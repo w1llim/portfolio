@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>William Lam — Portfolio</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -237,6 +238,11 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .big-count-lab{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--kraft-dim)}
 @media(max-width:820px){.cmd-grid{grid-template-columns:1fr}.rank-badge{max-width:340px}}
 
+/* ---------- kung fu ---------- */
+.kf-grid{display:grid;grid-template-columns:1fr auto;gap:clamp(30px,5vw,80px);align-items:center}
+.kf-rk{font-size:clamp(54px,7.5vw,92px)}
+@media(max-width:820px){.kf-grid{grid-template-columns:1fr}}
+
 /* ---------- ops lab ---------- */
 .ops-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch}
 .panel{
@@ -437,6 +443,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
     <nav class="links mono">
       <a href="#coursework">Coursework</a>
       <a href="#command">Command</a>
+      <a href="#kungfu">Kung Fu</a>
       <a href="#ops">Ops Lab</a>
       <a href="#mission">Mission</a>
       <a href="#contact">Contact</a>
@@ -498,8 +505,8 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 <!-- ================= TICKER ================= -->
 <div class="ticker" aria-hidden="true">
   <div class="ticker-track">
-    <span>English Advanced</span><span>Maths Advanced</span><span>Maths Extension 1</span><span>Physics</span><span>Software Engineering</span><span>Enterprise Computing</span><span>CUO · Company Commander</span><span>HSC 2026</span>
-    <span>English Advanced</span><span>Maths Advanced</span><span>Maths Extension 1</span><span>Physics</span><span>Software Engineering</span><span>Enterprise Computing</span><span>CUO · Company Commander</span><span>HSC 2026</span>
+    <span>English Advanced</span><span>Maths Advanced</span><span>Maths Extension 1</span><span>Physics</span><span>Software Engineering</span><span>Enterprise Computing</span><span>CUO · Company Commander</span><span>Pak Hok Pai · Kung Fu</span><span>Lion Dance</span><span>HSC 2026</span>
+    <span>English Advanced</span><span>Maths Advanced</span><span>Maths Extension 1</span><span>Physics</span><span>Software Engineering</span><span>Enterprise Computing</span><span>CUO · Company Commander</span><span>Pak Hok Pai · Kung Fu</span><span>Lion Dance</span><span>HSC 2026</span>
   </div>
 </div>
 
@@ -590,6 +597,37 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
   </div>
 </section>
 
+<!-- ================= KUNG FU ================= -->
+<section id="kungfu">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 data-scramble-scroll><span class="hash">#</span>Kung Fu</h2>
+      <span class="count">Pak Hok Pai Australia · Est. 2020</span>
+    </div>
+
+    <div class="kf-grid">
+      <div class="cmd-info reveal">
+        <h3>Pak Hok Pai — <em>white crane kung fu</em>, trained since 2020.</h3>
+        <p>Off the keyboard and out of uniform: white crane kung fu with Pak Hok Pai Australia. Empty-hand forms, weapons training with the dao — the single sabre — and performing lion dance with the school. Six years of the same lesson security keeps teaching: drill the fundamentals until they're reflex.</p>
+        <dl class="svc-record">
+          <div><dt>Style</dt><dd class="hl">Pak Hok Pai — White Crane</dd></div>
+          <div><dt>School</dt><dd>Pak Hok Pai Australia</dd></div>
+          <div><dt>Training since</dt><dd>2020 · 6 years</dd></div>
+          <div><dt>Weapon</dt><dd>Dao — single sabre</dd></div>
+          <div><dt>Performance</dt><dd>Lion dance</dd></div>
+        </dl>
+      </div>
+
+      <div class="rank-badge reveal d1">
+        <span class="corner tl"></span><span class="corner tr"></span>
+        <span class="corner bl"></span><span class="corner br"></span>
+        <div class="rk kf-rk" aria-label="Pak Hok — White Crane">白鶴</div>
+        <div class="rk-sub">Pak Hok Pai · White Crane</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ================= OPS LAB ================= -->
 <section id="ops">
   <div class="wrap">
@@ -653,7 +691,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
   <div class="wrap">
     <div class="sec-head reveal">
       <h2><span class="hash">#</span>Mission</h2>
-      <span class="count">Target: UNSW Sydney · 2027</span>
+      <span class="count">02 majors · Combined arms</span>
     </div>
     <div class="mission-grid">
       <div class="reveal">
@@ -737,7 +775,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
     <div class="foot-meta mono">
       <span>hello@williamlam.dev</span>
       <span style="display:flex;gap:22px">
-        <a href="#">GitHub</a><a href="#">LinkedIn</a>
+        <a href="https://github.com/w1llim" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/william-lam-2223aa353/" target="_blank" rel="noopener">LinkedIn</a>
       </span>
       <span>© 2026 William Lam · Sydney AU</span>
     </div>
