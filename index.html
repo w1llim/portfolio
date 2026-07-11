@@ -914,14 +914,28 @@ countIO.observe(countEl);
     passedEl.textContent = '1,204'; blockedEl.textContent = '37';
   }
 
-  const netIO = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-      if (reduceMotion) { if (e.isIntersecting) staticFrame(); return; }
-      if (e.isIntersecting && !running) { running = true; layout(); requestAnimationFrame(step); }
-      else if (!e.isIntersecting) running = false;
-    });
-  }, { threshold: 0.2 });
-  netIO.observe(canvas);
+  function start() {
+    if (reduceMotion) { staticFrame(); return; }
+    if (running) return;
+    running = true; layout(); requestAnimationFrame(step);
+  }
+
+  // Kick things off immediately so the monitor isn't dependent on the
+  // IntersectionObserver ever firing (it was previously gated entirely
+  // behind the observer's first callback, which could silently never
+  // arrive — leaving the canvas at its blank 300x150 default forever).
+  start();
+
+  if ('IntersectionObserver' in window) {
+    const netIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (reduceMotion) { if (e.isIntersecting) staticFrame(); return; }
+        if (e.isIntersecting) { start(); }
+        else { running = false; }
+      });
+    }, { threshold: 0.2 });
+    netIO.observe(canvas);
+  }
   window.addEventListener('resize', () => { if (running || reduceMotion) layout(); });
 })();
 
