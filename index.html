@@ -360,6 +360,33 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 .foot-meta a{border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
 .foot-meta a:hover{color:var(--phos);border-color:var(--phos)}
 
+/* ---------- slipspace jump ---------- */
+.slipspace{height:260vh;position:relative;background:var(--bark);padding:0}
+.slip-sticky{
+  position:sticky;top:0;height:100vh;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+}
+#slipCanvas{position:absolute;inset:0;width:100%;height:100%}
+.slip-copy{position:relative;z-index:1;text-align:center;padding:0 20px}
+.slip-sub{
+  font-size:12.5px;letter-spacing:.22em;text-transform:uppercase;
+  color:var(--phos);opacity:0;margin-bottom:20px;
+}
+.slip-text{
+  font-family:var(--disp);font-weight:700;
+  font-size:clamp(30px,6.5vw,88px);line-height:1.1;
+  letter-spacing:.5em;margin-right:-.5em;   /* cancel trailing tracking so it centres */
+  color:var(--kraft);opacity:0;
+  text-shadow:0 0 26px rgba(140,245,107,.4),0 0 80px rgba(140,245,107,.18);
+}
+@media(prefers-reduced-motion:reduce){
+  .slipspace{height:auto;padding:clamp(80px,10vw,150px) 0}
+  .slip-sticky{position:static;height:auto}
+  #slipCanvas{display:none}
+  .slip-sub,.slip-text{opacity:1}
+  .slip-text{letter-spacing:.18em;margin-right:-.18em}
+}
+
 /* ---------- matrix rain (scroll-driven) ---------- */
 #matrixRain{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:996;opacity:0}
 @media(prefers-reduced-motion:reduce){#matrixRain{display:none}}
@@ -433,6 +460,17 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       Scroll to decrypt
       <svg width="13" height="17" viewBox="0 0 14 18" fill="none" aria-hidden="true"><path d="M7 1v14M1.5 10.5L7 16l5.5-5.5" stroke="currentColor" stroke-width="1.6"/></svg>
     </a>
+  </div>
+</section>
+
+<!-- ================= SLIPSPACE JUMP ================= -->
+<section class="slipspace" id="slipspace" aria-label="Slipspace jump transition">
+  <div class="slip-sticky">
+    <canvas id="slipCanvas" aria-hidden="true"></canvas>
+    <div class="slip-copy">
+      <div class="slip-sub mono" id="slipSub">&gt; initiating slipspace jump_</div>
+      <div class="slip-text" id="slipText">ARE YOU READY?</div>
+    </div>
   </div>
 </section>
 
@@ -621,6 +659,10 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
           <div style="border-color:rgba(36,28,18,.3)"><dt style="color:#4A3F2C">Ethical hacking &amp; pentesting</dt><dd style="color:#33512F">// Interest</dd></div>
           <div style="border-color:rgba(36,28,18,.3)"><dt style="color:#4A3F2C">Cryptography</dt><dd style="color:#33512F">// Interest</dd></div>
           <div style="border-color:rgba(36,28,18,.3)"><dt style="color:#4A3F2C">Digital forensics</dt><dd style="color:#33512F">// Interest</dd></div>
+          <div style="border-color:rgba(36,28,18,.3)"><dt style="color:#4A3F2C">Secure software development</dt><dd style="color:#33512F">// Interest</dd></div>
+          <div style="border-color:rgba(36,28,18,.3)"><dt style="color:#4A3F2C">Reverse engineering &amp; malware analysis</dt><dd style="color:#33512F">// Interest</dd></div>
+          <div style="border-color:rgba(36,28,18,.3)"><dt style="color:#4A3F2C">Security governance, risk &amp; compliance</dt><dd style="color:#33512F">// Interest</dd></div>
+          <div style="border-color:rgba(36,28,18,.3)"><dt style="color:#4A3F2C">Incident response &amp; security operations</dt><dd style="color:#33512F">// Interest</dd></div>
         </div>
       </div>
     </div>
@@ -1023,6 +1065,107 @@ countIO.observe(countEl);
   window.addEventListener('scroll', wake, { passive: true });
   window.addEventListener('resize', layout);
   wake();
+})();
+
+/* ================= slipspace jump ================= */
+/* Scroll-scrubbed warp tunnel between the hero and coursework: a starfield
+   whose streaks stretch and accelerate the deeper you scroll into the
+   section, a rising core glow, a flash at the jump moment, and the
+   "ARE YOU READY?" callout decrypting in via scramble(). Reduced motion
+   gets a static text banner instead (handled in CSS). */
+(function slipspace() {
+  if (reduceMotion) return;
+  const sec = document.getElementById('slipspace');
+  const canvas = document.getElementById('slipCanvas');
+  const ctx = canvas.getContext('2d');
+  const subEl = document.getElementById('slipSub');
+  const textEl = document.getElementById('slipText');
+  let W, H, CX, CY, maxR, stars, running = false, scrambled = false;
+
+  function layout() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    CX = W / 2; CY = H / 2;
+    maxR = Math.hypot(CX, CY);
+    stars = Array.from({ length: 240 }, () => ({
+      a: Math.random() * Math.PI * 2,
+      r: Math.pow(Math.random(), .6) * maxR,
+      v: .4 + Math.random() * 1.1,
+      white: Math.random() < .12
+    }));
+  }
+
+  function progress() {   // 0 entering the section -> 1 leaving it
+    const top = sec.getBoundingClientRect().top;
+    const span = sec.offsetHeight - window.innerHeight;
+    return Math.max(0, Math.min(span > 0 ? -top / span : 0, 1));
+  }
+
+  const ramp = (p, a, b) => Math.max(0, Math.min((p - a) / (b - a), 1));
+
+  function step() {
+    if (!running) return;
+    requestAnimationFrame(step);
+    const p = progress();
+    const ease = p * p;                       // slow build, violent finish
+
+    ctx.clearRect(0, 0, W, H);
+
+    // core glow swells with depth
+    if (p > .05) {
+      const g = ctx.createRadialGradient(CX, CY, 0, CX, CY, maxR * .55);
+      g.addColorStop(0, `rgba(140,245,107,${.22 * ease})`);
+      g.addColorStop(.4, `rgba(140,245,107,${.07 * ease})`);
+      g.addColorStop(1, 'rgba(140,245,107,0)');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    // star streaks radiating from centre
+    ctx.lineCap = 'round';
+    for (const s of stars) {
+      const speed = s.v * (.25 + ease * 26) * (s.r / maxR + .15);
+      const r2 = s.r + speed;
+      const tail = Math.min(speed * (1 + ease * 6), s.r);
+      const cos = Math.cos(s.a), sin = Math.sin(s.a);
+      const alpha = (.25 + .75 * (s.r / maxR)) * (.35 + ease * .65);
+      ctx.strokeStyle = s.white
+        ? `rgba(239,255,232,${alpha})`
+        : `rgba(140,245,107,${alpha * .85})`;
+      ctx.lineWidth = s.white ? 1.6 : 1.1;
+      ctx.beginPath();
+      ctx.moveTo(CX + cos * (r2 - tail), CY + sin * (r2 - tail));
+      ctx.lineTo(CX + cos * r2, CY + sin * r2);
+      ctx.stroke();
+      s.r = r2 > maxR ? Math.random() * maxR * .08 : r2;
+    }
+
+    // the jump flash
+    const flash = ramp(p, .86, 1);
+    if (flash > 0) {
+      ctx.fillStyle = `rgba(214,255,201,${flash * .8})`;
+      ctx.fillRect(0, 0, W, H);
+    }
+
+    // copy: prompt line first, then the big question decrypts in
+    subEl.style.opacity = ramp(p, .22, .38) * (1 - ramp(p, .9, 1));
+    const tIn = ramp(p, .48, .68);
+    textEl.style.opacity = tIn * (1 - ramp(p, .92, 1));
+    textEl.style.letterSpacing = (.5 - .34 * ramp(p, .48, .9)) + 'em';
+    if (!scrambled && p > .5) { scrambled = true; scramble(textEl, 900); }
+    if (p < .3) scrambled = false;            // re-arm when scrolled back up
+  }
+
+  const slipIO = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting && !running) { running = true; layout(); requestAnimationFrame(step); }
+      else if (!e.isIntersecting) running = false;
+    });
+  });
+  slipIO.observe(sec);
+  window.addEventListener('resize', () => { if (running) layout(); });
 })();
 
 /* ================= caesar cipher ================= */
