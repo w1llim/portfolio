@@ -322,6 +322,8 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
   pointer-events:none;
 }
 .stamp.in{transform:rotate(-7deg) scale(1);opacity:.85}
+/* reserve room for the absolutely-positioned stamp so it never sits on the copy */
+@media(min-width:901px){.mission-col{padding-top:76px}}
 @media(max-width:900px){.mission-grid{grid-template-columns:1fr}.stamp{position:static;display:inline-block;margin-bottom:18px}}
 
 /* ---------- toolkit ---------- */
@@ -358,6 +360,10 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 .foot-meta a{border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
 .foot-meta a:hover{color:var(--phos);border-color:var(--phos)}
 
+/* ---------- matrix rain (scroll-driven) ---------- */
+#matrixRain{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:996;opacity:0}
+@media(prefers-reduced-motion:reduce){#matrixRain{display:none}}
+
 /* ---------- reveal ---------- */
 .reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease}
 .reveal.in{opacity:1;transform:none}
@@ -375,6 +381,8 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 </style>
 </head>
 <body>
+
+<canvas id="matrixRain" aria-hidden="true"></canvas>
 
 <header>
   <div class="wrap nav">
@@ -937,6 +945,84 @@ countIO.observe(countEl);
     netIO.observe(canvas);
   }
   window.addEventListener('resize', () => { if (running || reduceMotion) layout(); });
+})();
+
+/* ================= matrix rain (scroll-driven) ================= */
+/* A fixed overlay of falling glyphs that fades in and thickens the deeper
+   the page is scrolled — invisible at the top, full "in the matrix" by the
+   footer. Sits under the CRT scanline layers, above content, never blocks
+   clicks. Skipped entirely under prefers-reduced-motion. */
+(function matrixRain() {
+  if (reduceMotion) return;
+  const canvas = document.getElementById('matrixRain');
+  const ctx = canvas.getContext('2d');
+  const GLYPHS = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEFXZ<>/\\|=+*#$';
+  const FONT = 15;
+  let W, H, cols, drops, running = false, last = 0, intensity = 0;
+
+  function layout() {
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    W = window.innerWidth; H = window.innerHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    ctx.font = '600 ' + FONT + 'px "JetBrains Mono", monospace';
+    cols = Math.ceil(W / FONT);
+    drops = Array.from({ length: cols }, () => ({
+      y: Math.random() * -40,               // staggered starts above the fold
+      speed: .5 + Math.random() * .9,
+      gate: Math.random()                   // column joins as intensity rises
+    }));
+  }
+
+  function depth() {                        // 0 at page top -> 1 at page bottom
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    return max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+  }
+
+  function step(now) {
+    if (!running) return;
+    requestAnimationFrame(step);
+    if (now - last < 55) return;            // ~18fps: the classic chunky cadence
+    last = now;
+
+    intensity += (depth() - intensity) * .07;
+    canvas.style.opacity = (Math.min(intensity * 1.15, 1) * .4).toFixed(3);
+    if (intensity < .01 && depth() < .01) { // parked back at the top: sleep
+      running = false;
+      ctx.clearRect(0, 0, W, H);
+      canvas.style.opacity = 0;
+      return;
+    }
+
+    // erode the previous frame so trails linger on a transparent canvas
+    ctx.globalCompositeOperation = 'destination-out';
+    ctx.fillStyle = 'rgba(0,0,0,.16)';
+    ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'source-over';
+
+    const density = .2 + intensity * .8;    // more columns rain as you go deeper
+    for (let i = 0; i < cols; i++) {
+      const d = drops[i];
+      if (d.gate > density) continue;
+      const ch = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
+      const x = i * FONT, y = d.y * FONT;
+      if (y > 0 && y < H + FONT) {
+        ctx.fillStyle = Math.random() < .08 ? '#D9FFCC' : '#8CF56B';
+        ctx.fillText(ch, x, y);
+      }
+      d.y += d.speed * (.5 + intensity);
+      if (y > H && Math.random() > .975) { d.y = 0; d.speed = .5 + Math.random() * .9; }
+    }
+  }
+
+  function wake() {
+    if (!running && depth() > .01) { running = true; requestAnimationFrame(step); }
+  }
+
+  layout();
+  window.addEventListener('scroll', wake, { passive: true });
+  window.addEventListener('resize', layout);
+  wake();
 })();
 
 /* ================= caesar cipher ================= */
