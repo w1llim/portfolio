@@ -1,0 +1,872 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ops Lab — William Lam</title>
+<meta name="description" content="Interactive security lab — live packet monitor, Caesar cipher, SHA-256 avalanche visualiser, password entropy audit and a simulated port scan. Everything runs client-side.">
+<link rel="canonical" href="https://w1llim.github.io/portfolio/ops.html">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Ops Lab — William Lam">
+<meta property="og:description" content="Five interactive security modules — packet monitor, Caesar cipher, SHA-256 avalanche, password audit and a simulated port scan.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://w1llim.github.io/portfolio/ops.html">
+<meta property="og:site_name" content="William Lam — Portfolio">
+<meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ops Lab — William Lam">
+<meta name="twitter:description" content="Five interactive security modules — packet monitor, Caesar cipher, SHA-256 avalanche, password audit and a simulated port scan.">
+<meta name="theme-color" content="#211A10">
+<link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=Archivo:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bark:#211A10;        /* deep espresso brown — base */
+  --bark-2:#2B2316;      /* raised panels */
+  --moss:#33512F;        /* deep green */
+  --olive:#4E5A33;       /* military olive */
+  --kraft:#D3C4A2;       /* kraft paper */
+  --kraft-dim:#A99B7D;
+  --phos:#8CF56B;        /* phosphor green accent */
+  --phos-dim:rgba(140,245,107,.35);
+  --threat:#E8603F;      /* hostile packets / alerts */
+  --line:rgba(211,196,162,.16);
+  --mono:'JetBrains Mono',monospace;
+  --body:'Archivo',sans-serif;
+  --disp:'Chakra Petch',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bark);
+  color:var(--kraft);
+  font-family:var(--body);
+  font-size:17px;line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+/* CRT scanlines + vignette */
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:998;
+  background:repeating-linear-gradient(0deg,rgba(0,0,0,.14) 0 1px,transparent 1px 3px);
+  opacity:.5;
+}
+body::after{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:997;
+  background:radial-gradient(ellipse at 50% 40%,transparent 55%,rgba(0,0,0,.4));
+}
+::selection{background:var(--phos);color:var(--bark)}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--phos);outline-offset:3px}
+.mono{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.wrap{max-width:1240px;margin:0 auto;padding:0 clamp(20px,4vw,56px)}
+.phos{color:var(--phos)}
+
+/* ---------- header ---------- */
+header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  border-bottom:1px solid var(--line);
+  background:rgba(33,26,16,.82);backdrop-filter:blur(10px);
+}
+.nav{display:flex;justify-content:space-between;align-items:center;height:58px;position:relative}
+.mark{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:.04em}
+.mark .bracket{color:var(--phos)}
+.status{display:flex;align-items:center;gap:8px;color:var(--kraft-dim)}
+.status .dot{width:7px;height:7px;border-radius:50%;background:var(--phos);box-shadow:0 0 8px var(--phos);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+nav.links{display:flex;gap:clamp(12px,2vw,30px)}
+nav.links a{position:relative;padding:3px 0;color:var(--kraft-dim);transition:color .2s}
+nav.links a:hover{color:var(--phos)}
+nav.links a::before{content:"/";color:var(--phos);margin-right:5px;opacity:0;transition:opacity .2s}
+nav.links a:hover::before{opacity:1}
+@media(max-width:860px){.status{display:none}}
+
+/* Nav is a dropdown at every width, not just mobile: at 9 sections, the
+   inline list never comfortably fits the header even on wide desktop
+   once .wrap hits its 1240px max-width — it was landing flush against
+   the logo and status dot with zero clearance at 1280-1920px alike. */
+.nav-toggle{
+  display:flex;background:none;border:1px solid var(--line);width:36px;height:36px;
+  flex-direction:column;justify-content:center;align-items:center;gap:5px;cursor:pointer;flex-shrink:0;
+}
+.nav-toggle span{width:16px;height:1.5px;background:var(--kraft);transition:transform .25s,opacity .2s}
+.nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-toggle.open span:nth-child(2){opacity:0}
+.nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+
+nav.links{
+  position:fixed;top:58px;left:0;right:0;z-index:99;
+  flex-direction:column;gap:0;background:var(--bark-2);
+  border-bottom:1px solid var(--line);
+  max-height:0;overflow:hidden;transition:max-height .3s ease;
+}
+nav.links.open{max-height:70vh;overflow-y:auto}
+nav.links a{padding:15px 20px;border-bottom:1px solid var(--line)}
+nav.links a::before{display:none}
+@media(min-width:640px){
+  /* anchor the panel inside the centred .nav wrap (not the viewport) so
+     its right edge lines up with the toggle button at any screen width */
+  nav.links{position:absolute;top:58px;left:auto;width:280px;right:clamp(20px,4vw,56px);border:1px solid var(--line);border-top:0}
+}
+
+.btn{
+  font-family:var(--mono);font-size:13px;letter-spacing:.1em;text-transform:uppercase;
+  padding:13px 24px;border:1px solid var(--phos);color:var(--phos);
+  position:relative;overflow:hidden;transition:color .25s;display:inline-block;cursor:pointer;background:none;
+}
+.btn::before{content:"";position:absolute;inset:0;background:var(--phos);transform:scaleX(0);transform-origin:left;transition:transform .25s ease;z-index:-1}
+.btn:hover{color:var(--bark)}
+.btn:hover::before{transform:scaleX(1)}
+.btn.ghost{border-color:var(--line);color:var(--kraft-dim)}
+.btn.ghost::before{background:var(--kraft)}
+.btn.ghost:hover{color:var(--bark)}
+
+
+.term-bar{
+  display:flex;align-items:center;gap:8px;padding:10px 14px;
+  border-bottom:1px solid var(--line);color:var(--kraft-dim);font-size:11px;letter-spacing:.08em;
+  font-family:var(--mono);text-transform:none;
+}
+.term-bar .lights{display:flex;gap:6px;margin-right:6px}
+.term-bar .lights i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.term-bar .lights i:first-child{background:var(--phos);opacity:.7}
+
+/* ---------- sections ---------- */
+section{padding:clamp(80px,10vw,150px) 0;position:relative}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:clamp(36px,5vw,60px);flex-wrap:wrap}
+.sec-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(32px,4.6vw,58px);line-height:1}
+.sec-head h2 .hash{color:var(--phos);margin-right:6px}
+.sec-head .count{font-family:var(--mono);font-size:12.5px;color:var(--phos);letter-spacing:.12em;text-transform:uppercase}
+
+.page-top{padding-top:calc(58px + clamp(50px,7vw,90px))}
+.ops-intro{margin:-18px 0 clamp(30px,4vw,44px);color:var(--kraft-dim);max-width:64ch;font-size:15.5px}
+
+/* ---------- ops lab ---------- */
+.ops-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch}
+.panel{
+  border:1px solid var(--line);background:rgba(20,15,8,.7);
+  display:flex;flex-direction:column;min-width:0;
+}
+.panel .term-bar{justify-content:space-between}
+.panel .term-bar .right{color:var(--phos);flex-shrink:0}
+.panel .term-bar>span:first-child{
+  min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis;
+}
+.panel-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:14px}
+
+/* packet monitor */
+#netCanvas{width:100%;height:340px;display:block;background:radial-gradient(ellipse at 50% 50%,rgba(51,81,47,.18),transparent 70%)}
+.net-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.net-stats div{padding:14px 16px;border-right:1px solid var(--line);min-width:0}
+.net-stats div:last-child{border-right:0}
+.net-stats .v{font-family:var(--disp);font-weight:700;font-size:24px;color:var(--kraft)}
+.net-stats .v.threat{color:var(--threat)}
+.net-stats .v.ok{color:var(--phos)}
+.net-stats .l{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--kraft-dim)}
+
+/* cipher + shared panel form styles */
+.panel label{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--kraft-dim);display:block;margin-bottom:7px}
+.panel textarea{
+  width:100%;resize:vertical;min-height:72px;
+  background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--kraft);
+  font-family:var(--mono);font-size:13.5px;line-height:1.6;padding:12px;
+}
+.panel textarea:focus{border-color:var(--phos)}
+.panel input[type=text]{
+  width:100%;background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--kraft);
+  font-family:var(--mono);font-size:13.5px;line-height:1.6;padding:12px;
+}
+.panel input[type=text]:focus{border-color:var(--phos)}
+.panel-note{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--kraft-dim)}
+.shift-row{display:flex;align-items:center;gap:14px}
+.shift-row input[type=range]{flex:1;accent-color:var(--phos);cursor:pointer}
+.shift-val{
+  font-family:var(--disp);font-weight:700;font-size:26px;color:var(--phos);
+  min-width:58px;text-align:center;border:1px solid var(--line);padding:4px 0;
+}
+.mode-row{display:flex;gap:8px}
+.mode-btn{
+  flex:1;font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;
+  padding:10px 0;border:1px solid var(--line);background:none;color:var(--kraft-dim);cursor:pointer;
+  transition:all .2s;
+}
+.mode-btn.active{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+.alpha-map{
+  font-family:var(--mono);font-size:11.5px;line-height:1.9;letter-spacing:.28em;
+  color:var(--kraft-dim);border:1px dashed var(--line);padding:10px 12px;
+  overflow-x:auto;white-space:nowrap;
+}
+.alpha-map .to{color:var(--phos)}
+.cipher-out{
+  background:rgba(140,245,107,.06);border:1px solid rgba(140,245,107,.3);
+  font-family:var(--mono);font-size:13.5px;line-height:1.6;color:var(--phos);
+  padding:12px;min-height:72px;word-break:break-word;white-space:pre-wrap;
+}
+
+/* ops lab · row 2 */
+.ops-grid2{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:20px;align-items:stretch}
+
+/* hash lab */
+.hash-out{
+  background:rgba(140,245,107,.06);border:1px solid rgba(140,245,107,.3);
+  font-family:var(--mono);font-size:12px;letter-spacing:.04em;line-height:1.6;
+  color:var(--phos);padding:10px 12px;word-break:break-all;
+}
+.hash-bits{display:grid;grid-template-columns:repeat(32,1fr);gap:2px}
+.hash-bits i{display:block;aspect-ratio:1;background:rgba(211,196,162,.1);transition:background .5s}
+.hash-bits i.on{background:rgba(140,245,107,.5)}
+.hash-bits i.flip{background:var(--threat);transition:none}
+
+/* password audit */
+.pw-chips{display:flex;gap:8px;flex-wrap:wrap}
+.pw-chips span{
+  border:1px solid var(--line);padding:4px 10px;font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.12em;color:var(--kraft-dim);transition:color .25s,border-color .25s,background .25s;
+}
+.pw-chips span.hit{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+.pw-rail{height:6px;background:rgba(211,196,162,.12);overflow:hidden}
+.pw-fill{height:100%;width:0;background:var(--threat);transition:width .45s cubic-bezier(.2,.8,.2,1),background .45s}
+.pw-verdict{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--kraft-dim);margin-top:8px}
+
+/* recon scan sim */
+.scan-out{
+  flex:1;min-height:230px;max-height:280px;overflow:auto;
+  border:1px dashed var(--line);padding:12px 14px;
+  font-family:var(--mono);font-size:11.5px;line-height:1.85;
+  white-space:pre;color:var(--kraft);
+}
+.scan-out span{display:block}
+.scan-out .ok{color:var(--phos)}
+.scan-out .dim{color:var(--kraft-dim)}
+.scan-out .warn{color:var(--threat)}
+.scan-btn{width:100%;text-align:center}
+.btn:disabled{opacity:.45;pointer-events:none}
+
+@media(max-width:940px){.ops-grid,.ops-grid2{grid-template-columns:1fr}}
+
+/* ---------- footer ---------- */
+footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40px,6vw,80px)}
+.foot-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--kraft-dim)}
+.foot-meta a{border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
+.foot-meta a:hover{color:var(--phos);border-color:var(--phos)}
+
+/* ---------- reveal ---------- */
+/* position:relative pins this as the containing block unconditionally —
+   without it, the transform below (present pre-reveal, removed once .in
+   lands) is what was creating the containing block, so any absolutely
+   positioned descendant (the mission stamp) would jump to a different
+   anchor mid-transition as that transform animated away. */
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .7s ease,transform .7s ease;position:relative}
+.reveal.in{opacity:1;transform:none}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+.reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.4s}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .reveal{opacity:1;transform:none}
+  .mod .fill{width:var(--w)!important}
+  .stamp{opacity:.85;transform:rotate(-7deg)}
+  .rank-badge .chevrons svg{opacity:1;transform:none}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="mark" href="index.html"><span class="bracket">[</span>W.LAM<span class="bracket">]</span></a>
+    <nav class="links mono" id="navLinks">
+      <a href="index.html#mission">Mission</a>
+      <a href="index.html#coursework">Coursework</a>
+      <a href="index.html#command">Command</a>
+      <a href="index.html#kungfu">Kung Fu</a>
+      <a href="index.html#majorworks">Major Works</a>
+      <a href="index.html#projects">Projects</a>
+      <a href="index.html#timeline">Timeline</a>
+      <a href="index.html#toolkit">Toolkit</a>
+      <a href="index.html#contact">Contact</a>
+    </nav>
+    <div class="status mono"><span class="dot"></span>Lab online</div>
+    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- ================= OPS LAB ================= -->
+<section id="ops" class="page-top">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 data-scramble-scroll><span class="hash">#</span>Ops Lab</h2>
+      <span class="count">05 live modules · Interactive</span>
+    </div>
+
+    <div class="ops-grid">
+
+      <!-- packet monitor -->
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>netmon --live · perimeter firewall</span>
+          <span class="right" id="netStatus">MONITORING</span>
+        </div>
+        <canvas id="netCanvas" aria-label="Animated visualisation of network packets passing through a firewall; hostile packets are intercepted"></canvas>
+        <div class="net-stats" aria-live="off">
+          <div><div class="v ok" id="statPassed">0</div><div class="l">Packets cleared</div></div>
+          <div><div class="v threat" id="statBlocked">0</div><div class="l">Threats blocked</div></div>
+          <div><div class="v" id="statUptime">100%</div><div class="l">Perimeter integrity</div></div>
+        </div>
+      </div>
+
+      <!-- caesar cipher -->
+      <div class="panel cipher reveal d1">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>caesar --interactive</span>
+          <span class="right">ROT-N</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="cipherIn">Plaintext / ciphertext</label>
+            <textarea id="cipherIn" spellcheck="false">Meet at the flagpole at 0900.</textarea>
+          </div>
+          <div>
+            <label for="cipherShift">Shift key</label>
+            <div class="shift-row">
+              <input type="range" id="cipherShift" min="0" max="25" value="3">
+              <div class="shift-val" id="shiftVal">+3</div>
+            </div>
+          </div>
+          <div class="mode-row" role="group" aria-label="Cipher mode">
+            <button class="mode-btn active" id="modeEnc" type="button">Encrypt ▸</button>
+            <button class="mode-btn" id="modeDec" type="button">◂ Decrypt</button>
+          </div>
+          <div class="alpha-map" id="alphaMap" aria-hidden="true"></div>
+          <div>
+            <label for="cipherOut">Output</label>
+            <div class="cipher-out" id="cipherOut" aria-live="polite"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ops-grid2">
+
+      <!-- sha-256 avalanche -->
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>sha256 --avalanche</span>
+          <span class="right">WEB CRYPTO</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="hashIn">Message</label>
+            <textarea id="hashIn" spellcheck="false">Attack at dawn</textarea>
+          </div>
+          <div>
+            <label for="hashOut">SHA-256 digest · 256 bits</label>
+            <div class="hash-out" id="hashOut"></div>
+          </div>
+          <div class="hash-bits" id="hashBits" aria-hidden="true"></div>
+          <div class="panel-note" id="hashStat">// edit one character — watch ~half the bits flip</div>
+        </div>
+      </div>
+
+      <!-- password audit -->
+      <div class="panel reveal d1">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>passwd --audit · offline</span>
+          <span class="right">100 GH/s</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="pwIn">Test passphrase — invent one, not your real creds</label>
+            <input id="pwIn" type="text" autocomplete="off" spellcheck="false" maxlength="64" placeholder="hunter2">
+          </div>
+          <div class="pw-chips" aria-hidden="true">
+            <span id="cLow">a–z</span><span id="cUp">A–Z</span><span id="cDig">0–9</span><span id="cSym">#!?</span>
+          </div>
+          <div>
+            <div class="pw-rail"><div class="pw-fill" id="pwFill"></div></div>
+            <div class="pw-verdict" id="pwVerdict" aria-live="polite">// awaiting input</div>
+          </div>
+          <dl class="svc-record" style="margin-top:0">
+            <div><dt>Entropy</dt><dd id="pwBits">0 bits</dd></div>
+            <div><dt>Charset pool</dt><dd id="pwPool">0 symbols</dd></div>
+            <div><dt>Offline crack time</dt><dd class="hl" id="pwCrack">—</dd></div>
+          </dl>
+          <div class="panel-note">// runs 100% in-browser — nothing leaves this page</div>
+        </div>
+      </div>
+
+      <!-- recon scan simulation -->
+      <div class="panel reveal d2">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>recon --sim · training range</span>
+          <span class="right" id="scanStatus">IDLE</span>
+        </div>
+        <div class="panel-body">
+          <div class="scan-out" id="scanOut" aria-label="Simulated port scan output"></div>
+          <button type="button" class="btn scan-btn" id="scanBtn">Run scan ▸</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot-meta mono">
+    <a href="index.html">&#9666; Return to base</a>
+    <span>williamlam986@gmail.com</span>
+    <span>&copy; 2026 William Lam &middot; Sydney AU</span>
+  </div>
+</footer>
+
+<script>
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ================= nav dropdown ================= */
+(function navMenu() {
+  const toggle = document.getElementById('navToggle');
+  const links = document.getElementById('navLinks');
+  function setOpen(open) {
+    links.classList.toggle('open', open);
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', open);
+  }
+  toggle.addEventListener('click', () => setOpen(!links.classList.contains('open')));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('click', e => {
+    if (links.classList.contains('open') && !links.contains(e.target) && e.target !== toggle && !toggle.contains(e.target)) setOpen(false);
+  });
+})();
+
+/* ================= text scramble / decrypt ================= */
+const CHARS = '!<>-_\\/[]{}—=+*^?#01';
+function scramble(el, duration = 900) {
+  if (reduceMotion) return;
+  const original = el.dataset.original || el.textContent;
+  el.dataset.original = original;
+  const start = performance.now();
+  function frame(now) {
+    const p = Math.min((now - start) / duration, 1);
+    const settled = Math.floor(original.length * p);
+    let out = '';
+    for (let i = 0; i < original.length; i++) {
+      if (original[i] === ' ') { out += ' '; continue; }
+      out += i < settled ? original[i] : CHARS[Math.floor(Math.random() * CHARS.length)];
+    }
+    el.textContent = out;
+    if (p < 1) requestAnimationFrame(frame);
+    else el.textContent = original;
+  }
+  requestAnimationFrame(frame);
+}
+window.addEventListener('load', () => {
+  document.querySelectorAll('[data-scramble]').forEach((el, i) => {
+    setTimeout(() => scramble(el, 1100), 200 + i * 250);
+  });
+});
+document.querySelectorAll('[data-scramble-hover]').forEach(el => {
+  let busy = false;
+  el.closest('a').addEventListener('mouseenter', () => {
+    if (busy) return; busy = true;
+    scramble(el, 700);
+    setTimeout(() => busy = false, 750);
+  });
+});
+const scrambleIO = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { scramble(e.target, 800); scrambleIO.unobserve(e.target); }
+  });
+}, { threshold: 0.5 });
+document.querySelectorAll('[data-scramble-scroll]').forEach(el => scrambleIO.observe(el));
+
+/* ================= scroll reveals / bars / stamp / badge ================= */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  });
+}, { threshold: 0.15 });
+document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.observe(el));
+
+/* ================= packet traffic monitor ================= */
+(function packetMonitor() {
+  const canvas = document.getElementById('netCanvas');
+  const ctx = canvas.getContext('2d');
+  const passedEl = document.getElementById('statPassed');
+  const blockedEl = document.getElementById('statBlocked');
+  const uptimeEl = document.getElementById('statUptime');
+  const statusEl = document.getElementById('netStatus');
+  let W, H, dpr, nodes, packets = [], flashes = [];
+  let passed = 0, blocked = 0, running = false, lastSpawn = 0;
+
+  function layout() {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = W * dpr; canvas.height = H * dpr;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    // external hosts (left) -> firewall (centre) -> internal servers (right)
+    nodes = {
+      ext: [ {x:.08,y:.18},{x:.05,y:.5},{x:.09,y:.82} ].map(p => ({x:p.x*W, y:p.y*H})),
+      fw:  { x:.5*W, y:.5*H },
+      int: [ {x:.92,y:.22},{x:.95,y:.5},{x:.91,y:.78} ].map(p => ({x:p.x*W, y:p.y*H})),
+    };
+  }
+
+  function spawn() {
+    const from = nodes.ext[Math.floor(Math.random()*nodes.ext.length)];
+    const to = nodes.int[Math.floor(Math.random()*nodes.int.length)];
+    const hostile = Math.random() < 0.16;
+    packets.push({
+      from, to, hostile, phase: 0,          // 0 = travelling to firewall, 1 = beyond
+      t: 0, speed: 0.006 + Math.random()*0.007,
+      trail: []
+    });
+  }
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+
+  function step() {
+    if (!running) return;
+    const now = performance.now();
+    if (now - lastSpawn > 340 + Math.random()*420) { spawn(); lastSpawn = now; }
+
+    ctx.clearRect(0, 0, W, H);
+
+    // links
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(211,196,162,.12)';
+    nodes.ext.forEach(n => { ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(nodes.fw.x, nodes.fw.y); ctx.stroke(); });
+    nodes.int.forEach(n => { ctx.beginPath(); ctx.moveTo(nodes.fw.x, nodes.fw.y); ctx.lineTo(n.x, n.y); ctx.stroke(); });
+
+    // firewall node
+    const pulse = 6 + Math.sin(now/300)*1.5;
+    ctx.strokeStyle = 'rgba(140,245,107,.7)';
+    ctx.lineWidth = 1.5;
+    ctx.strokeRect(nodes.fw.x-16, nodes.fw.y-16, 32, 32);
+    ctx.strokeStyle = 'rgba(140,245,107,.25)';
+    ctx.strokeRect(nodes.fw.x-16-pulse, nodes.fw.y-16-pulse, 32+pulse*2, 32+pulse*2);
+    ctx.fillStyle = '#8CF56B';
+    ctx.font = '600 9px "JetBrains Mono", monospace';
+    ctx.textAlign = 'center';
+    ctx.fillText('FW', nodes.fw.x, nodes.fw.y+3.5);
+
+    // host nodes
+    function drawHost(n, label) {
+      ctx.fillStyle = 'rgba(211,196,162,.85)';
+      ctx.beginPath(); ctx.arc(n.x, n.y, 4, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = 'rgba(169,155,125,.75)';
+      ctx.fillText(label, n.x, n.y - 11);
+    }
+    nodes.ext.forEach((n,i) => drawHost(n, 'EXT-' + i));
+    nodes.int.forEach((n,i) => drawHost(n, 'SRV-' + i));
+
+    // packets
+    packets = packets.filter(p => {
+      p.t += p.speed;
+      const a = p.phase === 0 ? p.from : nodes.fw;
+      const b = p.phase === 0 ? nodes.fw : p.to;
+      const x = lerp(a.x, b.x, Math.min(p.t,1));
+      const y = lerp(a.y, b.y, Math.min(p.t,1));
+      p.trail.push({x, y});
+      if (p.trail.length > 9) p.trail.shift();
+
+      const col = p.hostile ? '232,96,63' : '140,245,107';
+      p.trail.forEach((pt, i) => {
+        ctx.fillStyle = `rgba(${col},${(i/p.trail.length)*.35})`;
+        ctx.beginPath(); ctx.arc(pt.x, pt.y, 2.2, 0, Math.PI*2); ctx.fill();
+      });
+      ctx.fillStyle = `rgb(${col})`;
+      ctx.shadowColor = `rgb(${col})`; ctx.shadowBlur = 8;
+      ctx.beginPath(); ctx.arc(x, y, 2.8, 0, Math.PI*2); ctx.fill();
+      ctx.shadowBlur = 0;
+
+      if (p.t >= 1) {
+        if (p.phase === 0) {
+          if (p.hostile) {                       // intercepted at the firewall
+            blocked++; blockedEl.textContent = blocked;
+            flashes.push({ x: nodes.fw.x, y: nodes.fw.y, r: 4, life: 1 });
+            statusEl.textContent = 'THREAT BLOCKED';
+            statusEl.style.color = '#E8603F';
+            setTimeout(() => { statusEl.textContent = 'MONITORING'; statusEl.style.color = ''; }, 900);
+            return false;
+          }
+          p.phase = 1; p.t = 0; p.trail = [];    // cleared through
+          return true;
+        }
+        passed++; passedEl.textContent = passed;
+        return false;
+      }
+      return true;
+    });
+
+    // interception flashes
+    flashes = flashes.filter(f => {
+      f.r += 1.6; f.life -= 0.045;
+      ctx.strokeStyle = `rgba(232,96,63,${Math.max(f.life,0)})`;
+      ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.arc(f.x, f.y, f.r, 0, Math.PI*2); ctx.stroke();
+      return f.life > 0;
+    });
+
+    uptimeEl.textContent = '100%';
+    requestAnimationFrame(step);
+  }
+
+  function staticFrame() {   // reduced-motion fallback: one calm frame
+    layout();
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle = 'rgba(211,196,162,.15)';
+    nodes.ext.forEach(n => { ctx.beginPath(); ctx.moveTo(n.x,n.y); ctx.lineTo(nodes.fw.x,nodes.fw.y); ctx.stroke(); });
+    nodes.int.forEach(n => { ctx.beginPath(); ctx.moveTo(nodes.fw.x,nodes.fw.y); ctx.lineTo(n.x,n.y); ctx.stroke(); });
+    ctx.strokeStyle = 'rgba(140,245,107,.7)';
+    ctx.strokeRect(nodes.fw.x-16,nodes.fw.y-16,32,32);
+    passedEl.textContent = '1,204'; blockedEl.textContent = '37';
+  }
+
+  function start() {
+    if (reduceMotion) { staticFrame(); return; }
+    if (running) return;
+    running = true; layout(); requestAnimationFrame(step);
+  }
+
+  // Kick things off immediately so the monitor isn't dependent on the
+  // IntersectionObserver ever firing (it was previously gated entirely
+  // behind the observer's first callback, which could silently never
+  // arrive — leaving the canvas at its blank 300x150 default forever).
+  start();
+
+  if ('IntersectionObserver' in window) {
+    const netIO = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (reduceMotion) { if (e.isIntersecting) staticFrame(); return; }
+        if (e.isIntersecting) { start(); }
+        else { running = false; }
+      });
+    }, { threshold: 0.2 });
+    netIO.observe(canvas);
+  }
+  window.addEventListener('resize', () => { if (running || reduceMotion) layout(); });
+})();
+
+/* ================= caesar cipher ================= */
+(function caesar() {
+  const input = document.getElementById('cipherIn');
+  const shift = document.getElementById('cipherShift');
+  const shiftVal = document.getElementById('shiftVal');
+  const out = document.getElementById('cipherOut');
+  const map = document.getElementById('alphaMap');
+  const encBtn = document.getElementById('modeEnc');
+  const decBtn = document.getElementById('modeDec');
+  let mode = 1; // 1 = encrypt, -1 = decrypt
+
+  function rot(str, k) {
+    k = ((k % 26) + 26) % 26;
+    return [...str].map(ch => {
+      const c = ch.charCodeAt(0);
+      if (c >= 65 && c <= 90)  return String.fromCharCode((c - 65 + k) % 26 + 65);
+      if (c >= 97 && c <= 122) return String.fromCharCode((c - 97 + k) % 26 + 97);
+      return ch;
+    }).join('');
+  }
+
+  function render() {
+    const k = +shift.value * mode;
+    shiftVal.textContent = (mode === 1 ? '+' : '−') + shift.value;
+    out.textContent = rot(input.value, k) || ' ';
+    const A = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    map.innerHTML = 'A→<span class="to">' + rot('A', k) + '</span>&ensp;' +
+                    'B→<span class="to">' + rot('B', k) + '</span>&ensp;' +
+                    'C→<span class="to">' + rot('C', k) + '</span>&ensp;…&ensp;' +
+                    A + '<br><span class="to">' + rot(A, k) + '</span>';
+  }
+
+  function setMode(m) {
+    mode = m;
+    encBtn.classList.toggle('active', m === 1);
+    decBtn.classList.toggle('active', m === -1);
+    render();
+  }
+  encBtn.addEventListener('click', () => setMode(1));
+  decBtn.addEventListener('click', () => setMode(-1));
+  input.addEventListener('input', render);
+  shift.addEventListener('input', render);
+  render();
+})();
+
+/* ================= sha-256 avalanche lab ================= */
+/* Live SHA-256 via Web Crypto, with all 256 output bits rendered as a grid.
+   Bits that flipped versus the previous digest flash threat-red, so a
+   one-character edit visibly scrambles ~half the state. */
+(function hashLab() {
+  const input = document.getElementById('hashIn');
+  const out = document.getElementById('hashOut');
+  const grid = document.getElementById('hashBits');
+  const stat = document.getElementById('hashStat');
+  if (!(window.crypto && crypto.subtle)) {
+    out.textContent = 'web crypto unavailable in this context';
+    return;
+  }
+  const cells = [];
+  for (let i = 0; i < 256; i++) {
+    const c = document.createElement('i');
+    grid.appendChild(c);
+    cells.push(c);
+  }
+  let prev = null, seq = 0;
+  async function update() {
+    const my = ++seq;
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input.value));
+    if (my !== seq) return;                  // a newer keystroke already superseded this digest
+    const bytes = new Uint8Array(buf);
+    out.textContent = [...bytes].map(b => b.toString(16).padStart(2, '0')).join('');
+    let flips = 0;
+    for (let i = 0; i < 256; i++) {
+      const bit = (bytes[i >> 3] >> (7 - (i & 7))) & 1;
+      const pbit = prev ? (prev[i >> 3] >> (7 - (i & 7))) & 1 : bit;
+      cells[i].className = bit ? 'on' : '';
+      if (prev && bit !== pbit) { flips++; cells[i].classList.add('flip'); }
+    }
+    if (prev) {
+      stat.textContent = '// avalanche: ' + flips + '/256 bits flipped (' + (flips / 2.56).toFixed(1) + '%)';
+      setTimeout(() => cells.forEach(c => c.classList.remove('flip')), 450);
+    }
+    prev = bytes;
+  }
+  input.addEventListener('input', update);
+  update();
+})();
+
+/* ================= password entropy audit ================= */
+/* Everything below is arithmetic on the local string — no storage, no
+   network. Crack estimate assumes an offline attacker at 10^11 guesses/sec
+   needing on average half the keyspace. */
+(function pwAudit() {
+  const input = document.getElementById('pwIn');
+  const fill = document.getElementById('pwFill');
+  const verdict = document.getElementById('pwVerdict');
+  const bitsEl = document.getElementById('pwBits');
+  const poolEl = document.getElementById('pwPool');
+  const crackEl = document.getElementById('pwCrack');
+  const COMMON = ['password', '123456', '12345678', '123456789', 'qwerty', 'qwerty123', 'abc123',
+    'letmein', 'dragon', 'iloveyou', 'admin', 'welcome', 'monkey', 'football', 'hunter2',
+    'p@ssw0rd', 'passw0rd', 'password1', '111111', 'sunshine', 'trustno1'];
+  const RATE = 1e11;
+  function human(s) {
+    if (s < 1) return 'instant';
+    if (s < 60) return Math.ceil(s) + ' sec';
+    if (s < 3600) return Math.ceil(s / 60) + ' min';
+    if (s < 86400) return Math.ceil(s / 3600) + ' hours';
+    if (s < 31557600) return Math.ceil(s / 86400) + ' days';
+    const y = s / 31557600;
+    if (y < 1000) return Math.ceil(y) + ' years';
+    if (y < 1e6) return Math.ceil(y / 1000) + 'k years';
+    if (y < 1e9) return Math.ceil(y / 1e6) + 'M years';
+    if (y < 13.8e9) return Math.ceil(y / 1e9) + 'B years';
+    return 'heat death of the universe';
+  }
+  function update() {
+    const v = input.value;
+    const sets = [[/[a-z]/, 26, 'cLow'], [/[A-Z]/, 26, 'cUp'], [/[0-9]/, 10, 'cDig'], [/[^a-zA-Z0-9]/, 33, 'cSym']];
+    let pool = 0;
+    sets.forEach(([re, n, id]) => {
+      const hit = v !== '' && re.test(v);
+      document.getElementById(id).classList.toggle('hit', hit);
+      if (hit) pool += n;
+    });
+    const bits = v ? v.length * Math.log2(pool) : 0;
+    const common = COMMON.includes(v.toLowerCase());
+    bitsEl.textContent = bits.toFixed(1) + ' bits';
+    poolEl.textContent = pool + ' symbols';
+    let color, text, pct, crack;
+    if (!v) { color = 'rgba(211,196,162,.2)'; text = '// awaiting input'; pct = 0; crack = '—'; }
+    else if (common) { color = '#E8603F'; text = 'COMPROMISED — breach wordlist hit'; pct = 5; crack = 'instant'; }
+    else {
+      crack = human(Math.pow(2, bits - 1) / RATE);
+      pct = Math.min(bits / 96 * 100, 100);
+      if (bits < 28) { color = '#E8603F'; text = 'CRITICAL — trivially crackable'; }
+      else if (bits < 40) { color = '#E8823F'; text = 'WEAK — coffee-break crack'; }
+      else if (bits < 60) { color = '#E0B33C'; text = 'FAIR — resists casual attack'; }
+      else if (bits < 80) { color = '#B8D94A'; text = 'STRONG — serious rig required'; }
+      else { color = '#8CF56B'; text = 'HARDENED — outlives the attacker'; }
+    }
+    fill.style.width = pct + '%';
+    fill.style.background = color;
+    verdict.textContent = text;
+    verdict.style.color = v && !common && bits >= 60 ? color : '';
+    crackEl.textContent = crack;
+  }
+  input.addEventListener('input', update);
+  update();
+})();
+
+/* ================= recon scan simulation ================= */
+/* Purely theatrical: a canned nmap-style sweep of a fictional training-range
+   host. Every line is scripted — zero packets are sent anywhere. */
+(function reconSim() {
+  const out = document.getElementById('scanOut');
+  const btn = document.getElementById('scanBtn');
+  const status = document.getElementById('scanStatus');
+  const pad = (s, n) => s + ' '.repeat(Math.max(n - s.length, 0));
+  const PORTS = [
+    ['22/tcp',   'open',     'ssh',        'ok'],
+    ['23/tcp',   'open',     'telnet',     'warn'],
+    ['53/tcp',   'filtered', 'dns',        ''],
+    ['80/tcp',   'open',     'http',       'ok'],
+    ['110/tcp',  'closed',   'pop3',       'dim'],
+    ['135/tcp',  'filtered', 'msrpc',      ''],
+    ['443/tcp',  'open',     'https',      'ok'],
+    ['445/tcp',  'filtered', 'smb',        ''],
+    ['3306/tcp', 'closed',   'mysql',      'dim'],
+    ['3389/tcp', 'filtered', 'rdp',        ''],
+  ];
+  function line(text, cls) {
+    const l = document.createElement('span');
+    if (cls) l.className = cls;
+    l.textContent = text;
+    out.appendChild(l);
+    out.scrollTop = out.scrollHeight;
+  }
+  function finish() {
+    status.textContent = 'COMPLETE';
+    status.style.color = '';
+    btn.disabled = false;
+    btn.textContent = 'Run again ▸';
+  }
+  function run() {
+    btn.disabled = true;
+    out.innerHTML = '';
+    status.textContent = 'SWEEPING';
+    status.style.color = '#E8B23C';
+    const rows = [
+      ['> nmap -sS 10.13.37.7 --top-ports 10', 'dim'],
+      ['scanning TR-HOST-01 · fictional lab node', 'dim'],
+      [pad('PORT', 11) + pad('STATE', 10) + 'SERVICE', 'dim'],
+    ];
+    PORTS.forEach(p => rows.push([pad(p[0], 11) + pad(p[1], 10) + p[2] + (p[3] === 'warn' ? '  ⚠' : ''), p[3]]));
+    rows.push(['', '']);
+    rows.push(['scan done · 4 open · 4 filtered · 2 closed', 'ok']);
+    rows.push(['[!] telnet/23 exposed — plaintext auth', 'warn']);
+    rows.push(['    harden: disable telnet, enforce ssh', 'warn']);
+    if (reduceMotion) { rows.forEach(r => line(r[0], r[1])); finish(); return; }
+    let i = 0;
+    (function next() {
+      line(rows[i][0], rows[i][1]);
+      if (++i < rows.length) setTimeout(next, 90 + Math.random() * 260);
+      else finish();
+    })();
+  }
+  line('> recon --sim tr-host-01.range', 'dim');
+  line('press [ run scan ] to sweep the', 'dim');
+  line('training-range host', 'dim');
+  line('// simulation only — zero packets sent', 'dim');
+  btn.addEventListener('click', run);
+})();
+</script>
+
+</body>
+</html>
