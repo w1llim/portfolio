@@ -50,7 +50,7 @@ What-If Analysis sheet for scenario testing.
 
 - [`Task 2 Folio.pdf`](Task%202%20Folio.pdf) — full folio: dataset evaluation, import instructions, schema, ER diagram, data dictionary
 - [`William Lam Data Dashboard and Sheets.xlsx`](William%20Lam%20Data%20Dashboard%20and%20Sheets.xlsx) — the dashboard workbook
-- **Access database** (`William_Lam_Database.accdb`) — pending upload; at ~300MB it's over GitHub's 100MB file limit and is being compacted down before it can be added. The Excel workbook needs it in the same folder to maintain its live query links (per the folio's import instructions).
+- [`William_Lam_Database.accdb`](William_Lam_Database.accdb) — the Access database (compacted from ~300MB down to ~45MB). Download it into the same folder as the Excel workbook to keep its live query links working (per the folio's import instructions).
 
 ## Video
 
