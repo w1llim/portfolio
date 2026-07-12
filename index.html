@@ -331,6 +331,47 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 }
 @media(max-width:940px){.ops-grid{grid-template-columns:1fr}}
 
+/* ---------- major works ---------- */
+.majorworks{position:relative}
+.majorworks::before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:radial-gradient(ellipse 60% 45% at 50% 0%,rgba(140,245,107,.07),transparent 70%);
+}
+.mw-card{
+  position:relative;border:1px solid rgba(140,245,107,.3);
+  background:linear-gradient(180deg,rgba(140,245,107,.035),rgba(20,15,8,.85) 36%);
+  padding:clamp(30px,4.5vw,56px);margin-bottom:26px;
+  box-shadow:0 30px 80px rgba(0,0,0,.5),0 0 60px rgba(140,245,107,.05);
+}
+.mw-card .corner{position:absolute;width:16px;height:16px;border:2px solid var(--phos)}
+.mw-card .corner.tl{top:-2px;left:-2px;border-right:0;border-bottom:0}
+.mw-card .corner.tr{top:-2px;right:-2px;border-left:0;border-bottom:0}
+.mw-card .corner.bl{bottom:-2px;left:-2px;border-right:0;border-top:0}
+.mw-card .corner.br{bottom:-2px;right:-2px;border-left:0;border-top:0}
+.mw-badge{
+  display:inline-block;font-size:10.5px;letter-spacing:.22em;color:var(--phos);
+  border:1px solid rgba(140,245,107,.4);padding:5px 12px;margin-bottom:20px;
+}
+.mw-title{font-family:var(--disp);font-weight:700;font-size:clamp(30px,4.5vw,50px);color:var(--kraft);line-height:1.05}
+.mw-title .mw-sub{
+  display:block;font-family:var(--body);font-weight:500;font-size:clamp(14px,1.6vw,18px);
+  color:var(--kraft-dim);letter-spacing:0;margin-top:10px;
+}
+.mw-tagline{margin-top:18px;font-size:16px;color:var(--kraft-dim);max-width:72ch;line-height:1.65}
+.mw-body{display:grid;grid-template-columns:1.3fr .9fr;gap:clamp(32px,4vw,64px);margin-top:34px;align-items:start}
+.mw-col h4{font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--phos);margin-top:22px}
+.mw-col h4:first-child{margin-top:0}
+.mw-col p{margin-top:8px;color:var(--kraft-dim);font-size:14.5px;line-height:1.7}
+.mw-meta .svc-record{margin-top:0}
+.mw-links{margin-top:24px;display:flex;flex-direction:column;gap:10px}
+.mw-links .btn{text-align:center}
+.mw-links .proj-video-toggle .chev{transition:transform .25s}
+.mw-links .proj-video-toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.mw-card.mw-pending{border-style:dashed;border-color:var(--line);background:rgba(20,15,8,.5);box-shadow:none}
+.mw-card.mw-pending .mw-badge{color:var(--kraft-dim);border-color:var(--line)}
+.mw-card.mw-pending .corner{border-color:var(--kraft-dim)}
+@media(max-width:820px){.mw-body{grid-template-columns:1fr}}
+
 /* ---------- projects ---------- */
 .proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
 @media(max-width:960px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
@@ -557,6 +598,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <a href="#command">Command</a>
       <a href="#kungfu">Kung Fu</a>
       <a href="#ops">Ops Lab</a>
+      <a href="#majorworks">Major Works</a>
       <a href="#projects">Projects</a>
       <a href="#mission">Mission</a>
       <a href="#timeline">Timeline</a>
@@ -800,6 +842,60 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         </div>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- ================= MAJOR WORKS ================= -->
+<section id="majorworks" class="majorworks">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 data-scramble-scroll><span class="hash">#</span>Major Works</h2>
+      <span class="count">HSC capstone · Highest weighting</span>
+    </div>
+
+    <div class="mw-card reveal">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="mw-badge mono">CAPSTONE · ENT-CMP · YEAR 12 · TASK 3</div>
+      <h3 class="mw-title">WAILA<span class="mw-sub">"What Am I Looking At?" — an AI part-ID app for mechanics</span></h3>
+      <p class="mw-tagline">Point a camera at a vehicle part under the car, get instant identification with audio feedback, and request stock without ever leaving the job — designed end to end from a real client interview through to a working prototype, a relational database, and the network it runs on.</p>
+
+      <div class="mw-body">
+        <div class="mw-col">
+          <h4>The brief</h4>
+          <p>A dealership workshop's mechanics identify and request vehicle parts from stock takers by hand. The client — a mechanic — wanted camera-based part ID with audio feedback and in-app requesting, aimed at <em>experienced</em> mechanics specifically, so newer staff still learn to identify parts rather than lean on the app.</p>
+          <h4>Iterated on client feedback</h4>
+          <p>After a draft review, login moved from username/password to SMS verification, and the target audience narrowed from all mechanics to experienced ones only — WAILA is explicitly a support tool, not a replacement for skill.</p>
+          <h4>Evaluation, stated plainly</h4>
+          <p>A high-fidelity prototype, not a working system — no real backend, no persistence between sessions, no trained model behind the "AI." The folio is upfront about this: it exists to show the client what a final product could be. The most interesting risk it raises: handing an ID aid to newer staff risks quietly substituting for the workshop expertise it was only ever meant to support.</p>
+        </div>
+        <div class="mw-col mw-meta">
+          <dl class="svc-record">
+            <div><dt>System</dt><dd class="hl">Figma prototype</dd></div>
+            <div><dt>Schema</dt><dd>5 entities · 2 bridge tables</dd></div>
+            <div><dt>Network</dt><dd>Cisco Packet Tracer model</dd></div>
+            <div><dt>Client process</dt><dd>Real interview → iteration</dd></div>
+          </dl>
+          <div class="mw-links">
+            <a class="btn" href="https://www.figma.com/proto/IQEhEVizCWXGp7NdPjgue8/Assessment-Task-3?node-id=45-394&p=f&t=dvoTw3jTiYhuHMl5-0&scaling=scale-down&content-scaling=fixed&page-id=0%3A1&starting-point-node-id=45%3A394" target="_blank" rel="noopener">Open prototype ↗</a>
+            <button type="button" class="btn ghost proj-video-toggle" data-video="ecUnVJKIl8w" aria-expanded="false">Watch demo <span class="chev">▾</span></button>
+            <a class="btn ghost" href="https://github.com/w1llim/portfolio/tree/main/projects/enterprise-computing/year-12/task-3" target="_blank" rel="noopener">View source ↗</a>
+          </div>
+          <div class="proj-video"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mw-card mw-pending reveal d1">
+      <span class="corner tl"></span><span class="corner tr"></span>
+      <span class="corner bl"></span><span class="corner br"></span>
+      <div class="mw-badge mono">CAPSTONE · SFT-ENG · YEAR 12 · TASK 3</div>
+      <h3 class="mw-title">Software Engineering Major Work<span class="mw-sub">In progress</span></h3>
+      <div class="redact w70"></div>
+      <div class="redact w95"></div>
+      <div class="redact w55"></div>
+      <p class="proj-foot mono" style="margin-top:14px">[ awaiting declassification ]</p>
     </div>
   </div>
 </section>
@@ -1060,7 +1156,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
    time a card's "Watch demo" link is opened, via youtube-nocookie.com. */
 document.querySelectorAll('.proj-video-toggle').forEach(btn => {
   btn.addEventListener('click', () => {
-    const wrap = btn.closest('.proj-card').querySelector('.proj-video');
+    const wrap = btn.closest('.proj-card, .mw-card').querySelector('.proj-video');
     const open = !wrap.classList.contains('open');
     wrap.classList.toggle('open', open);
     btn.setAttribute('aria-expanded', String(open));
