@@ -515,7 +515,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 .foot-meta a:hover{color:var(--phos);border-color:var(--phos)}
 
 /* ---------- slipspace jump ---------- */
-.slipspace{height:260vh;position:relative;background:var(--bark);padding:0}
+.slipspace{height:310vh;position:relative;background:var(--bark);padding:0}
 .slip-sticky{
   position:sticky;top:0;height:100vh;overflow:hidden;
   display:flex;align-items:center;justify-content:center;
@@ -1680,8 +1680,10 @@ countIO.observe(countEl);
       s.r = r2 > maxR ? Math.random() * maxR * .08 : r2;
     }
 
-    // the jump flash
-    const flash = ramp(p, .86, 1);
+    // the jump flash - ramps in, then holds at full brightness for a
+    // real stretch of scroll before the section releases, rather than
+    // only cresting on the very last pixel
+    const flash = ramp(p, .78, .9);
     if (flash > 0) {
       ctx.fillStyle = `rgba(214,255,201,${flash * .8})`;
       ctx.fillRect(0, 0, W, H);
