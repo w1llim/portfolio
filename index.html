@@ -275,6 +275,34 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .big-count-lab{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--kraft-dim)}
 @media(max-width:820px){.cmd-grid{grid-template-columns:1fr}.rank-badge{max-width:340px}}
 
+/* rank progression strip */
+.rank-path{margin-top:clamp(40px,6vw,64px);border:1px solid var(--line);background:rgba(20,15,8,.55);padding:22px clamp(18px,3vw,34px) 26px;position:relative}
+.rp-head{font-family:var(--mono);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--kraft-dim);margin-bottom:22px}
+.rp-track{list-style:none;display:grid;grid-template-columns:repeat(7,1fr);position:relative}
+.rp-track::before{content:"";position:absolute;top:4px;left:calc(50%/7);right:calc(50%/7);height:1px;background:linear-gradient(90deg,var(--moss),var(--phos))}
+.rp-track li{position:relative;text-align:center;padding-top:18px}
+.rp-track li::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:9px;height:9px;border:1px solid var(--olive);background:var(--bark)}
+.rp-track li.cur::before{background:var(--phos);border-color:var(--phos);box-shadow:0 0 14px var(--phos-dim)}
+.rp-rank{display:block;font-family:var(--mono);font-size:12px;letter-spacing:.1em;color:var(--kraft)}
+.rp-track li.cur .rp-rank{color:var(--phos)}
+.rp-year{display:block;font-family:var(--mono);font-size:10px;letter-spacing:.14em;color:var(--kraft-dim);margin-top:5px}
+.rp-note{display:block;font-size:11.5px;color:var(--kraft-dim);margin-top:7px;line-height:1.4;padding:0 4px}
+@media(max-width:820px){
+  .rp-track{grid-template-columns:1fr}
+  .rp-track::before{top:4px;bottom:4px;left:4px;right:auto;width:1px;height:auto;background:linear-gradient(180deg,var(--moss),var(--phos))}
+  .rp-track li{text-align:left;padding:10px 0 10px 26px}
+  .rp-track li::before{top:50%;left:0;transform:translateY(-50%)}
+  .rp-note{padding:0}
+}
+
+/* command detail cards */
+.cmd-detail{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:18px}
+.cmd-card{border:1px solid var(--line);background:rgba(20,15,8,.55);padding:24px 22px}
+.cmd-card .code{font-family:var(--mono);font-size:11px;letter-spacing:.14em;color:var(--phos);text-transform:uppercase}
+.cmd-card h4{font-family:var(--disp);font-weight:600;font-size:18.5px;margin:12px 0 8px;color:var(--kraft);line-height:1.35}
+.cmd-card p{font-size:14.5px;color:var(--kraft-dim)}
+@media(max-width:960px){.cmd-detail{grid-template-columns:1fr}}
+
 /* ---------- kung fu ---------- */
 .kf-grid{display:grid;grid-template-columns:1fr auto;gap:clamp(30px,5vw,80px);align-items:center}
 .kf-rk{font-size:clamp(54px,7.5vw,92px)}
@@ -633,7 +661,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         <span class="glitchable" data-scramble>WILLIAM</span>
         <span class="glitchable accent" data-scramble>LAM</span>
       </h1>
-      <p class="hero-sub">Year 12 student, <b>Cadet Under Officer</b>, and future security engineer. Running a heavy STEM course load and commanding a company of ~100 cadets — headed for <b>UNSW cyber security</b>.</p>
+      <p class="hero-sub">Year 12 student, <b>Cadet Under Officer</b>, and future security engineer. Running a heavy STEM course load and commanding a company of 100 cadets — headed for <b>UNSW cyber security</b>.</p>
       <div class="hero-cta">
         <a class="btn" href="#ops">Enter the ops lab</a>
         <a class="btn ghost" href="#contact">Get in touch</a>
@@ -755,16 +783,49 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 
       <div class="cmd-info reveal d1">
         <h3>Company Commander — the <em>highest cadet position</em> at the unit.</h3>
-        <p>As a Cadet Under Officer with the Australian Army Cadets, I hold the appointment of Company Commander at HAHSACU — responsible for the leadership, training and welfare of the company on parade nights and in the field.</p>
+        <p>As a Cadet Under Officer with the Australian Army Cadets, I hold the appointment of Company Commander at HAHSACU — responsible for the leadership, training and welfare of the company on parade nights and in the field. Six years of service, holding every rank on the way up: section commander of ~10 cadets, Platoon Sergeant to a 50-recruit intake, Company Sergeant Major, and now command.</p>
         <dl class="svc-record">
           <div><dt>Rank</dt><dd class="hl">CUO — Cadet Under Officer</dd></div>
           <div><dt>Appointment</dt><dd>Company Commander</dd></div>
           <div><dt>Unit</dt><dd>HAHSACU · Australian Army Cadets</dd></div>
+          <div><dt>Service</dt><dd>2021 → present · 6th year</dd></div>
+          <div><dt>Unit established</dt><dd>1906</dd></div>
           <div>
             <dt>Personnel under command</dt>
-            <dd><span class="big-count" id="cadetCount" data-target="100">0</span><span class="big-count" style="font-size:inherit">+</span><br><span class="big-count-lab">cadets</span></dd>
+            <dd><span class="big-count" id="cadetCount" data-target="100">0</span><br><span class="big-count-lab">cadets</span></dd>
           </div>
         </dl>
+      </div>
+    </div>
+
+    <div class="rank-path reveal d2">
+      <div class="rp-head">// rank progression — recruit to company commander</div>
+      <ol class="rp-track">
+        <li><span class="rp-rank">CDTREC</span><span class="rp-year">2021</span><span class="rp-note">Recruit</span></li>
+        <li><span class="rp-rank">CDT</span><span class="rp-year">2022</span><span class="rp-note">Cadet</span></li>
+        <li><span class="rp-rank">CDTLCPL</span><span class="rp-year">2023</span><span class="rp-note">Section Commander</span></li>
+        <li><span class="rp-rank">CDTCPL</span><span class="rp-year">2023</span><span class="rp-note">Corporal's Course</span></li>
+        <li><span class="rp-rank">CDTSGT</span><span class="rp-year">2024</span><span class="rp-note">Platoon Sergeant</span></li>
+        <li><span class="rp-rank">CDTWO2</span><span class="rp-year">2025</span><span class="rp-note">Company Sergeant Major</span></li>
+        <li class="cur"><span class="rp-rank">CUO</span><span class="rp-year">2026</span><span class="rp-note">Company Commander</span></li>
+      </ol>
+    </div>
+
+    <div class="cmd-detail">
+      <div class="cmd-card reveal">
+        <div class="code">// origin</div>
+        <h4>Joined 2021 — a quiet 13-year-old recruit.</h4>
+        <p>Straight into COVID lockdowns: field activities cancelled, a missed email that cost a whole term of parades, and an attendance warning from the OC that nearly ended it. Choosing to stay turned out to be the most important decision of the six years since.</p>
+      </div>
+      <div class="cmd-card reveal d1">
+        <div class="code">// field record</div>
+        <h4>AFX, bivouacs, WTSS and ceremonial duty.</h4>
+        <p>Week-long state-wide Annual Field Exercises, 2–3 day bivouacs, WTSS weapons-simulation training, and promotion courses as both candidate and instructor — plus ANZAC and Remembrance Day services: dawn services, guards of honour and catafalque parties.</p>
+      </div>
+      <div class="cmd-card reveal d2">
+        <div class="code">// the unit</div>
+        <h4>Founded 1906 — run by cadets, for cadets.</h4>
+        <p>One of the school's oldest and largest programs. Training is planned and delivered by the NCOs — Lance Corporal through CUO — every Thursday from 1505 to 1800, built on the Army's values: Service, Courage, Respect, Integrity and Excellence.</p>
       </div>
     </div>
   </div>
@@ -1064,8 +1125,6 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <span class="count">Service record · 2020 →</span>
     </div>
 
-    <!-- Confirmed anchors only; PLACEHOLDER rows marked "pending" get real
-         entries (cadets milestones, promotions, etc.) when William supplies them -->
     <ol class="tl">
       <li class="tl-item reveal">
         <span class="tl-year mono">2020</span>
@@ -1074,20 +1133,32 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
           <p>Started training with Pak Hok Pai Australia: forms, dao sabre work and lion dance.</p>
         </div>
       </li>
-      <li class="tl-item pending reveal d1">
-        <span class="tl-year mono">&#9608;&#9608;&#9608;&#9608;</span>
+      <li class="tl-item reveal d1">
+        <span class="tl-year mono">2021</span>
         <div class="tl-body">
-          <h3 class="mono" style="letter-spacing:.18em">[ ENTRY PENDING ]</h3>
-          <div class="redact w80"></div>
-          <div class="redact w55"></div>
+          <h3>Enlisted — Australian Army Cadets, HAHSACU</h3>
+          <p>Joined as a quiet 13-year-old recruit, straight into COVID lockdowns — and nearly quit after a missed email cost a term of parades.</p>
         </div>
       </li>
-      <li class="tl-item pending reveal d2">
-        <span class="tl-year mono">&#9608;&#9608;&#9608;&#9608;</span>
+      <li class="tl-item reveal d2">
+        <span class="tl-year mono">2023</span>
         <div class="tl-body">
-          <h3 class="mono" style="letter-spacing:.18em">[ ENTRY PENDING ]</h3>
-          <div class="redact w70"></div>
-          <div class="redact w60"></div>
+          <h3>Promoted CDTLCPL, then CDTCPL</h3>
+          <p>First command — a section of ~10 cadets — followed by the week-long Corporal's Course later that year.</p>
+        </div>
+      </li>
+      <li class="tl-item reveal">
+        <span class="tl-year mono">2024</span>
+        <div class="tl-body">
+          <h3>Promoted CDTSGT — Platoon Sergeant</h3>
+          <p>Stepped up from section to platoon level as PLSGT.</p>
+        </div>
+      </li>
+      <li class="tl-item reveal">
+        <span class="tl-year mono">2025</span>
+        <div class="tl-body">
+          <h3>Promoted CDTWO2 — Company Sergeant Major</h3>
+          <p>Ran the incoming 50-recruit platoon as PLSGT, then promoted mid-year to CSM — the company's benchmark for drill, dress and discipline.</p>
         </div>
       </li>
       <li class="tl-item reveal">
@@ -1129,7 +1200,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         <span class="tl-year mono">2026</span>
         <div class="tl-body">
           <h3>Year 12 — NSW HSC</h3>
-          <p>Final year: heavy STEM load, CUO and Company Commander at HAHSACU, commanding 100+ cadets.</p>
+          <p>Final year: heavy STEM load, CUO and Company Commander at HAHSACU, commanding 100 cadets.</p>
         </div>
       </li>
       <li class="tl-item reveal">
@@ -1202,7 +1273,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <div class="tool-row reveal">
         <span class="n">0x05</span>
         <h3>Leadership</h3>
-        <p>Commanding a company of 100+ cadets: planning training, briefing teams, and making decisions people rely on.</p>
+        <p>Commanding a company of 100 cadets: planning training, briefing teams, and making decisions people rely on.</p>
       </div>
       <div class="tool-row reveal">
         <span class="n">0x06</span>
@@ -1357,7 +1428,7 @@ const SHELL = {
     'MAJORS: cybersecurity mgmt + security engineering',
     'ETA: 2027',
   ],
-  cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100+'],
+  cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100', 'service record: CDTREC 2021 -> CUO 2026'],
   kungfu: ['白鶴派 pak hok pai — white crane, since 2020', 'armament: dao (single sabre) // aux: lion dance'],
   contact: ['williamlam986@gmail.com', 'github.com/w1llim // linkedin: in/thew1llim'],
   ls: ['coursework/  command/  kungfu/  ops-lab/  mission/  contact/'],
