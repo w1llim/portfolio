@@ -735,8 +735,11 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <span class="count">02 majors · Combined arms</span>
     </div>
     <div class="mission-grid">
+      <!-- direct child of .mission-grid so its absolute-position anchor is the
+           whole grid (stable, never transformed) — inside a .reveal column it
+           anchors to that column and lands on the headline text -->
+      <div class="stamp" id="stamp">Target locked · UNSW 2027</div>
       <div class="reveal">
-        <div class="stamp" id="stamp">Target locked · UNSW 2027</div>
         <p class="big">Dream degree: the double at UNSW — <em>Bachelor of Information Systems / Bachelor of Computer Science</em> — attacking security from both the business and engineering sides.</p>
         <div class="majors">
           <div class="major-card">
