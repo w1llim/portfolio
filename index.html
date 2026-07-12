@@ -63,7 +63,7 @@ header{
   border-bottom:1px solid var(--line);
   background:rgba(33,26,16,.82);backdrop-filter:blur(10px);
 }
-.nav{display:flex;justify-content:space-between;align-items:center;height:58px}
+.nav{display:flex;justify-content:space-between;align-items:center;height:58px;position:relative}
 .mark{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:.04em}
 .mark .bracket{color:var(--phos)}
 .status{display:flex;align-items:center;gap:8px;color:var(--kraft-dim)}
@@ -99,7 +99,9 @@ nav.links.open{max-height:70vh;overflow-y:auto}
 nav.links a{padding:15px 20px;border-bottom:1px solid var(--line)}
 nav.links a::before{display:none}
 @media(min-width:640px){
-  nav.links{left:auto;width:280px;right:clamp(20px,4vw,56px);border:1px solid var(--line);border-top:0}
+  /* anchor the panel inside the centred .nav wrap (not the viewport) so
+     its right edge lines up with the toggle button at any screen width */
+  nav.links{position:absolute;top:58px;left:auto;width:280px;right:clamp(20px,4vw,56px);border:1px solid var(--line);border-top:0}
 }
 
 /* ---------- hero ---------- */
@@ -1174,33 +1176,38 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
   <div class="wrap">
     <div class="sec-head reveal">
       <h2><span class="hash">#</span>Toolkit</h2>
-      <span class="count">05 capabilities</span>
+      <span class="count">06 capabilities · Proven in the field</span>
     </div>
     <div class="tool-rows">
       <div class="tool-row reveal">
         <span class="n">0x01</span>
         <h3>Programming</h3>
-        <p>Building and debugging software through the Software Engineering course — from algorithms to working projects.</p>
+        <p>Python CLI games through to an installable PWA with SHA-256 hashed auth, XSS sanitisation and offline service-worker caching — plus embedded work driving servos and sensors on paired micro:bits.</p>
       </div>
       <div class="tool-row reveal">
         <span class="n">0x02</span>
-        <h3>Systems &amp; networks</h3>
-        <p>Enterprise Computing's view of how data moves through organisations: databases, networks and the systems behind them.</p>
+        <h3>Networks &amp; security</h3>
+        <p>Designed and hardened a multi-department LAN in Cisco Packet Tracer — port security, MAC locking, WPA2 — then threat-modelled it with a 5×5 risk matrix. Dissected the Optus breach's API and IDOR failures on paper.</p>
       </div>
       <div class="tool-row reveal">
         <span class="n">0x03</span>
-        <h3>Mathematical reasoning</h3>
-        <p>Proof and problem-solving from Advanced and Extension 1 maths — the thinking behind encryption and secure design.</p>
+        <h3>Data modelling</h3>
+        <p>Normalised a ~500,000-row dataset to 3NF across a five-table Access schema, ERDs and data dictionaries included, then live-linked it into an Excel dashboard with Power Query.</p>
       </div>
       <div class="tool-row reveal">
         <span class="n">0x04</span>
+        <h3>Design &amp; prototyping</h3>
+        <p>High-fidelity, click-tested prototypes in Adobe XD and Figma — including a capstone built from a real client interview and revised on their feedback.</p>
+      </div>
+      <div class="tool-row reveal">
+        <span class="n">0x05</span>
         <h3>Leadership</h3>
         <p>Commanding a company of 100+ cadets: planning training, briefing teams, and making decisions people rely on.</p>
       </div>
       <div class="tool-row reveal">
-        <span class="n">0x05</span>
+        <span class="n">0x06</span>
         <h3>Communication</h3>
-        <p>English Advanced sharpens the part most people forget: explaining technical problems clearly to humans.</p>
+        <p>Every project ships with a folio, a demo video and documentation someone else could actually follow — and English Advanced sharpens the part most people forget: explaining technical problems to humans.</p>
       </div>
     </div>
   </div>
