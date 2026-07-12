@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>William Lam — Portfolio</title>
+<meta name="description" content="William Lam — Year 12 student, Army Cadets Company Commander and white crane kung fu practitioner in Sydney, headed for UNSW cyber security (BIS / BCompSc).">
+<meta property="og:title" content="William Lam — Portfolio">
+<meta property="og:description" content="Year 12 student, Cadet Under Officer and future security engineer. Target locked: UNSW BIS / BCompSc, 2027.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://w1llim.github.io/portfolio/">
+<meta name="theme-color" content="#211A10">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -152,7 +158,9 @@ h1.name .accent{color:var(--phos);text-shadow:0 0 24px var(--phos-dim)}
 .term-bar .lights{display:flex;gap:6px;margin-right:6px}
 .term-bar .lights i{width:9px;height:9px;border-radius:50%;background:var(--line)}
 .term-bar .lights i:first-child{background:var(--phos);opacity:.7}
-.term-body{padding:18px 18px 22px;min-height:262px;color:var(--kraft)}
+.term-body{padding:18px 18px 22px;min-height:262px;max-height:320px;overflow-y:auto;color:var(--kraft)}
+.term{cursor:text;position:relative}
+#termKb{position:absolute;width:1px;height:1px;opacity:0;border:0;padding:0}
 .term-body .ln{display:block;white-space:pre-wrap;word-break:break-word}
 .term-body .prompt{color:var(--phos)}
 .term-body .ok{color:var(--phos)}
@@ -509,12 +517,13 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       </div>
     </div>
 
-    <div class="term" role="img" aria-label="Terminal showing William's profile boot sequence">
+    <div class="term" id="termShell" aria-label="Interactive terminal — William's profile boot sequence; type help for commands">
       <div class="term-bar">
         <span class="lights"><i></i><i></i><i></i></span>
         wlam@hsc-2026 : ~/profile
       </div>
       <div class="term-body" id="terminal" aria-hidden="true"></div>
+      <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
     </div>
   </div>
 
@@ -897,13 +906,7 @@ const LINES = [
 ];
 const termEl = document.getElementById('terminal');
 function typeLines(i = 0) {
-  if (i >= LINES.length) {
-    const c = document.createElement('span');
-    c.innerHTML = '<span class="prompt">&gt; </span><span class="caret"></span>';
-    c.className = 'ln';
-    termEl.appendChild(c);
-    return;
-  }
+  if (i >= LINES.length) { startShell(); return; }
   const { t, cls } = LINES[i];
   const line = document.createElement('span');
   line.className = 'ln ' + cls;
@@ -919,6 +922,63 @@ function typeLines(i = 0) {
   })();
 }
 setTimeout(() => typeLines(), reduceMotion ? 0 : 600);
+
+/* ================= interactive shell (after boot) ================= */
+/* The boot sequence hands off to a tiny real shell: click the terminal
+   and type. Commands only surface facts already on the page. */
+const SHELL = {
+  help: [
+    'available commands:',
+    '  whoami   mission   cadets   kungfu',
+    '  contact  ls        clear',
+  ],
+  whoami: ['william.lam — YEAR 12 // SYDNEY, AU // HSC 2026'],
+  mission: [
+    'TARGET: UNSW BIS / BCompSc',
+    'MAJORS: cybersecurity mgmt + security engineering',
+    'ETA: 2027',
+  ],
+  cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100+'],
+  kungfu: ['白鶴派 pak hok pai — white crane, since 2020', 'armament: dao (single sabre) // aux: lion dance'],
+  contact: ['williamlam986@gmail.com', 'github.com/w1llim // linkedin: in/thew1llim'],
+  ls: ['coursework/  command/  kungfu/  ops-lab/  mission/  contact/'],
+};
+let typedSpan = null;
+const kb = document.getElementById('termKb');
+
+function shellPrint(text, cls) {
+  const l = document.createElement('span');
+  l.className = 'ln ' + (cls || '');
+  l.textContent = text;
+  termEl.appendChild(l);
+}
+function newPromptLine() {
+  const l = document.createElement('span');
+  l.className = 'ln';
+  l.innerHTML = '<span class="prompt">&gt; </span><span></span><span class="caret"></span>';
+  typedSpan = l.children[1];
+  termEl.appendChild(l);
+  termEl.scrollTop = termEl.scrollHeight;
+}
+function startShell() {
+  shellPrint("type 'help' for commands", 'dim');
+  newPromptLine();
+}
+function runCommand(raw) {
+  const cmd = raw.trim().toLowerCase();
+  typedSpan.parentElement.querySelector('.caret').remove(); // freeze the line
+  if (cmd === '') {}
+  else if (cmd === 'clear') { termEl.innerHTML = ''; }
+  else if (cmd.startsWith('sudo')) { shellPrint('permission denied: nice try.', 'dim'); }
+  else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd === 'help' || cmd === 'ls' ? 'dim' : '')); }
+  else { shellPrint('sh: command not found: ' + cmd.split(' ')[0], 'dim'); shellPrint("type 'help' for commands", 'dim'); }
+  newPromptLine();
+}
+document.getElementById('termShell').addEventListener('click', () => kb.focus({ preventScroll: true }));
+kb.addEventListener('input', () => { if (typedSpan) typedSpan.textContent = kb.value; });
+kb.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && typedSpan) { runCommand(kb.value); kb.value = ''; }
+});
 
 /* ================= scroll reveals / bars / stamp / badge ================= */
 const io = new IntersectionObserver(entries => {
