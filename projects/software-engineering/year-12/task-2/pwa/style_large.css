@@ -1,0 +1,203 @@
+/*import google font*/
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+/* AutoPrefixer added prefix vendors */
+body {
+  background-color: #efe;
+  margin: auto;
+  width: 40%;
+  font-family: "Ubuntu", Arial;
+}
+ul,
+fieldset,
+legend{
+  border: 1px solid;
+  background-color: #fff;
+}
+ul {
+  padding: 0;
+  
+}
+li,
+legend {
+  list-style-type: none;
+  padding: 0.2em 0.5em;
+  background-color: #cfc;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+}
+legend {
+  background-color: #324A09;
+  color: white;
+  border-radius: 0.5em;
+}
+li {
+  font-size: 0.9em;
+  white-space: nowrap;
+}
+li p {
+  margin: 0;
+}
+li:nth-of-type(even) {
+  background-color: inherit;
+}
+
+#totalHoursContainer {
+  margin-top: 10px;
+}
+#totalHoursContainer p {
+  font-weight: normal;
+  margin: 0;
+  font-size: 0.7em;
+}
+#sessionTimePara {
+  white-space: nowrap;
+  margin-left: 1em;
+  background-color:#47611A;
+  color: black;
+  border: 1px black solid;
+  padding: 0.1em 0.3em;
+  color: white;
+  border-radius: 0.5em;
+}
+
+h1 {
+  background-color: #324A09;
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-top: 0;
+  padding-top: 1em;
+  padding-bottom: 1em;
+  text-align: center;
+  color: white;
+  font-size: 5em;
+}
+
+button {
+  background-color: #324A09;
+  text-align: center;
+  color: white;
+  border-radius: 0.5em;
+  text-decoration: none;
+  padding: 0.4em;
+  font-family: inherit;
+}
+button:hover {
+  background-color: green;
+}
+
+input {
+  font-family: inherit;
+}
+
+#buttonContainer {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 0.5em;
+  -webkit-box-pack: end;
+  -ms-flex-pack: end;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+}
+
+.notification {
+  position: fixed;
+  bottom: 1.25em;
+  right: 1.25em;
+  background-color: #324A09;
+  color: white;
+  padding: 0.625em;
+  border-radius: 0.3125em;
+  z-index: 1000;
+}
+
+.hidden {
+  display: none;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdownContent {
+ display: none;
+ position: absolute;
+ width: 100%;
+ z-index: 1; 
+}
+
+.show {
+  display:block;
+}
+
+.startenddiv {
+  margin-left: 2em;
+}
+
+/*mobile responsiveness*/
+@media screen and (max-width: 450px) {
+  /*adjust body width for smaller screens*/
+  body {
+    width: 90%;
+  }
+  h1 {
+    font-size: 1em;
+  }
+  li {
+    white-space: normal;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  }
+  #buttonsContainer {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column; 
+    -webkit-box-align: stretch; 
+    -ms-flex-align: stretch; 
+    align-items: stretch; /* Makes buttons full width of the container */
+    gap: 0.5em /* Adds space between buttons when stacked vertically */
+  }
+  /* Make buttons full width on small screens */
+  button {
+    width: 100%;
+    margin: 0.5em; /* Adjust padding for better touch targets */
+  }
+}
+
+/*tablet responsiveness*/
+@media screen and (min-width: 451px) and (max-width: 1000px) {
+  body {
+    width: 70%;
+  }
+  h1 {
+    font-size: 2em;
+  }
+  li {
+    white-space: normal;
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+  } 
+  #buttonsContainer {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column; 
+    -webkit-box-align: stretch; 
+    -ms-flex-align: stretch; 
+    align-items: stretch; /* Makes buttons full width of the container */
+    gap: 0.5em /* Adds space between buttons when stacked vertically */
+  }
+}

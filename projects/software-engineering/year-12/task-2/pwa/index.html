@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Learner Driving Hours</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="manifest" href="LearnerHours.json" />
+    <link rel="icon" href="./Icons/icon2.jpg" />
+  </head>
+  <body>
+    <h1>Learner Driving Hours</h1>
+    <div id="loginDiv">
+      <form id="loginForm">
+        <fieldset>
+          <legend>Login</legend>
+          <p>
+            <label for="username">Username</label>
+            <input type="text" id="username" required />
+          </p>
+          <p>
+            <label for="password">Password</label>
+            <input type="password" id="password" required />
+          </p>
+          <p>
+            <button type="button" id="submitLoginButton">Login</button>
+            <button type="button" id="registerButton">Register</button>
+          </p>
+        </fieldset>
+      </form>
+    </div>
+    <div id="mainappDiv" class="hidden">
+      <button type="button" id="logoutButton">Logout</button> <br><br>
+      <form>
+        <fieldset>
+          <legend>Enter the date, description and start & end times</legend>
+          <p>
+            <label for="date">Date</label>
+            <input type="date" id="date" required />
+          </p>
+          <div class='startenddiv'>
+            <p>
+              <label for="start-time">Start time</label>
+              <input type="time" id="start-time" required />
+            </p>
+            <p>
+              <label for="end-time">End time</label>
+              <input type="time" id="end-time" required />
+            </p>
+          </div>
+          <div>
+            <p>
+              <label for="description">Description</label>
+              <input type="text" id="description" required placeholder="Weather, Location etc..." maxlength="20"/>
+            </p>
+          </div>
+        </fieldset>
+        <p>
+          <button type="submit" id="submitButton">Add Session</button>
+        
+        <!--cancel button, data is cleared and not saved to local storage-->
+        
+          <button type="reset">Cancel</button>
+        
+      
+          <button type="button" id="clearAllButton">Clear All</button>
+          
+        </p>
+      </form>
+
+      <button type="button" id="toggleSearchButton" class ="open">Open Search</button>
+      <br><br>
+      <div id="searchContainer" class="hidden">
+        <form id="searchForm">
+          <fieldset>
+            <legend>Search and Filters</legend>
+            <p>
+              <label for="searchDate">Date</label>
+              <input type = "date" id="searchDate" oninput="search()"/>
+            </p>
+            <div class="startenddiv">
+              <p>
+                <label for="searchStartTime">Start Time</label>
+                <input type = "time" id="searchStartTime" oninput="search()"/>
+              </p>
+              <p>  
+                <label for="searchEndTime">End Time</label>
+                <input type = "time" id="searchEndTime" oninput="search()"/>
+              </p>
+            </div>
+            <p>
+              <label for="searchDescription">Description</label>
+              <input type = "text" id="searchDescription" placeholder="Weather, Location etc..." oninput="search()" maxlength="20"/>
+            </p>
+            <form id="filterForm"> 
+            <div id="filters">
+              <label for="filterType">Filter by:</label>
+              <select id="filterType">
+                <option value="filterTypeSelect">Select</option>
+                <option value="filterDate">Date</option>
+                <option value="filterStartTime">Start Time</option>
+                <option value="filterEndTime">End Time</option>
+              </select>  
+
+              <label for="filterOrder">Order by:</label>
+              <select id="filterOrder">
+                <option value="filterOrderSelect">Select</option>
+                <option value="ascending">Ascending</option>
+                <option value="descending">Descending</option>
+              </select>
+              <button type="button" id="filterButton">Confirm</button>
+              <p>
+                <button type="reset" onclick="renderPastSessions()">Reset</button>
+              </p>  
+            </div>
+            </form>
+
+          </fieldset> 
+        </form>
+        
+      </div>
+
+      <section id="past-sessions"></section>
+    </div>
+    <div id="notification" class="notification hidden"></div>
+
+    <script src="app.js" defer></script>
+
+    <!-- Register the app's service worker. -->
+    <script>
+    if ("serviceWorker" in navigator) {
+        navigator.serviceWorker.register("sw.js");
+    }
+    </script>
+    <!-- gets DOMPurify -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.0.6/purify.min.js"></script>
+    
+
+  </body>
+</html>
