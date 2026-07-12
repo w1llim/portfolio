@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://w1llim.github.io/portfolio/sitemap.xml
