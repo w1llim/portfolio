@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ops Lab — William Lam</title>
-<meta name="description" content="Interactive security lab — live packet monitor, Caesar cipher, SHA-256 avalanche visualiser, password entropy audit and a simulated port scan. Everything runs client-side.">
+<meta name="description" content="Interactive security lab — live packet monitor, Caesar cipher, SHA-256 avalanche, password audit, port-scan sim, an EXIF/PNG metadata inspector, a JWT decoder and a Base64 codec. Everything runs client-side; nothing is uploaded.">
 <link rel="canonical" href="https://w1llim.github.io/portfolio/ops.html">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Ops Lab — William Lam">
-<meta property="og:description" content="Five interactive security modules — packet monitor, Caesar cipher, SHA-256 avalanche, password audit and a simulated port scan.">
+<meta property="og:description" content="Eight interactive security modules — packet monitor, Caesar cipher, SHA-256 avalanche, password audit, port-scan sim, EXIF metadata inspector, JWT decoder and Base64 codec.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://w1llim.github.io/portfolio/ops.html">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ops Lab — William Lam">
-<meta name="twitter:description" content="Five interactive security modules — packet monitor, Caesar cipher, SHA-256 avalanche, password audit and a simulated port scan.">
+<meta name="twitter:description" content="Eight interactive security modules — packet monitor, Caesar cipher, SHA-256 avalanche, password audit, port-scan sim, EXIF metadata inspector, JWT decoder and Base64 codec.">
 <meta name="theme-color" content="#211A10">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -244,7 +244,59 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .scan-btn{width:100%;text-align:center}
 .btn:disabled{opacity:.45;pointer-events:none}
 
-@media(max-width:940px){.ops-grid,.ops-grid2{grid-template-columns:1fr}}
+/* ops lab · rows 3-4 */
+.ops-solo{margin-top:20px}
+.ops-grid3{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;align-items:stretch}
+
+/* metadata inspector (exiftool) */
+.exif-drop{
+  border:1px dashed var(--line);background:rgba(211,196,162,.04);
+  padding:34px 20px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;
+  font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:var(--kraft-dim);
+}
+.exif-drop:hover,.exif-drop.drag{border-color:var(--phos);background:rgba(140,245,107,.06);color:var(--kraft)}
+.exif-drop b{color:var(--phos);display:block;margin-bottom:8px;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
+.exif-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px;align-items:start}
+.exif-preview img{
+  width:100%;max-height:280px;object-fit:contain;background:rgba(0,0,0,.35);
+  border:1px solid var(--line);display:block;
+}
+.exif-preview .panel-note{margin-top:10px;line-height:1.7;word-break:break-word}
+.exif-gps{
+  border:1px solid var(--threat);background:rgba(232,96,63,.08);padding:12px 14px;margin-bottom:14px;
+}
+.exif-gps .hd{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--threat);margin-bottom:6px}
+.exif-gps .coord{font-family:var(--mono);font-size:14px;color:var(--kraft);word-break:break-all}
+.exif-gps a{color:var(--phos);border-bottom:1px solid transparent;font-family:var(--mono);font-size:11px;letter-spacing:.1em}
+.exif-gps a:hover{border-color:var(--phos)}
+.exif-clean{border:1px solid rgba(140,245,107,.3);background:rgba(140,245,107,.06);padding:12px 14px;margin-bottom:14px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--phos)}
+.exif-tags{max-height:300px;overflow-y:auto}
+.exif-tags .svc-record div{padding:9px 0}
+.exif-tags dt{font-size:11px}
+.exif-tags dd{font-size:11.5px;text-transform:none;letter-spacing:.02em}
+
+/* jwt decoder */
+.jwt-part{margin-top:2px}
+.jwt-part .lab{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--kraft-dim);margin-bottom:6px}
+.jwt-part pre{
+  background:rgba(211,196,162,.06);border:1px solid var(--line);padding:10px 12px;
+  font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--kraft);
+  white-space:pre-wrap;word-break:break-word;overflow-x:auto;
+}
+.jwt-part.head pre{color:#B8D94A}
+.jwt-part.body pre{color:var(--phos)}
+.jwt-part.sig pre{color:var(--kraft-dim)}
+
+/* base64 codec */
+.b64-out{
+  background:rgba(140,245,107,.06);border:1px solid rgba(140,245,107,.3);
+  font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--phos);
+  padding:12px;min-height:72px;word-break:break-all;white-space:pre-wrap;
+}
+
+@media(max-width:940px){.ops-grid,.ops-grid2,.ops-grid3{grid-template-columns:1fr}}
+@media(max-width:720px){.exif-grid{grid-template-columns:1fr}}
 
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40px,6vw,80px)}
@@ -301,7 +353,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
   <div class="wrap">
     <div class="sec-head reveal">
       <h2 data-scramble-scroll><span class="hash">#</span>Ops Lab</h2>
-      <span class="count">05 live modules · Interactive</span>
+      <span class="count">08 live modules · Interactive</span>
     </div>
 
     <div class="ops-grid">
@@ -410,6 +462,77 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
         <div class="panel-body">
           <div class="scan-out" id="scanOut" aria-label="Simulated port scan output"></div>
           <button type="button" class="btn scan-btn" id="scanBtn">Run scan ▸</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- metadata inspector (exiftool) -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>exiftool --scan · drop an image</span>
+          <span class="right" id="exifStatus">NO FILE</span>
+        </div>
+        <div class="panel-body">
+          <label class="exif-drop" id="exifDrop" for="exifFile" tabindex="0" role="button" aria-label="Choose or drop an image to inspect its metadata">
+            <b>Drop an image · or click to browse</b>
+            JPEG &amp; PNG — decoded byte-by-byte in your browser.
+            Nothing is uploaded. Try a photo straight off a phone.
+          </label>
+          <input type="file" id="exifFile" accept="image/jpeg,image/png,image/*" style="display:none">
+          <div class="exif-grid" id="exifResult" hidden>
+            <div class="exif-preview">
+              <img id="exifImg" alt="Preview of the selected image">
+              <div class="panel-note" id="exifFileMeta"></div>
+            </div>
+            <div class="exif-tags-wrap">
+              <div id="exifGps"></div>
+              <dl class="svc-record exif-tags" id="exifTags"></dl>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ops-grid3">
+
+      <!-- jwt decoder -->
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>jwt --decode · no verify</span>
+          <span class="right" id="jwtAlg">—</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="jwtIn">Paste a JSON Web Token</label>
+            <textarea id="jwtIn" spellcheck="false">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3aWxsaWFtLmxhbSIsInJvbGUiOiJjdW8iLCJ1bml0IjoiSEFIU0FDVSIsImlhdCI6MTc4NDAwMDAwMCwiZXhwIjoxNzg0MDg2NDAwfQ.3q0Z8kY2mF4wJ1nQh6xVd9pRsLtCzE7bAoIuKgWyN5M</textarea>
+          </div>
+          <div class="jwt-part head"><div class="lab">Header</div><pre id="jwtHead">—</pre></div>
+          <div class="jwt-part body"><div class="lab">Payload</div><pre id="jwtBody">—</pre></div>
+          <div class="panel-note" id="jwtMeta">// signature is never verified — decode only</div>
+        </div>
+      </div>
+
+      <!-- base64 codec -->
+      <div class="panel reveal d1">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>base64 --codec · utf-8</span>
+          <span class="right" id="b64Status">ENCODE</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="b64In">Input</label>
+            <textarea id="b64In" spellcheck="false">Meet at the flagpole at 0900.</textarea>
+          </div>
+          <div class="mode-row" role="group" aria-label="Base64 mode">
+            <button class="mode-btn active" id="b64Enc" type="button">Encode ▸</button>
+            <button class="mode-btn" id="b64Dec" type="button">◂ Decode</button>
+          </div>
+          <div>
+            <label for="b64Out">Output</label>
+            <div class="b64-out" id="b64Out" aria-live="polite"></div>
+          </div>
         </div>
       </div>
 
@@ -865,6 +988,338 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
   line('training-range host', 'dim');
   line('// simulation only — zero packets sent', 'dim');
   btn.addEventListener('click', run);
+})();
+
+/* ================= metadata inspector (exiftool) ================= */
+/* Reads EXIF (JPEG APP1 / TIFF IFDs) and PNG text/dimension chunks
+   straight out of the file's bytes with a DataView — no library, no
+   network. The whole point of the module is the privacy lesson: a photo
+   off a phone often carries the exact GPS fix where it was taken. */
+(function metaInspector() {
+  const drop = document.getElementById('exifDrop');
+  const fileInput = document.getElementById('exifFile');
+  const result = document.getElementById('exifResult');
+  const img = document.getElementById('exifImg');
+  const fileMeta = document.getElementById('exifFileMeta');
+  const gpsBox = document.getElementById('exifGps');
+  const tagList = document.getElementById('exifTags');
+  const status = document.getElementById('exifStatus');
+  let lastUrl = null;
+
+  // ---- EXIF tag dictionaries ----
+  const IFD0 = { 0x0100:'Image width', 0x0101:'Image height', 0x010F:'Camera make',
+    0x0110:'Camera model', 0x0112:'Orientation', 0x0131:'Software', 0x0132:'Modified',
+    0x013B:'Artist', 0x8298:'Copyright' };
+  const EXIF = { 0x829A:'Exposure', 0x829D:'Aperture', 0x8827:'ISO', 0x9003:'Taken (original)',
+    0x9004:'Digitised', 0x920A:'Focal length', 0xA002:'Pixel width', 0xA003:'Pixel height',
+    0xA434:'Lens model', 0xA433:'Lens make', 0x9209:'Flash', 0x9291:'Sub-sec' };
+  const GPS = { 0x0000:'ver', 0x0001:'latRef', 0x0002:'lat', 0x0003:'lonRef', 0x0004:'lon',
+    0x0005:'altRef', 0x0006:'alt', 0x0007:'time', 0x001D:'date' };
+  const ORIENT = { 1:'normal', 2:'flip H', 3:'rotate 180°', 4:'flip V',
+    5:'transpose', 6:'rotate 90° CW', 7:'transverse', 8:'rotate 90° CCW' };
+  const TYPE_SIZE = { 1:1, 2:1, 3:2, 4:4, 5:8, 7:1, 9:4, 10:8 };
+
+  function fmtBytes(n) {
+    if (n < 1024) return n + ' B';
+    if (n < 1048576) return (n / 1024).toFixed(1) + ' KB';
+    return (n / 1048576).toFixed(2) + ' MB';
+  }
+
+  function readEntries(dv, tiff, ifd, le, tags, out, follow) {
+    const count = dv.getUint16(tiff + ifd, le);
+    for (let i = 0; i < count; i++) {
+      const e = tiff + ifd + 2 + i * 12;
+      if (e + 12 > dv.byteLength) break;
+      const tag = dv.getUint16(e, le);
+      const type = dv.getUint16(e + 2, le);
+      const num = dv.getUint32(e + 4, le);
+      const size = (TYPE_SIZE[type] || 1) * num;
+      let valOff = e + 8;
+      if (size > 4) { valOff = tiff + dv.getUint32(e + 8, le); }
+      if (valOff + size > dv.byteLength) continue;
+
+      // sub-IFD pointers (Exif @0x8769, GPS @0x8825)
+      if (follow && (tag === 0x8769 || tag === 0x8825)) {
+        follow(tag, dv.getUint32(valOff, le));
+        continue;
+      }
+      out[tag] = readValue(dv, valOff, type, num, le);
+    }
+  }
+
+  function readValue(dv, off, type, num, le) {
+    if (type === 2) { // ASCII
+      let s = '';
+      for (let i = 0; i < num; i++) { const c = dv.getUint8(off + i); if (c === 0) break; s += String.fromCharCode(c); }
+      return s.trim();
+    }
+    const rd = (o) => {
+      switch (type) {
+        case 1: case 7: return dv.getUint8(o);
+        case 3: return dv.getUint16(o, le);
+        case 4: return dv.getUint32(o, le);
+        case 9: return dv.getInt32(o, le);
+        case 5: { const n = dv.getUint32(o, le), d = dv.getUint32(o + 4, le); return d ? n / d : 0; }
+        case 10: { const n = dv.getInt32(o, le), d = dv.getInt32(o + 4, le); return d ? n / d : 0; }
+        default: return dv.getUint8(o);
+      }
+    };
+    const step = TYPE_SIZE[type] || 1;
+    if (num === 1) return rd(off);
+    const arr = [];
+    for (let i = 0; i < num; i++) arr.push(rd(off + i * step));
+    return arr;
+  }
+
+  function dms(arr, ref) {
+    if (!Array.isArray(arr) || arr.length < 3) return null;
+    let dec = arr[0] + arr[1] / 60 + arr[2] / 3600;
+    if (ref === 'S' || ref === 'W') dec = -dec;
+    return dec;
+  }
+
+  function parseJpeg(dv) {
+    if (dv.getUint16(0) !== 0xFFD8) return null;
+    const out = { _ifd0: {}, _exif: {}, _gps: {} };
+    let off = 2;
+    while (off < dv.byteLength - 1) {
+      if (dv.getUint8(off) !== 0xFF) { off++; continue; }
+      const marker = dv.getUint8(off + 1);
+      if (marker === 0xD9 || marker === 0xDA) break;               // EOI / start of scan
+      const len = dv.getUint16(off + 2);
+      // SOF markers carry true dimensions
+      if (marker >= 0xC0 && marker <= 0xCF && ![0xC4, 0xC8, 0xCC].includes(marker)) {
+        out.height = dv.getUint16(off + 5); out.width = dv.getUint16(off + 7);
+      }
+      if (marker === 0xE1) {                                        // APP1 = Exif
+        const base = off + 4;
+        if (dv.getUint32(base) === 0x45786966) {                   // "Exif"
+          const tiff = base + 6;
+          const le = dv.getUint16(tiff) === 0x4949;
+          const ifd0 = dv.getUint32(tiff + 4, le);
+          readEntries(dv, tiff, ifd0, le, IFD0, out._ifd0, (tag, ptr) => {
+            if (tag === 0x8769) readEntries(dv, tiff, ptr, le, EXIF, out._exif);
+            else readEntries(dv, tiff, ptr, le, GPS, out._gps);
+          });
+        }
+      }
+      off += 2 + len;
+    }
+    return out;
+  }
+
+  function parsePng(dv) {
+    if (dv.getUint32(0) !== 0x89504E47) return null;
+    const out = { _ifd0: {}, _exif: {}, _gps: {}, _text: {} };
+    let off = 8;
+    while (off + 8 <= dv.byteLength) {
+      const len = dv.getUint32(off);
+      let type = '';
+      for (let i = 0; i < 4; i++) type += String.fromCharCode(dv.getUint8(off + 4 + i));
+      const data = off + 8;
+      if (type === 'IHDR') { out.width = dv.getUint32(data); out.height = dv.getUint32(data + 4); }
+      else if (type === 'tEXt' && data + len <= dv.byteLength) {
+        let s = '';
+        for (let i = 0; i < len; i++) s += String.fromCharCode(dv.getUint8(data + i));
+        const cut = s.indexOf('\x00');
+        if (cut > 0) out._text[s.slice(0, cut)] = s.slice(cut + 1).replace(/\x00/g, '').trim();
+      } else if (type === 'tIME' && len >= 7) {
+        out._text['Modified'] = dv.getUint16(data) + '-' +
+          String(dv.getUint8(data + 2)).padStart(2, '0') + '-' +
+          String(dv.getUint8(data + 3)).padStart(2, '0') + ' ' +
+          String(dv.getUint8(data + 4)).padStart(2, '0') + ':' +
+          String(dv.getUint8(data + 5)).padStart(2, '0');
+      }
+      if (type === 'IEND') break;
+      off = data + len + 4;
+    }
+    return out;
+  }
+
+  function addRow(dt, dd) {
+    const row = document.createElement('div');
+    const a = document.createElement('dt'), b = document.createElement('dd');
+    a.textContent = dt; b.textContent = dd;
+    row.appendChild(a); row.appendChild(b); tagList.appendChild(row);
+  }
+
+  function render(meta, file, kind) {
+    tagList.innerHTML = ''; gpsBox.innerHTML = '';
+    addRow('File', file.name);
+    addRow('Size', fmtBytes(file.size));
+    addRow('Type', file.type || kind);
+    if (meta.width) addRow('Dimensions', meta.width + ' × ' + meta.height + ' px');
+
+    const i = meta._ifd0 || {}, x = meta._exif || {}, t = meta._text || {};
+    const pushed = [];
+    function tag(label, v, fmt) {
+      if (v === undefined || v === '' || v === null) return;
+      addRow(label, fmt ? fmt(v) : String(v)); pushed.push(label);
+    }
+    tag('Camera make', i[0x010F]);
+    tag('Camera model', i[0x0110]);
+    tag('Lens', x[0xA434]);
+    tag('Software', i[0x0131]);
+    tag('Orientation', i[0x0112], v => ORIENT[v] || v);
+    tag('Taken', x[0x9003]);
+    tag('Modified', i[0x0132] || t['Modified']);
+    tag('Exposure', x[0x829A], v => v >= 1 ? v + ' s' : '1/' + Math.round(1 / v) + ' s');
+    tag('Aperture', x[0x829D], v => 'f/' + (+v).toFixed(1));
+    tag('ISO', x[0x8827], v => Array.isArray(v) ? v[0] : v);
+    tag('Focal length', x[0x920A], v => Math.round(v) + ' mm');
+    tag('Artist', i[0x013B]);
+    tag('Copyright', i[0x8298]);
+    Object.keys(t).forEach(k => { if (k !== 'Modified') tag(k, t[k]); });
+
+    // GPS — the headline finding
+    const g = meta._gps || {};
+    const lat = dms(g[0x0002], g[0x0001]);
+    const lon = dms(g[0x0004], g[0x0003]);
+    if (lat !== null && lon !== null && !(lat === 0 && lon === 0)) {
+      const c = lat.toFixed(6) + ', ' + lon.toFixed(6);
+      gpsBox.className = 'exif-gps';
+      gpsBox.innerHTML = '<div class="hd">⚠ GPS location embedded</div>' +
+        '<div class="coord">' + c + '</div>' +
+        '<a href="https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon +
+        '#map=16/' + lat.toFixed(5) + '/' + lon.toFixed(5) +
+        '" target="_blank" rel="noopener noreferrer">▸ pinpoint on a map</a>';
+      status.textContent = 'GPS FOUND';
+      status.style.color = '#E8603F';
+    } else if (pushed.length) {
+      gpsBox.className = 'exif-clean';
+      gpsBox.textContent = '✓ no GPS coordinates in this file';
+      status.textContent = 'METADATA FOUND';
+      status.style.color = '';
+    } else {
+      gpsBox.className = 'exif-clean';
+      gpsBox.textContent = '✓ clean — no embedded EXIF metadata (likely stripped on export/upload)';
+      status.textContent = 'CLEAN';
+      status.style.color = '';
+    }
+  }
+
+  function handle(file) {
+    if (!file) return;
+    if (!/^image\//.test(file.type) && !/\.(jpe?g|png)$/i.test(file.name)) {
+      status.textContent = 'NOT AN IMAGE'; status.style.color = '#E8603F'; return;
+    }
+    status.textContent = 'READING'; status.style.color = '#E8B23C';
+    if (lastUrl) URL.revokeObjectURL(lastUrl);
+    lastUrl = URL.createObjectURL(file);
+    img.src = lastUrl;
+    fileMeta.textContent = '// ' + file.name + ' · ' + fmtBytes(file.size) +
+      ' · read locally, never uploaded';
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const dv = new DataView(reader.result);
+        const kind = dv.getUint16(0) === 0xFFD8 ? 'image/jpeg'
+          : dv.getUint32(0) === 0x89504E47 ? 'image/png' : 'unknown';
+        const meta = kind === 'image/jpeg' ? parseJpeg(dv)
+          : kind === 'image/png' ? parsePng(dv) : { _ifd0:{}, _exif:{}, _gps:{}, _text:{} };
+        result.hidden = false;
+        render(meta || { _ifd0:{}, _exif:{}, _gps:{}, _text:{} }, file, kind);
+      } catch (err) {
+        status.textContent = 'PARSE ERROR'; status.style.color = '#E8603F';
+      }
+    };
+    reader.readAsArrayBuffer(file);
+  }
+
+  fileInput.addEventListener('change', () => handle(fileInput.files[0]));
+  drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => {
+    e.preventDefault(); drop.classList.add('drag');
+  }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => {
+    e.preventDefault(); drop.classList.remove('drag');
+  }));
+  drop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) handle(e.dataTransfer.files[0]); });
+})();
+
+/* ================= jwt decoder ================= */
+/* Splits a JWT and base64url-decodes the header + payload for inspection.
+   It deliberately does NOT verify the signature — decoding is not
+   validation, and that distinction is the security point. */
+(function jwtDecode() {
+  const input = document.getElementById('jwtIn');
+  const headEl = document.getElementById('jwtHead');
+  const bodyEl = document.getElementById('jwtBody');
+  const meta = document.getElementById('jwtMeta');
+  const algEl = document.getElementById('jwtAlg');
+
+  function b64url(s) {
+    s = s.replace(/-/g, '+').replace(/_/g, '/');
+    while (s.length % 4) s += '=';
+    return decodeURIComponent(escape(atob(s)));
+  }
+  function pretty(obj) { return JSON.stringify(obj, null, 2); }
+  function when(ts) {
+    const d = new Date(ts * 1000);
+    return isNaN(d) ? '?' : d.toISOString().replace('T', ' ').slice(0, 19) + 'Z';
+  }
+
+  function render() {
+    const raw = input.value.trim();
+    if (!raw) { headEl.textContent = bodyEl.textContent = '—'; algEl.textContent = '—'; meta.textContent = '// signature is never verified — decode only'; return; }
+    const parts = raw.split('.');
+    if (parts.length < 2) { headEl.textContent = '—'; bodyEl.textContent = 'not a JWT (need header.payload.signature)'; algEl.textContent = 'ERR'; meta.textContent = '// expected three dot-separated segments'; return; }
+    let head, body;
+    try { head = JSON.parse(b64url(parts[0])); } catch (e) { headEl.textContent = 'header not decodable'; }
+    try { body = JSON.parse(b64url(parts[1])); } catch (e) { bodyEl.textContent = 'payload not decodable'; }
+    const notes = [];
+    if (head) {
+      headEl.textContent = pretty(head);
+      algEl.textContent = head.alg || '?';
+      if (head.alg && head.alg.toLowerCase() === 'none') notes.push('⚠ alg=none — unsigned, trivially forgeable');
+    }
+    if (body) {
+      bodyEl.textContent = pretty(body);
+      if (body.exp) notes.push((body.exp * 1000 < Date.now() ? '⚠ expired ' : 'expires ') + when(body.exp));
+      if (body.iat) notes.push('issued ' + when(body.iat));
+    }
+    notes.push('signature NOT verified');
+    meta.textContent = '// ' + notes.join(' · ');
+  }
+  input.addEventListener('input', render);
+  render();
+})();
+
+/* ================= base64 codec ================= */
+/* UTF-8-safe base64 both ways — the encode path round-trips multibyte
+   characters instead of throwing on them. */
+(function base64() {
+  const input = document.getElementById('b64In');
+  const out = document.getElementById('b64Out');
+  const encBtn = document.getElementById('b64Enc');
+  const decBtn = document.getElementById('b64Dec');
+  const status = document.getElementById('b64Status');
+  let mode = 'enc';
+
+  function render() {
+    const v = input.value;
+    if (!v) { out.textContent = ' '; return; }
+    try {
+      out.style.color = '';
+      out.textContent = mode === 'enc'
+        ? btoa(unescape(encodeURIComponent(v)))
+        : decodeURIComponent(escape(atob(v.trim())));
+    } catch (e) {
+      out.style.color = '#E8603F';
+      out.textContent = mode === 'enc' ? 'could not encode input' : 'invalid base64 input';
+    }
+  }
+  function setMode(m) {
+    mode = m;
+    encBtn.classList.toggle('active', m === 'enc');
+    decBtn.classList.toggle('active', m === 'dec');
+    status.textContent = m === 'enc' ? 'ENCODE' : 'DECODE';
+    render();
+  }
+  encBtn.addEventListener('click', () => setMode('enc'));
+  decBtn.addEventListener('click', () => setMode('dec'));
+  input.addEventListener('input', render);
+  render();
 })();
 </script>
 
