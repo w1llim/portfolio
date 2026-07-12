@@ -346,7 +346,16 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
   font-size:11px;letter-spacing:.16em;color:var(--kraft-dim);margin-bottom:6px;
 }
 .proj-status{color:var(--threat)}
+.proj-status.live{color:var(--phos)}
+.proj-card.live{border-color:rgba(140,245,107,.25)}
+.proj-title{font-family:var(--disp);font-weight:600;font-size:19px;color:var(--kraft)}
+.proj-meta{font-size:10.5px;letter-spacing:.14em;color:var(--phos);text-transform:uppercase;margin-top:-6px}
+.proj-desc{font-size:13.5px;color:var(--kraft-dim);line-height:1.6;flex:1}
+.proj-tags{display:flex;flex-wrap:wrap;gap:6px;font-size:10px;letter-spacing:.08em}
+.proj-tags span{border:1px solid var(--line);padding:3px 8px;color:var(--kraft-dim)}
 .proj-foot{margin-top:10px;font-size:10.5px;color:var(--kraft-dim);letter-spacing:.14em}
+a.proj-link{color:var(--phos);border-bottom:1px solid transparent;width:fit-content;transition:border-color .2s}
+a.proj-link:hover{border-color:var(--phos)}
 .proj-note{margin-top:22px;font-size:11.5px;color:var(--kraft-dim);letter-spacing:.12em}
 .redact{
   height:12px;margin:3px 0;
@@ -792,15 +801,16 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
     </div>
 
     <div class="proj-grid">
+      <div class="proj-card live reveal">
+        <div class="proj-head"><span>PRJ-01</span><span class="proj-status live">DEPLOYED</span></div>
+        <h3 class="proj-title">Math Quest</h3>
+        <div class="proj-meta mono">SFT-ENG · Year 11 · 2025</div>
+        <p class="proj-desc">Command-line arithmetic quiz game — a lives/streak system, a boss fight with harder expressions, a one-time calculator power-up earned by a 5-streak, and scores persisted to a stats file between runs.</p>
+        <div class="proj-tags mono"><span>Python</span><span>CLI</span><span>File I/O</span></div>
+        <a class="proj-foot mono proj-link" href="https://github.com/w1llim/portfolio/tree/main/software-engineering/year-11/task-1" target="_blank" rel="noopener">View source ↗</a>
+      </div>
       <!-- PLACEHOLDER cards: swap each for a real project (title, description,
            stack tags, repo/demo links) when William supplies the details -->
-      <div class="proj-card reveal">
-        <div class="proj-head"><span>PRJ-01</span><span class="proj-status">PENDING</span></div>
-        <div class="redact w70"></div>
-        <div class="redact w95"></div>
-        <div class="redact w60"></div>
-        <div class="proj-foot mono">[ awaiting declassification ]</div>
-      </div>
       <div class="proj-card reveal d1">
         <div class="proj-head"><span>PRJ-02</span><span class="proj-status">PENDING</span></div>
         <div class="redact w85"></div>
