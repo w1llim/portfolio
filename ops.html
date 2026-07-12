@@ -257,11 +257,34 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .exif-drop:hover,.exif-drop.drag{border-color:var(--phos);background:rgba(140,245,107,.06);color:var(--kraft)}
 .exif-drop b{color:var(--phos);display:block;margin-bottom:8px;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
 .exif-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px;align-items:start}
-.exif-preview img{
-  width:100%;max-height:280px;object-fit:contain;background:rgba(0,0,0,.35);
-  border:1px solid var(--line);display:block;
+/* min-width:0 on the grid children: without it, the caption's nowrap
+   filename reports its full un-truncated intrinsic width as the grid
+   item's content minimum, which forces the fr track (and the whole
+   page) wider than the viewport instead of letting the ellipsis clip it */
+.exif-grid>*{min-width:0}
+/* framed preview — same corner-bracket + mono-caption treatment as the
+   rank badge / major-works cards, so a dropped-in photo reads as an
+   inspected artifact rather than a bare <img> tag */
+.exif-frame{
+  position:relative;border:1px solid var(--line);background:rgba(0,0,0,.4);
+  box-shadow:0 18px 44px rgba(0,0,0,.4);
+  min-width:0;
 }
-.exif-preview .panel-note{margin-top:10px;line-height:1.7;word-break:break-word}
+.exif-frame .corner{position:absolute;width:14px;height:14px;border:2px solid var(--phos)}
+.exif-frame .corner.tl{top:-2px;left:-2px;border-right:0;border-bottom:0}
+.exif-frame .corner.tr{top:-2px;right:-2px;border-left:0;border-bottom:0}
+.exif-frame .corner.bl{bottom:-2px;left:-2px;border-right:0;border-top:0}
+.exif-frame .corner.br{bottom:-2px;right:-2px;border-left:0;border-top:0}
+.exif-frame .cap{
+  display:flex;justify-content:space-between;align-items:baseline;gap:10px;
+  padding:9px 12px;border-bottom:1px solid var(--line);
+  font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--kraft-dim);min-width:0;
+}
+.exif-frame .cap b{color:var(--phos);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.exif-frame .cap span{flex-shrink:0}
+.exif-frame img{width:100%;max-height:260px;object-fit:contain;background:rgba(0,0,0,.5);display:block}
+.exif-preview .panel-note{margin-top:12px;line-height:1.7;word-break:break-word}
 .exif-gps{
   border:1px solid var(--threat);background:rgba(232,96,63,.08);padding:12px 14px;margin-bottom:14px;
 }
@@ -483,7 +506,12 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
           <input type="file" id="exifFile" accept="image/jpeg,image/png,image/*" style="display:none">
           <div class="exif-grid" id="exifResult" hidden>
             <div class="exif-preview">
-              <img id="exifImg" alt="Preview of the selected image">
+              <div class="exif-frame">
+                <span class="corner tl"></span><span class="corner tr"></span>
+                <span class="corner bl"></span><span class="corner br"></span>
+                <div class="cap"><b id="exifCapName">FILE.JPG</b><span id="exifCapSize">0 KB</span></div>
+                <img id="exifImg" alt="Preview of the selected image">
+              </div>
               <div class="panel-note" id="exifFileMeta"></div>
             </div>
             <div class="exif-tags-wrap">
@@ -1000,6 +1028,8 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
   const fileInput = document.getElementById('exifFile');
   const result = document.getElementById('exifResult');
   const img = document.getElementById('exifImg');
+  const capName = document.getElementById('exifCapName');
+  const capSize = document.getElementById('exifCapSize');
   const fileMeta = document.getElementById('exifFileMeta');
   const gpsBox = document.getElementById('exifGps');
   const tagList = document.getElementById('exifTags');
@@ -1207,8 +1237,9 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
     if (lastUrl) URL.revokeObjectURL(lastUrl);
     lastUrl = URL.createObjectURL(file);
     img.src = lastUrl;
-    fileMeta.textContent = '// ' + file.name + ' · ' + fmtBytes(file.size) +
-      ' · read locally, never uploaded';
+    capName.textContent = file.name;
+    capSize.textContent = fmtBytes(file.size);
+    fileMeta.textContent = '// read locally in your browser — never uploaded';
     const reader = new FileReader();
     reader.onload = () => {
       try {
