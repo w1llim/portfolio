@@ -85,7 +85,7 @@ nav.links a:hover::before{opacity:1}
 .nav-toggle.open span:nth-child(2){opacity:0}
 .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
 
-@media(max-width:640px){
+@media(max-width:880px){
   .nav-toggle{display:flex}
   nav.links{
     position:fixed;top:58px;left:0;right:0;z-index:99;
@@ -331,6 +331,51 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 }
 @media(max-width:940px){.ops-grid{grid-template-columns:1fr}}
 
+/* ---------- projects ---------- */
+.proj-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media(max-width:960px){.proj-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:620px){.proj-grid{grid-template-columns:1fr}}
+.proj-card{
+  border:1px solid var(--line);background:rgba(20,15,8,.7);padding:20px;
+  display:flex;flex-direction:column;gap:12px;min-width:0;
+  transition:border-color .3s;
+}
+.proj-card:hover{border-color:rgba(140,245,107,.35)}
+.proj-head{
+  display:flex;justify-content:space-between;font-family:var(--mono);
+  font-size:11px;letter-spacing:.16em;color:var(--kraft-dim);margin-bottom:6px;
+}
+.proj-status{color:var(--threat)}
+.proj-foot{margin-top:10px;font-size:10.5px;color:var(--kraft-dim);letter-spacing:.14em}
+.proj-note{margin-top:22px;font-size:11.5px;color:var(--kraft-dim);letter-spacing:.12em}
+.redact{
+  height:12px;margin:3px 0;
+  background:repeating-linear-gradient(45deg,rgba(211,196,162,.16) 0 6px,rgba(211,196,162,.05) 6px 12px);
+}
+.redact.w50{width:50%}.redact.w55{width:55%}.redact.w60{width:60%}.redact.w70{width:70%}
+.redact.w75{width:75%}.redact.w80{width:80%}.redact.w85{width:85%}.redact.w90{width:90%}.redact.w95{width:95%}
+
+/* ---------- timeline ---------- */
+.tl{list-style:none;border-left:1px solid var(--moss);margin-left:8px}
+.tl-item{
+  position:relative;display:flex;gap:clamp(18px,4vw,44px);align-items:baseline;
+  padding:22px 0 22px clamp(20px,3vw,36px);
+}
+.tl-item::before{
+  content:"";position:absolute;left:-5px;top:31px;width:9px;height:9px;
+  background:var(--bark);border:1.5px solid var(--phos);transform:rotate(45deg);
+}
+.tl-item.target::before{background:var(--phos);box-shadow:0 0 12px var(--phos-dim)}
+.tl-item.pending::before{border-color:var(--kraft-dim)}
+.tl-year{font-size:13px;color:var(--phos);letter-spacing:.14em;flex-shrink:0;width:52px}
+.tl-item.pending .tl-year{color:var(--kraft-dim)}
+.tl-body{min-width:0;flex:1}
+.tl-body h3{font-family:var(--disp);font-weight:600;font-size:clamp(17px,2vw,22px);color:var(--kraft)}
+.tl-body p{margin-top:5px;color:var(--kraft-dim);font-size:14.5px;max-width:60ch}
+.tl-item.pending .tl-body h3{font-size:12px;color:var(--kraft-dim)}
+.tl-item.pending .redact{max-width:420px}
+@media(max-width:560px){.tl-item{flex-direction:column;gap:6px}}
+
 /* ---------- mission (kraft) ---------- */
 .mission{background:var(--kraft);color:#241C12}
 .mission::before{
@@ -491,7 +536,9 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <a href="#command">Command</a>
       <a href="#kungfu">Kung Fu</a>
       <a href="#ops">Ops Lab</a>
+      <a href="#projects">Projects</a>
       <a href="#mission">Mission</a>
+      <a href="#timeline">Timeline</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="status mono"><span class="dot"></span>System online</div>
@@ -736,6 +783,43 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
   </div>
 </section>
 
+<!-- ================= PROJECTS ================= -->
+<section id="projects">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 data-scramble-scroll><span class="hash">#</span>Projects</h2>
+      <span class="count">Deployments · SFT-ENG / ENT-CMP</span>
+    </div>
+
+    <div class="proj-grid">
+      <!-- PLACEHOLDER cards: swap each for a real project (title, description,
+           stack tags, repo/demo links) when William supplies the details -->
+      <div class="proj-card reveal">
+        <div class="proj-head"><span>PRJ-01</span><span class="proj-status">PENDING</span></div>
+        <div class="redact w70"></div>
+        <div class="redact w95"></div>
+        <div class="redact w60"></div>
+        <div class="proj-foot mono">[ awaiting declassification ]</div>
+      </div>
+      <div class="proj-card reveal d1">
+        <div class="proj-head"><span>PRJ-02</span><span class="proj-status">PENDING</span></div>
+        <div class="redact w85"></div>
+        <div class="redact w55"></div>
+        <div class="redact w75"></div>
+        <div class="proj-foot mono">[ awaiting declassification ]</div>
+      </div>
+      <div class="proj-card reveal d2">
+        <div class="proj-head"><span>PRJ-03</span><span class="proj-status">PENDING</span></div>
+        <div class="redact w60"></div>
+        <div class="redact w90"></div>
+        <div class="redact w50"></div>
+        <div class="proj-foot mono">[ awaiting declassification ]</div>
+      </div>
+    </div>
+    <p class="proj-note mono reveal d3">// software engineering &amp; enterprise computing project files being prepared for release</p>
+  </div>
+</section>
+
 <!-- ================= MISSION ================= -->
 <section class="mission" id="mission">
   <div class="wrap">
@@ -778,6 +862,58 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         </div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- ================= TIMELINE ================= -->
+<section id="timeline">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <h2 data-scramble-scroll><span class="hash">#</span>Timeline</h2>
+      <span class="count">Service record · 2020 →</span>
+    </div>
+
+    <!-- Confirmed anchors only; PLACEHOLDER rows marked "pending" get real
+         entries (cadets milestones, promotions, etc.) when William supplies them -->
+    <ol class="tl">
+      <li class="tl-item reveal">
+        <span class="tl-year mono">2020</span>
+        <div class="tl-body">
+          <h3>Began Pak Hok Pai — white crane kung fu</h3>
+          <p>Started training with Pak Hok Pai Australia: forms, dao sabre work and lion dance.</p>
+        </div>
+      </li>
+      <li class="tl-item pending reveal d1">
+        <span class="tl-year mono">&#9608;&#9608;&#9608;&#9608;</span>
+        <div class="tl-body">
+          <h3 class="mono" style="letter-spacing:.18em">[ ENTRY PENDING ]</h3>
+          <div class="redact w80"></div>
+          <div class="redact w55"></div>
+        </div>
+      </li>
+      <li class="tl-item pending reveal d2">
+        <span class="tl-year mono">&#9608;&#9608;&#9608;&#9608;</span>
+        <div class="tl-body">
+          <h3 class="mono" style="letter-spacing:.18em">[ ENTRY PENDING ]</h3>
+          <div class="redact w70"></div>
+          <div class="redact w60"></div>
+        </div>
+      </li>
+      <li class="tl-item reveal d3">
+        <span class="tl-year mono">2026</span>
+        <div class="tl-body">
+          <h3>Year 12 — NSW HSC</h3>
+          <p>Final year: heavy STEM load, CUO and Company Commander at HAHSACU, commanding 100+ cadets.</p>
+        </div>
+      </li>
+      <li class="tl-item target reveal d4">
+        <span class="tl-year mono">2027</span>
+        <div class="tl-body">
+          <h3>ETA — UNSW Kensington</h3>
+          <p>Target locked: Bachelor of Information Systems / Bachelor of Computer Science.</p>
+        </div>
+      </li>
+    </ol>
   </div>
 </section>
 
@@ -849,7 +985,7 @@ const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').match
   }
   toggle.addEventListener('click', () => setOpen(!links.classList.contains('open')));
   links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setOpen(false)));
-  window.addEventListener('resize', () => { if (window.innerWidth > 640) setOpen(false); });
+  window.addEventListener('resize', () => { if (window.innerWidth > 880) setOpen(false); });
 })();
 
 /* ================= text scramble / decrypt ================= */
