@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ops Lab — William Lam</title>
-<meta name="description" content="Interactive security lab — live packet monitor, Caesar cipher, SHA-256 avalanche, password audit, port-scan sim, an EXIF/PNG metadata inspector, a JWT decoder and a Base64 codec. Everything runs client-side; nothing is uploaded.">
+<meta name="description" content="Interactive security &amp; CTF lab — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier and a hexdump/strings file analyzer. All client-side; nothing is uploaded.">
 <link rel="canonical" href="https://w1llim.github.io/portfolio/ops.html">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Ops Lab — William Lam">
-<meta property="og:description" content="Eight interactive security modules — packet monitor, Caesar cipher, SHA-256 avalanche, password audit, port-scan sim, EXIF metadata inspector, JWT decoder and Base64 codec.">
+<meta property="og:description" content="Twelve interactive security &amp; CTF modules — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier and a hexdump/strings file analyzer.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://w1llim.github.io/portfolio/ops.html">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ops Lab — William Lam">
-<meta name="twitter:description" content="Eight interactive security modules — packet monitor, Caesar cipher, SHA-256 avalanche, password audit, port-scan sim, EXIF metadata inspector, JWT decoder and Base64 codec.">
+<meta name="twitter:description" content="Twelve interactive security &amp; CTF modules — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier and a hexdump/strings file analyzer.">
 <meta name="theme-color" content="#211A10">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -344,8 +344,60 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
   padding:12px;min-height:72px;word-break:break-all;white-space:pre-wrap;
 }
 
+/* ---------- ctf toolkit (rows 5-6) ---------- */
+/* magic multitool decoder */
+.magic-list{display:flex;flex-direction:column;border:1px solid var(--line);max-height:360px;overflow-y:auto}
+.magic-row{
+  display:grid;grid-template-columns:140px 1fr;gap:14px;align-items:baseline;min-width:0;
+  padding:10px 14px;border-bottom:1px solid var(--line);
+}
+.magic-row:last-child{border-bottom:0}
+.magic-tag{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--kraft-dim);white-space:nowrap}
+.magic-val{font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--kraft-dim);word-break:break-all;white-space:pre-wrap;min-width:0}
+.magic-row.hit .magic-tag{color:var(--phos)}
+.magic-row.hit .magic-val{color:var(--kraft)}
+.magic-row.flag{background:rgba(140,245,107,.1)}
+.magic-row.flag .magic-tag{color:var(--phos)}
+.magic-row.flag .magic-val{color:#D9FFCC;font-weight:600}
+.magic-empty{padding:16px 14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--kraft-dim)}
+
+/* xor brute-forcer */
+.xor-list{display:flex;flex-direction:column;border:1px solid var(--line);max-height:260px;overflow-y:auto}
+.xor-cand{
+  display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;min-width:0;
+  padding:8px 12px;border-bottom:1px solid var(--line);
+}
+.xor-cand:last-child{border-bottom:0}
+.xor-key{font-family:var(--mono);font-size:11px;color:var(--phos);white-space:nowrap}
+.xor-txt{font-family:var(--mono);font-size:12px;color:var(--kraft);word-break:break-all;min-width:0}
+.xor-cand.flag{background:rgba(140,245,107,.1)}
+.xor-cand.flag .xor-txt{color:#D9FFCC;font-weight:600}
+
+/* hash identifier */
+.hashid-list{display:flex;flex-direction:column;gap:8px}
+.hashid-cand{
+  display:flex;justify-content:space-between;gap:12px;align-items:baseline;
+  border:1px solid var(--line);padding:9px 12px;font-family:var(--mono);font-size:12px;
+}
+.hashid-cand .algo{color:var(--phos);letter-spacing:.06em}
+.hashid-cand .conf{color:var(--kraft-dim);font-size:9.5px;letter-spacing:.14em;text-transform:uppercase;flex-shrink:0}
+
+/* hexdump + strings */
+.dump-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:20px;align-items:start;margin-top:2px}
+.dump-grid>*{min-width:0}
+.dump-col h5{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--kraft-dim);margin-bottom:8px;display:flex;justify-content:space-between}
+.dump-out,.strings-out{
+  border:1px solid var(--line);background:rgba(0,0,0,.35);padding:10px 12px;
+  font-family:var(--mono);font-size:11px;line-height:1.75;max-height:300px;overflow:auto;color:var(--kraft);
+}
+.dump-out{white-space:pre}
+.dump-out .off{color:var(--kraft-dim)}
+.dump-out .asc{color:var(--phos)}
+.strings-out{white-space:pre-wrap;word-break:break-all}
+.strings-out .flag{color:#D9FFCC;font-weight:600;background:rgba(140,245,107,.12)}
+
 @media(max-width:940px){.ops-grid,.ops-grid2,.ops-grid3{grid-template-columns:1fr}}
-@media(max-width:720px){.exif-grid{grid-template-columns:1fr}}
+@media(max-width:720px){.exif-grid,.dump-grid{grid-template-columns:1fr}}
 
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40px,6vw,80px)}
@@ -402,7 +454,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
   <div class="wrap">
     <div class="sec-head reveal">
       <h2 data-scramble-scroll><span class="hash">#</span>Ops Lab</h2>
-      <span class="count">08 live modules · Interactive</span>
+      <span class="count">12 live modules · Interactive</span>
     </div>
 
     <div class="ops-grid">
@@ -601,6 +653,89 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       </div>
 
     </div>
+
+    <!-- cipher multitool / magic decoder -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>magic --decode · run every codec</span>
+          <span class="right" id="magicStatus">READY</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="magicIn">Paste an encoded blob — it's decoded every way at once, readable results float to the top</label>
+            <textarea id="magicIn" spellcheck="false">666c61677b6d346731635f643363306433727d</textarea>
+          </div>
+          <div class="magic-list" id="magicList" aria-live="polite"></div>
+          <div class="panel-note">// base64 · base32 · base58 · hex · binary · decimal · url · rot13 · rot47 · atbash · morse · reverse — all client-side</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ops-grid3">
+
+      <!-- xor single-byte brute-forcer -->
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>xor --brute · single byte</span>
+          <span class="right" id="xorStatus">256 KEYS</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="xorIn">Ciphertext in hex — every key 0x00–0xFF is tried, ranked by how English the plaintext scores</label>
+            <textarea id="xorIn" spellcheck="false">3c363b3d21226a28056b29052d696e3127</textarea>
+          </div>
+          <div class="xor-list" id="xorList" aria-live="polite"></div>
+          <div class="panel-note">// classic single-byte XOR break — frequency-scored, top matches first</div>
+        </div>
+      </div>
+
+      <!-- hash identifier -->
+      <div class="panel reveal d1">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>hashid --identify</span>
+          <span class="right" id="hashidLen">—</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="hashidIn">Paste an unknown hash</label>
+            <input id="hashidIn" type="text" autocomplete="off" spellcheck="false" value="5f4dcc3b5aa765d61d8327deb882cf99">
+          </div>
+          <div class="hashid-list" id="hashidList" aria-live="polite"></div>
+          <div class="panel-note" id="hashidMeta">// identified by length &amp; charset — candidates, not certainty</div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- hexdump + strings -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>xxd + strings · drop a file</span>
+          <span class="right" id="dumpStatus">NO FILE</span>
+        </div>
+        <div class="panel-body">
+          <label class="exif-drop" id="dumpDrop" for="dumpFile" tabindex="0" role="button" aria-label="Choose or drop any file to hex-dump it and extract strings">
+            <b>Drop any file · or click to browse</b>
+            Hex-dumped and scanned for printable strings in your browser —
+            the first move on any mystery CTF file. Nothing is uploaded.
+          </label>
+          <input type="file" id="dumpFile" style="display:none">
+          <div class="dump-grid" id="dumpResult" hidden>
+            <div class="dump-col">
+              <h5><span>Hex dump</span><span id="dumpRange"></span></h5>
+              <div class="dump-out" id="dumpOut"></div>
+            </div>
+            <div class="dump-col">
+              <h5><span>Strings ≥ 4</span><span id="dumpStrCount"></span></h5>
+              <div class="strings-out" id="stringsOut"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1394,6 +1529,336 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
   decBtn.addEventListener('click', () => setMode('dec'));
   input.addEventListener('input', render);
   render();
+})();
+
+/* ================= shared CTF helpers ================= */
+const CTF = (function () {
+  const FLAG = /[A-Za-z0-9_]{2,}\{[^}\n]{1,80}\}/;
+  const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  function bytesToText(bytes) {
+    try { return new TextDecoder('utf-8', { fatal: false }).decode(bytes); }
+    catch (e) { let s = ''; for (const b of bytes) s += String.fromCharCode(b); return s; }
+  }
+  function printableRatio(str) {
+    if (!str.length) return 0;
+    let ok = 0;
+    for (let i = 0; i < str.length; i++) {
+      const c = str.charCodeAt(i);
+      if ((c >= 32 && c <= 126) || c === 9 || c === 10 || c === 13) ok++;
+    }
+    return ok / str.length;
+  }
+  return { FLAG, esc, bytesToText, printableRatio };
+})();
+
+/* ================= magic multi-codec decoder ================= */
+/* Runs the input through every common CTF codec at once and floats the
+   readable results (and anything shaped like a flag) to the top. Pure
+   string/byte math — no network. */
+(function magicDecode() {
+  const input = document.getElementById('magicIn');
+  const list = document.getElementById('magicList');
+  const status = document.getElementById('magicStatus');
+
+  const B32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+  const B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+  const MORSE = { '.-':'A','-...':'B','-.-.':'C','-..':'D','.':'E','..-.':'F','--.':'G','....':'H','..':'I','.---':'J','-.-':'K','.-..':'L','--':'M','-.':'N','---':'O','.--.':'P','--.-':'Q','.-.':'R','...':'S','-':'T','..-':'U','...-':'V','.--':'W','-..-':'X','-.--':'Y','--..':'Z','-----':'0','.----':'1','..---':'2','...--':'3','....-':'4','.....':'5','-....':'6','--...':'7','---..':'8','----.':'9' };
+
+  const fromBase64 = s => {
+    let t = s.replace(/\s+/g, '');
+    if (!/^[A-Za-z0-9+/]+={0,2}$/.test(t) || t.length < 4) return null;
+    t = t.replace(/=+$/, '');
+    if (t.length % 4 === 1) return null;
+    while (t.length % 4) t += '=';
+    try { const bin = atob(t); const b = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) b[i] = bin.charCodeAt(i); return CTF.bytesToText(b); }
+    catch (e) { return null; }
+  };
+  const fromBase32 = s => {
+    let t = s.replace(/\s+/g, '').replace(/=+$/, '').toUpperCase();
+    if (!/^[A-Z2-7]+$/.test(t) || t.length < 2) return null;
+    let bits = '', out = [];
+    for (const ch of t) bits += B32.indexOf(ch).toString(2).padStart(5, '0');
+    for (let i = 0; i + 8 <= bits.length; i += 8) out.push(parseInt(bits.slice(i, i + 8), 2));
+    return out.length ? CTF.bytesToText(new Uint8Array(out)) : null;
+  };
+  const fromBase58 = s => {
+    const t = s.trim();
+    if (!/^[1-9A-HJ-NP-Za-km-z]+$/.test(t) || t.length < 2) return null;
+    try {
+      let num = 0n; for (const ch of t) num = num * 58n + BigInt(B58.indexOf(ch));
+      const bytes = [];
+      while (num > 0n) { bytes.unshift(Number(num & 255n)); num >>= 8n; }
+      for (let i = 0; i < t.length && t[i] === '1'; i++) bytes.unshift(0);
+      return CTF.bytesToText(new Uint8Array(bytes));
+    } catch (e) { return null; }
+  };
+  const fromHex = s => {
+    const t = s.replace(/0x/gi, '').replace(/[\s:,]/g, '');
+    if (!/^[0-9a-fA-F]+$/.test(t) || t.length < 2 || t.length % 2) return null;
+    const b = new Uint8Array(t.length / 2);
+    for (let i = 0; i < b.length; i++) b[i] = parseInt(t.substr(i * 2, 2), 16);
+    return CTF.bytesToText(b);
+  };
+  const fromBinary = s => {
+    if (!/^[01\s]+$/.test(s.trim())) return null;
+    const t = s.replace(/[^01]/g, '');
+    if (t.length < 8 || t.length % 8) return null;
+    const b = new Uint8Array(t.length / 8);
+    for (let i = 0; i < b.length; i++) b[i] = parseInt(t.substr(i * 8, 8), 2);
+    return CTF.bytesToText(b);
+  };
+  const fromDecimal = s => {
+    const parts = s.trim().split(/[\s,]+/);
+    if (parts.length < 2 || !parts.every(p => /^\d{1,3}$/.test(p) && +p <= 255)) return null;
+    return CTF.bytesToText(new Uint8Array(parts.map(Number)));
+  };
+  const fromUrl = s => { if (!/%[0-9a-fA-F]{2}/.test(s)) return null; try { return decodeURIComponent(s); } catch (e) { return null; } };
+  const rot13 = s => s.replace(/[a-z]/gi, c => String.fromCharCode((c <= 'Z' ? 90 : 122) >= (c.charCodeAt(0) + 13) ? c.charCodeAt(0) + 13 : c.charCodeAt(0) - 13));
+  const rot47 = s => [...s].map(c => { const n = c.charCodeAt(0); return n >= 33 && n <= 126 ? String.fromCharCode(33 + (n - 33 + 47) % 94) : c; }).join('');
+  const atbash = s => s.replace(/[a-z]/gi, c => { const base = c <= 'Z' ? 65 : 97; return String.fromCharCode(base + 25 - (c.charCodeAt(0) - base)); });
+  const reverse = s => [...s.trim()].reverse().join('');
+  const fromMorse = s => {
+    const t = s.trim();
+    if (!/^[.\-/\s]+$/.test(t) || !/[.\-]/.test(t)) return null;
+    return t.split(/\s*\/\s*|\s{2,}/).map(word =>
+      word.trim().split(/\s+/).map(code => MORSE[code] || '').join('')
+    ).join(' ').trim() || null;
+  };
+
+  const CODECS = [
+    ['from base64', fromBase64, true], ['from base32', fromBase32, true],
+    ['from base58', fromBase58, true], ['from hex', fromHex, true],
+    ['from binary', fromBinary, true], ['from decimal', fromDecimal, true],
+    ['url decode', fromUrl, false], ['rot13', rot13, false],
+    ['rot47', rot47, false], ['atbash', atbash, false],
+    ['from morse', fromMorse, true], ['reverse', reverse, false],
+  ];
+
+  function render() {
+    const raw = input.value;
+    list.innerHTML = '';
+    if (!raw.trim()) { list.innerHTML = '<div class="magic-empty">// paste something encoded above</div>'; status.textContent = 'READY'; return; }
+    const cands = [];
+    for (const [name, fn, isByte] of CODECS) {
+      let out; try { out = fn(raw); } catch (e) { out = null; }
+      if (out == null || out === '' || out === raw) continue;
+      const ratio = CTF.printableRatio(out);
+      const flag = CTF.FLAG.test(out);
+      if (!flag && ratio < 0.6) continue;                 // drop garbage
+      if (!flag && isByte && ratio < 0.75) continue;      // byte decoders need to look real
+      const score = (flag ? 1e4 : 0) + ratio * 100 + (/\s/.test(out) ? 6 : 0) + (/[aeiou]/i.test(out) ? 4 : 0);
+      cands.push({ name, out, ratio, flag, score });
+    }
+    cands.sort((a, b) => b.score - a.score);
+    if (!cands.length) { list.innerHTML = '<div class="magic-empty">// nothing decoded to readable text — try another codec</div>'; status.textContent = 'NO MATCH'; return; }
+    status.textContent = cands.some(c => c.flag) ? 'FLAG?' : cands.length + ' HITS';
+    for (const c of cands) {
+      const row = document.createElement('div');
+      row.className = 'magic-row' + (c.flag ? ' flag' : c.ratio >= 0.85 ? ' hit' : '');
+      const disp = c.out.length > 300 ? c.out.slice(0, 300) + '…' : c.out;
+      row.innerHTML = '<span class="magic-tag">' + c.name + '</span><span class="magic-val">' + CTF.esc(disp) + '</span>';
+      list.appendChild(row);
+    }
+  }
+  input.addEventListener('input', render);
+  render();
+})();
+
+/* ================= single-byte XOR brute-forcer ================= */
+/* Tries all 256 keys against hex ciphertext and ranks candidates by an
+   English-frequency score; anything matching a flag pattern jumps to the
+   top. The bread-and-butter of intro crypto CTF challenges. */
+(function xorBrute() {
+  const input = document.getElementById('xorIn');
+  const list = document.getElementById('xorList');
+  const status = document.getElementById('xorStatus');
+  const FREQ = ' etaoinshrdlucmfwypvbgkjqxz';        // rough English order, space first
+
+  function score(bytes) {
+    let s = 0;
+    for (const b of bytes) {
+      if (b === 10 || b === 13 || b === 9) { s += 1; continue; }
+      if (b < 32 || b > 126) { s -= 8; continue; }     // non-printable = very unlikely
+      const ch = String.fromCharCode(b).toLowerCase();
+      const idx = FREQ.indexOf(ch);
+      s += idx >= 0 ? (FREQ.length - idx) / 4 : 0.3;
+    }
+    return s / (bytes.length || 1);
+  }
+
+  function render() {
+    const t = input.value.replace(/0x/gi, '').replace(/[\s:,]/g, '');
+    list.innerHTML = '';
+    if (!/^[0-9a-fA-F]+$/.test(t) || t.length < 2 || t.length % 2) {
+      list.innerHTML = '<div class="magic-empty">// paste even-length hex ciphertext</div>';
+      status.textContent = 'HEX?'; return;
+    }
+    const cipher = new Uint8Array(t.length / 2);
+    for (let i = 0; i < cipher.length; i++) cipher[i] = parseInt(t.substr(i * 2, 2), 16);
+    const results = [];
+    for (let k = 0; k < 256; k++) {
+      const dec = cipher.map(b => b ^ k);
+      const text = CTF.bytesToText(dec);
+      const flag = CTF.FLAG.test(text);
+      results.push({ k, text, flag, sc: (flag ? 1e4 : 0) + score(dec) });
+    }
+    results.sort((a, b) => b.sc - a.sc);
+    const top = results.slice(0, 6);
+    status.textContent = '0x' + top[0].k.toString(16).toUpperCase().padStart(2, '0') + ' BEST';
+    for (const r of top) {
+      const row = document.createElement('div');
+      row.className = 'xor-cand' + (r.flag ? ' flag' : '');
+      const keyCh = r.k >= 33 && r.k <= 126 ? String.fromCharCode(r.k) : '·';
+      const disp = r.text.length > 120 ? r.text.slice(0, 120) + '…' : r.text;
+      row.innerHTML = '<span class="xor-key">0x' + r.k.toString(16).toUpperCase().padStart(2, '0') +
+        ' ' + CTF.esc(keyCh) + '</span><span class="xor-txt">' + CTF.esc(disp) + '</span>';
+      list.appendChild(row);
+    }
+  }
+  input.addEventListener('input', render);
+  render();
+})();
+
+/* ================= hash identifier ================= */
+/* Guesses the algorithm behind an unknown hash from its length, charset
+   and any crypt(3)-style prefix. Candidates, not certainty. */
+(function hashId() {
+  const input = document.getElementById('hashidIn');
+  const list = document.getElementById('hashidList');
+  const lenEl = document.getElementById('hashidLen');
+  const meta = document.getElementById('hashidMeta');
+
+  const HEXLEN = {
+    8:  [['CRC-32', 'Common'], ['Adler-32', 'Possible']],
+    16: [['CRC-64', 'Possible'], ['MySQL 3.x', 'Possible']],
+    32: [['MD5', 'High'], ['NTLM', 'High'], ['MD4', 'Common'], ['RIPEMD-128', 'Possible']],
+    40: [['SHA-1', 'High'], ['RIPEMD-160', 'Common'], ['MySQL 4.1+', 'Possible']],
+    56: [['SHA-224', 'High'], ['SHA3-224', 'Common']],
+    64: [['SHA-256', 'High'], ['SHA3-256', 'Common'], ['BLAKE2s-256', 'Possible'], ['RIPEMD-256', 'Possible']],
+    96: [['SHA-384', 'High'], ['SHA3-384', 'Common']],
+    128:[['SHA-512', 'High'], ['SHA3-512', 'Common'], ['BLAKE2b-512', 'Possible'], ['Whirlpool', 'Possible']],
+  };
+  const PREFIX = [
+    [/^\$2[abxy]?\$\d\d\$/, 'bcrypt', 'High'],
+    [/^\$argon2(id|i|d)\$/, 'Argon2', 'High'],
+    [/^\$6\$/, 'sha512crypt', 'High'],
+    [/^\$5\$/, 'sha256crypt', 'High'],
+    [/^\$1\$/, 'md5crypt', 'High'],
+    [/^\$y\$/, 'yescrypt', 'High'],
+    [/^\$P\$|^\$H\$/, 'phpass', 'High'],
+    [/^\{SSHA\}/, 'salted SHA-1 (LDAP)', 'High'],
+    [/^\{SHA\}/, 'SHA-1 (LDAP base64)', 'High'],
+  ];
+
+  function render() {
+    const t = input.value.trim();
+    list.innerHTML = '';
+    if (!t) { lenEl.textContent = '—'; meta.textContent = '// paste a hash to identify it'; return; }
+    lenEl.textContent = t.length + ' CHARS';
+    let cands = null, note = '';
+
+    for (const [re, name, conf] of PREFIX) if (re.test(t)) { cands = [[name, conf]]; note = 'matched by crypt(3) prefix'; break; }
+
+    if (!cands && /^[0-9a-fA-F]+$/.test(t)) {
+      cands = HEXLEN[t.length] || null;
+      note = cands ? 'hex · ' + (t.length * 4) + '-bit digest' : 'hex, but an unusual length';
+    }
+    if (!cands && /^[A-Za-z0-9+/]+={0,2}$/.test(t) && /[+/=]|[a-z]/.test(t)) {
+      const raw = t.replace(/=+$/, '').length * 6 / 8;
+      const near = { 16: 'MD5 (base64)', 20: 'SHA-1 (base64)', 28: 'SHA-224 (base64)', 32: 'SHA-256 (base64)', 48: 'SHA-384 (base64)', 64: 'SHA-512 (base64)' };
+      const hit = near[Math.round(raw)];
+      cands = hit ? [[hit, 'Possible']] : [['base64-encoded digest', 'Possible']];
+      note = 'looks base64 · ~' + Math.round(raw) + ' raw bytes';
+    }
+
+    if (!cands) { list.innerHTML = '<div class="magic-empty">// unrecognised — not standard hex/base64/crypt</div>'; meta.textContent = '// unknown format'; return; }
+    meta.textContent = '// ' + note;
+    for (const [algo, conf] of cands) {
+      const row = document.createElement('div');
+      row.className = 'hashid-cand';
+      row.innerHTML = '<span class="algo">' + CTF.esc(algo) + '</span><span class="conf">' + conf + '</span>';
+      list.appendChild(row);
+    }
+  }
+  input.addEventListener('input', render);
+  render();
+})();
+
+/* ================= hexdump + strings file analyzer ================= */
+/* Drop any file: it renders an xxd-style hex dump of the first 2 KB and
+   extracts printable strings (runs of 4+). The reflex first move on an
+   unknown CTF artifact. Bytes never leave the browser. */
+(function hexdump() {
+  const drop = document.getElementById('dumpDrop');
+  const fileInput = document.getElementById('dumpFile');
+  const result = document.getElementById('dumpResult');
+  const dumpOut = document.getElementById('dumpOut');
+  const stringsOut = document.getElementById('stringsOut');
+  const status = document.getElementById('dumpStatus');
+  const rangeEl = document.getElementById('dumpRange');
+  const countEl = document.getElementById('dumpStrCount');
+  const DUMP_CAP = 2048, SCAN_CAP = 262144;
+
+  function hex2(n) { return n.toString(16).padStart(2, '0'); }
+
+  function renderDump(bytes) {
+    const n = Math.min(bytes.length, DUMP_CAP);
+    let html = '';
+    for (let off = 0; off < n; off += 16) {
+      let hexpart = '', asc = '';
+      for (let i = 0; i < 16; i++) {
+        if (off + i < n) {
+          const b = bytes[off + i];
+          hexpart += hex2(b) + ' ';
+          asc += (b >= 32 && b <= 126) ? CTF.esc(String.fromCharCode(b)) : '.';
+        } else { hexpart += '   '; asc += ' '; }
+        if (i === 7) hexpart += ' ';
+      }
+      html += '<span class="off">' + off.toString(16).padStart(8, '0') + '</span>  ' +
+        hexpart + ' <span class="asc">' + asc + '</span>\n';
+    }
+    dumpOut.innerHTML = html;
+    rangeEl.textContent = '0x000–0x' + (n - 1).toString(16).toUpperCase();
+  }
+
+  function renderStrings(bytes) {
+    const scan = Math.min(bytes.length, SCAN_CAP);
+    const found = [];
+    let cur = '';
+    for (let i = 0; i < scan; i++) {
+      const b = bytes[i];
+      if (b >= 32 && b <= 126) { cur += String.fromCharCode(b); }
+      else { if (cur.length >= 4) found.push(cur); cur = ''; }
+      if (found.length >= 500) break;
+    }
+    if (cur.length >= 4) found.push(cur);
+    countEl.textContent = found.length + (found.length >= 500 ? '+' : '') + ' found';
+    stringsOut.innerHTML = found.length
+      ? found.map(s => CTF.FLAG.test(s) ? '<span class="flag">' + CTF.esc(s) + '</span>' : CTF.esc(s)).join('\n')
+      : '<span class="off">// no printable runs of 4+ characters</span>';
+  }
+
+  function handle(file) {
+    if (!file) return;
+    status.textContent = 'READING'; status.style.color = '#E8B23C';
+    const reader = new FileReader();
+    reader.onload = () => {
+      const bytes = new Uint8Array(reader.result);
+      result.hidden = false;
+      renderDump(bytes);
+      renderStrings(bytes);
+      status.textContent = (file.size > 1024 ? (file.size / 1024).toFixed(1) + ' KB' : file.size + ' B');
+      status.style.color = '';
+    };
+    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; };
+    reader.readAsArrayBuffer(file.slice(0, SCAN_CAP));
+  }
+
+  fileInput.addEventListener('change', () => handle(fileInput.files[0]));
+  drop.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fileInput.click(); } });
+  ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('drag'); }));
+  ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('drag'); }));
+  drop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) handle(e.dataTransfer.files[0]); });
 })();
 </script>
 
