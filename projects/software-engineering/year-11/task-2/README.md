@@ -49,7 +49,7 @@ clear — a big part of why manual mode exists as a fallback.
 
 ## Video
 
-Demo video pending — being compressed for upload.
+[Watch the demo](https://youtu.be/YdxmU-E1jqk) (unlisted)
 
 > `.hex` files are compiled MicroPython/MakeCode output for the micro:bit, not
 > human-readable source; the pseudocode in the folio documents the actual logic.

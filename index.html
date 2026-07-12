@@ -354,8 +354,20 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .proj-tags{display:flex;flex-wrap:wrap;gap:6px;font-size:10px;letter-spacing:.08em}
 .proj-tags span{border:1px solid var(--line);padding:3px 8px;color:var(--kraft-dim)}
 .proj-foot{margin-top:10px;font-size:10.5px;color:var(--kraft-dim);letter-spacing:.14em}
-a.proj-link{color:var(--phos);border-bottom:1px solid transparent;width:fit-content;transition:border-color .2s}
-a.proj-link:hover{border-color:var(--phos)}
+.proj-links{margin-top:10px;display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+.proj-link{
+  color:var(--phos);border-bottom:1px solid transparent;width:fit-content;
+  transition:border-color .2s;font-size:10.5px;letter-spacing:.14em;
+  background:none;border-top:0;border-left:0;border-right:0;padding:0;cursor:pointer;
+  display:flex;align-items:center;gap:5px;
+}
+.proj-link:hover{border-color:var(--phos)}
+.proj-video-toggle .chev{transition:transform .25s}
+.proj-video-toggle[aria-expanded="true"] .chev{transform:rotate(180deg)}
+.proj-video{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.proj-video.open{max-height:400px;margin-top:14px}
+.proj-video-embed{position:relative;width:100%;padding-bottom:56.25%;background:#000}
+.proj-video-embed iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 .proj-note{margin-top:22px;font-size:11.5px;color:var(--kraft-dim);letter-spacing:.12em}
 .redact{
   height:12px;margin:3px 0;
@@ -810,12 +822,18 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         <a class="proj-foot mono proj-link" href="https://github.com/w1llim/portfolio/tree/main/projects/software-engineering/year-11/task-1" target="_blank" rel="noopener">View source ↗</a>
       </div>
       <div class="proj-card live reveal d1">
-        <div class="proj-head"><span>PRJ-02</span><span class="proj-status">IN PROGRESS</span></div>
+        <div class="proj-head"><span>PRJ-02</span><span class="proj-status live">DEPLOYED</span></div>
         <h3 class="proj-title">Smart Garage</h3>
         <div class="proj-meta mono">SFT-ENG · Year 11 · 2025</div>
         <p class="proj-desc">Two micro:bits over radio: a remote sends enter/leave commands, the garage unit drives a servo door and neopixel lights, and an ultrasonic sensor beeps the car to a stop. Manual mode via a rotary-sensor knob as a fallback.</p>
         <div class="proj-tags mono"><span>micro:bit</span><span>MakeCode</span><span>Radio</span><span>Sensors</span></div>
-        <a class="proj-foot mono proj-link" href="https://github.com/w1llim/portfolio/tree/main/projects/software-engineering/year-11/task-2" target="_blank" rel="noopener">View source ↗</a>
+        <div class="proj-links">
+          <a class="mono proj-link" href="https://github.com/w1llim/portfolio/tree/main/projects/software-engineering/year-11/task-2" target="_blank" rel="noopener">View source ↗</a>
+          <button type="button" class="mono proj-link proj-video-toggle" data-video="YdxmU-E1jqk" aria-expanded="false">
+            Watch demo <span class="chev">▾</span>
+          </button>
+        </div>
+        <div class="proj-video"></div>
       </div>
       <!-- PLACEHOLDER card: swap for a real project (title, description,
            stack tags, repo/demo links) when William supplies the details -->
@@ -984,6 +1002,28 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ================= project video toggle ================= */
+/* Video is hidden by default; the iframe is only created (lazy) the first
+   time a card's "Watch demo" link is opened, via youtube-nocookie.com. */
+document.querySelectorAll('.proj-video-toggle').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const wrap = btn.closest('.proj-card').querySelector('.proj-video');
+    const open = !wrap.classList.contains('open');
+    wrap.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+    btn.childNodes[0].textContent = open ? 'Hide demo ' : 'Watch demo ';
+    if (open && !wrap.dataset.loaded) {
+      const id = btn.dataset.video;
+      const embed = document.createElement('div');
+      embed.className = 'proj-video-embed';
+      embed.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/' + id +
+        '" title="Project demo video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe>';
+      wrap.appendChild(embed);
+      wrap.dataset.loaded = '1';
+    }
+  });
+});
 
 /* ================= mobile nav dropdown ================= */
 (function navMenu() {
