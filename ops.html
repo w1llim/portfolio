@@ -527,9 +527,51 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
   .rank-badge .chevrons svg{opacity:1;transform:none}
   html{scroll-behavior:auto}
 }
+
+/* ---------- always-on terminal ---------- */
+.term{
+  border:1px solid var(--line);background:rgba(20,15,8,.85);
+  font-family:var(--mono);font-size:13.5px;line-height:1.75;
+}
+.term-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:8px;padding:10px 14px;
+  border-bottom:1px solid var(--line);color:var(--kraft-dim);font-size:11px;letter-spacing:.08em;
+  font-family:var(--mono);text-transform:none;
+}
+.term-bar .lights{display:flex;gap:6px;margin-right:6px}
+.term-bar .lights i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.term-bar .lights i:first-child{background:var(--phos);opacity:.7}
+.term-min{background:none;border:0;color:var(--kraft-dim);font-family:var(--mono);font-size:13px;line-height:1;cursor:pointer;padding:2px 4px}
+.term-min:hover{color:var(--phos)}
+.term-body{padding:18px 18px 22px;color:var(--kraft);overflow-y:auto}
+.term{cursor:text;position:relative}
+#termKb{position:absolute;width:1px;height:1px;opacity:0;border:0;padding:0}
+.term-body .ln{display:block;white-space:pre-wrap;word-break:break-word}
+.term-body .prompt{color:var(--phos)}
+.term-body .ok{color:var(--phos)}
+.term-body .dim{color:var(--kraft-dim)}
+.caret{display:inline-block;width:8px;height:15px;background:var(--phos);vertical-align:-2px;animation:blink 1s steps(1) infinite}
+@keyframes blink{50%{opacity:0}}
+.term.docked{
+  position:fixed;right:18px;bottom:18px;z-index:1000;
+  width:300px;max-width:calc(100vw - 36px);
+  box-shadow:0 20px 50px rgba(0,0,0,.6),0 0 0 1px rgba(140,245,107,.08);
+}
+.term.docked .term-body{min-height:0;max-height:38vh}
+.term.minimized .term-body,.term.minimized #termKb{display:none}
+@media(max-width:600px){.term.docked{right:12px;bottom:12px;width:calc(100vw - 24px)}}
 </style>
 </head>
 <body>
+
+<div class="term docked minimized" id="termShell" aria-label="Interactive terminal — type help for commands, cd to navigate">
+  <div class="term-bar">
+    <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/ops-lab</span>
+    <button type="button" class="term-min" id="termMin" aria-label="Restore terminal">▢</button>
+  </div>
+  <div class="term-body" id="terminal" aria-hidden="true"></div>
+  <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
+</div>
 
 <header>
   <div class="wrap nav">
@@ -3333,6 +3375,100 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
   ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('drag'); }));
   drop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) handle(e.dataTransfer.files[0]); });
 })();
+
+/* ================= always-on terminal ================= */
+const SHELL = {
+  help: [
+    'available commands:',
+    '  whoami   mission   cadets   kungfu',
+    '  contact  ls        clear',
+    "  cd <dir> — jump to a section, e.g. cd kungfu. ls to list.",
+  ],
+  whoami: ['william.lam — YEAR 12 // SYDNEY, AU // HSC 2026'],
+  mission: [
+    'TARGET: UNSW BIS / BCompSc',
+    'MAJORS: cybersecurity mgmt + security engineering',
+    'ETA: 2027',
+  ],
+  cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100', 'service record: CDTREC 2021 -> CUO 2026'],
+  kungfu: ['白鶴派 pak hok pai — white crane, since 2020', 'armament: dao (single sabre) // aux: lion dance'],
+  contact: [
+    'williamlam986@gmail.com',
+    'github.com/w1llim // linkedin: in/thew1llim // instagram: willim_2008',
+    'status: inbox monitored — open a channel anytime',
+  ],
+  ls: ['ops-lab/  mission/  coursework/  command/  kungfu/  majorworks/  projects/  timeline/  toolkit/  contact/'],
+};
+const SECTIONS = {
+  ops: 'here', 'ops-lab': 'here', '~': 'here', '/': 'here',
+  top: 'top', home: 'top', main: 'top',
+  mission: 'mission', coursework: 'coursework',
+  command: 'command', cadets: 'command',
+  kungfu: 'kungfu', majorworks: 'majorworks', 'major-works': 'majorworks',
+  projects: 'projects', timeline: 'timeline', toolkit: 'toolkit', contact: 'contact',
+};
+const termEl = document.getElementById('terminal');
+let typedSpan = null;
+const kb = document.getElementById('termKb');
+function shellPrint(text, cls) {
+  const l = document.createElement('span');
+  l.className = 'ln ' + (cls || '');
+  l.textContent = text;
+  termEl.appendChild(l);
+}
+function newPromptLine() {
+  const l = document.createElement('span');
+  l.className = 'ln';
+  l.innerHTML = '<span class="prompt">&gt; </span><span></span><span class="caret"></span>';
+  typedSpan = l.children[1];
+  termEl.appendChild(l);
+  termEl.scrollTop = termEl.scrollHeight;
+}
+shellPrint("type 'help' for commands", 'dim');
+newPromptLine();
+function runCommand(raw) {
+  const cmd = raw.trim().toLowerCase();
+  typedSpan.parentElement.querySelector('.caret').remove();
+  if (cmd === '') {}
+  else if (cmd === 'clear') { termEl.innerHTML = ''; }
+  else if (cmd.startsWith('sudo')) { shellPrint('permission denied: nice try.', 'dim'); }
+  else if (cmd === 'cd' || cmd.startsWith('cd ')) {
+    const target = cmd.slice(2).trim().replace(/^~?\/+/, '').replace(/\/+$/, '');
+    const dest = !target ? 'here' : SECTIONS[target];
+    if (!dest) {
+      shellPrint('cd: no such directory: ' + target, 'dim');
+      shellPrint("type 'ls' to see available directories", 'dim');
+    } else if (dest === 'here') {
+      document.getElementById('ops').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      shellPrint('~/ops-lab', 'dim');
+    } else {
+      const href = 'index.html' + (dest === 'top' ? '' : '#' + dest);
+      shellPrint('redirecting to ' + href + '...', 'dim');
+      setTimeout(() => { window.location.href = href; }, reduceMotion ? 0 : 450);
+    }
+  }
+  else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd === 'help' || cmd === 'ls' ? 'dim' : '')); }
+  else { shellPrint('sh: command not found: ' + cmd.split(' ')[0], 'dim'); shellPrint("type 'help' for commands", 'dim'); }
+  newPromptLine();
+}
+document.getElementById('termShell').addEventListener('click', () => kb.focus({ preventScroll: true }));
+kb.addEventListener('input', () => { if (typedSpan) typedSpan.textContent = kb.value; });
+kb.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && typedSpan) { runCommand(kb.value); kb.value = ''; }
+});
+const termShellEl = document.getElementById('termShell');
+const termMinBtn = document.getElementById('termMin');
+function setMinimized(min) {
+  termShellEl.classList.toggle('minimized', min);
+  termMinBtn.textContent = min ? '▢' : '_';
+  termMinBtn.setAttribute('aria-label', min ? 'Restore terminal' : 'Minimize terminal');
+}
+termMinBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const min = !termShellEl.classList.contains('minimized');
+  setMinimized(min);
+  if (!min) kb.focus({ preventScroll: true });
+});
 </script>
 
 </body>
