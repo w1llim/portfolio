@@ -320,6 +320,11 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .exif-gps a:hover{border-color:var(--phos)}
 .exif-clean{border:1px solid rgba(140,245,107,.3);background:rgba(140,245,107,.06);padding:12px 14px;margin-bottom:14px;
   font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--phos)}
+.exif-flag{border:1px solid var(--phos);background:rgba(140,245,107,.1);padding:12px 14px;margin-bottom:14px}
+.exif-flag .hd{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--phos);margin-bottom:6px}
+.exif-flag .val{font-family:var(--mono);font-size:14px;color:#D9FFCC;font-weight:600;word-break:break-all}
+.exif-flag .val+.val{margin-top:4px}
+.svc-record dd .flag{color:#D9FFCC;font-weight:600;background:rgba(140,245,107,.15);padding:0 1px}
 .exif-tags{max-height:300px;overflow-y:auto}
 .exif-tags .svc-record div{padding:9px 0}
 .exif-tags dt{font-size:11px}
@@ -788,6 +793,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
               <div class="panel-note" id="exifFileMeta"></div>
             </div>
             <div class="exif-tags-wrap">
+              <div id="exifFlag"></div>
               <div id="exifGps"></div>
               <dl class="svc-record exif-tags" id="exifTags"></dl>
             </div>
@@ -1675,6 +1681,7 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
   const capName = document.getElementById('exifCapName');
   const capSize = document.getElementById('exifCapSize');
   const fileMeta = document.getElementById('exifFileMeta');
+  const flagBox = document.getElementById('exifFlag');
   const gpsBox = document.getElementById('exifGps');
   const tagList = document.getElementById('exifTags');
   const status = document.getElementById('exifStatus');
@@ -1810,15 +1817,19 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
     return out;
   }
 
+  let flagHits = [];
   function addRow(dt, dd) {
     const row = document.createElement('div');
     const a = document.createElement('dt'), b = document.createElement('dd');
-    a.textContent = dt; b.textContent = dd;
+    a.textContent = dt;
+    const s = String(dd);
+    if (CTF.FLAG.test(s)) { b.innerHTML = highlightFlag(s); flagHits.push({ label: dt, value: s }); }
+    else b.textContent = dd;
     row.appendChild(a); row.appendChild(b); tagList.appendChild(row);
   }
 
   function render(meta, file, kind) {
-    tagList.innerHTML = ''; gpsBox.innerHTML = '';
+    tagList.innerHTML = ''; gpsBox.innerHTML = ''; flagBox.innerHTML = ''; flagHits = [];
     addRow('File', file.name);
     addRow('Size', fmtBytes(file.size));
     addRow('Type', file.type || kind);
@@ -1869,6 +1880,18 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
       gpsBox.textContent = '✓ clean — no embedded EXIF metadata (likely stripped on export/upload)';
       status.textContent = 'CLEAN';
       status.style.color = '';
+    }
+
+    // flag-shaped metadata — checked across every field above (including
+    // PNG tEXt chunks, a classic hiding spot) takes priority over GPS/
+    // clean as the headline result, since it's what a CTF player is
+    // actually here for.
+    if (flagHits.length) {
+      flagBox.className = 'exif-flag';
+      flagBox.innerHTML = '<div class="hd">🚩 flag-shaped data found in metadata</div>' +
+        flagHits.map(h => '<div class="val">' + CTF.esc(h.label) + ': ' + highlightFlag(h.value) + '</div>').join('');
+      status.textContent = 'FLAG FOUND';
+      status.style.color = '#8CF56B';
     }
   }
 
