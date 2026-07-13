@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ops Lab — William Lam</title>
-<meta name="description" content="Interactive security &amp; CTF lab — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier and a hexdump/strings file analyzer. All client-side; nothing is uploaded.">
+<meta name="description" content="Interactive security &amp; CTF lab — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer and a grep pattern search. All client-side; nothing is uploaded.">
 <link rel="canonical" href="https://w1llim.github.io/portfolio/ops.html">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Ops Lab — William Lam">
-<meta property="og:description" content="Twelve interactive security &amp; CTF modules — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier and a hexdump/strings file analyzer.">
+<meta property="og:description" content="Thirteen interactive security &amp; CTF modules — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer and a grep pattern search.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://w1llim.github.io/portfolio/ops.html">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ops Lab — William Lam">
-<meta name="twitter:description" content="Twelve interactive security &amp; CTF modules — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier and a hexdump/strings file analyzer.">
+<meta name="twitter:description" content="Thirteen interactive security &amp; CTF modules — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer and a grep pattern search.">
 <meta name="theme-color" content="#211A10">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -396,6 +396,21 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .strings-out{white-space:pre-wrap;word-break:break-all}
 .strings-out .flag{color:#D9FFCC;font-weight:600;background:rgba(140,245,107,.12)}
 
+/* grep pattern search */
+.grep-controls{display:flex;flex-direction:column;gap:12px}
+.grep-out{
+  border:1px dashed var(--line);background:rgba(0,0,0,.35);padding:10px 12px;
+  font-family:var(--mono);font-size:12px;line-height:1.75;max-height:300px;overflow:auto;
+  color:var(--kraft);min-height:72px;
+}
+.grep-line{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;min-width:0}
+.grep-line .ln{color:var(--kraft-dim);text-align:right;user-select:none;min-width:3ch;white-space:nowrap}
+.grep-line .lt{word-break:break-word;white-space:pre-wrap;min-width:0}
+.grep-hit{background:rgba(140,245,107,.2);color:#D9FFCC;font-weight:600;padding:0 1px}
+.grep-idle{color:var(--kraft-dim);letter-spacing:.04em}
+.grep-err{color:var(--threat)}
+.mode-btn[aria-pressed=true]{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+
 @media(max-width:940px){.ops-grid,.ops-grid2,.ops-grid3{grid-template-columns:1fr}}
 @media(max-width:720px){.exif-grid,.dump-grid{grid-template-columns:1fr}}
 
@@ -454,7 +469,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
   <div class="wrap">
     <div class="sec-head reveal">
       <h2 data-scramble-scroll><span class="hash">#</span>Ops Lab</h2>
-      <span class="count">12 live modules · Interactive</span>
+      <span class="count">13 live modules · Interactive</span>
     </div>
 
     <div class="ops-grid">
@@ -732,6 +747,41 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
               <div class="strings-out" id="stringsOut"></div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- grep pattern search -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>grep --pattern · search any text</span>
+          <span class="right" id="grepStatus">IDLE</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="grepCorpus">Text to search — paste a log, a dump, a wordlist, anything</label>
+            <textarea id="grepCorpus" spellcheck="false">auth.log — 2026-07-13
+[00:04:12] sshd: Accepted password for root from 10.0.0.4
+[00:04:19] sshd: Failed password for admin from 10.0.0.9
+[00:05:01] sudo: pam_unix(sudo:session): session opened for user deploy
+[00:05:44] note: staging key flag{gr3p_1s_your_b3st_fr13nd}
+[00:06:10] sshd: Failed password for admin from 10.0.0.9
+[00:07:33] cron: nightly backup completed OK</textarea>
+          </div>
+          <div class="grep-controls">
+            <div>
+              <label for="grepPat">Pattern — grep only runs once you type something here</label>
+              <input id="grepPat" type="text" autocomplete="off" spellcheck="false" placeholder="Failed  ·  flag\{.*\}  ·  10\.0\.0\.\d+">
+            </div>
+            <div class="mode-row" role="group" aria-label="grep options">
+              <button class="mode-btn" id="grepI" type="button" aria-pressed="false">-i ignore-case</button>
+              <button class="mode-btn" id="grepE" type="button" aria-pressed="false">-E regex</button>
+              <button class="mode-btn" id="grepV" type="button" aria-pressed="false">-v invert</button>
+            </div>
+          </div>
+          <div class="grep-out" id="grepOut" aria-live="polite"></div>
+          <div class="panel-note" id="grepMeta">// nothing runs until you enter a pattern — matches highlighted, -n line numbers, all client-side</div>
         </div>
       </div>
     </div>
@@ -1859,6 +1909,95 @@ const CTF = (function () {
   ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('drag'); }));
   ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('drag'); }));
   drop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) handle(e.dataTransfer.files[0]); });
+})();
+
+/* ================= grep pattern search ================= */
+/* Searches the pasted text for a user-supplied pattern. The hard rule:
+   with no pattern there is nothing to grep for, so it stays idle and
+   runs nothing — grep only fires once the user actually types one.
+   Literal by default; -E switches to full regex, -i ignores case,
+   -v inverts. Matches are highlighted, lines numbered like grep -n. */
+(function grepSearch() {
+  const corpus = document.getElementById('grepCorpus');
+  const pat = document.getElementById('grepPat');
+  const out = document.getElementById('grepOut');
+  const status = document.getElementById('grepStatus');
+  const meta = document.getElementById('grepMeta');
+  const bI = document.getElementById('grepI');
+  const bE = document.getElementById('grepE');
+  const bV = document.getElementById('grepV');
+
+  const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+  function toggle(btn) {
+    const on = btn.getAttribute('aria-pressed') !== 'true';
+    btn.setAttribute('aria-pressed', on);
+    btn.classList.toggle('active', on);
+    render();
+  }
+
+  function highlight(line, re) {
+    re.lastIndex = 0;
+    let html = '', last = 0, m;
+    while ((m = re.exec(line)) !== null) {
+      html += CTF.esc(line.slice(last, m.index)) +
+        '<span class="grep-hit">' + CTF.esc(m[0]) + '</span>';
+      last = m.index + m[0].length;
+      if (m[0].length === 0) re.lastIndex++;   // guard against zero-width loops
+    }
+    return html + CTF.esc(line.slice(last));
+  }
+
+  function render() {
+    const raw = pat.value;
+    // The core requirement: no pattern from the user → don't grep at all.
+    if (!raw) {
+      out.innerHTML = '<span class="grep-idle">// idle — enter a pattern above to search</span>';
+      status.textContent = 'IDLE'; status.style.color = '';
+      meta.textContent = '// nothing runs until you enter a pattern — matches highlighted, -n line numbers, all client-side';
+      return;
+    }
+
+    const ci = bI.getAttribute('aria-pressed') === 'true';
+    const rx = bE.getAttribute('aria-pressed') === 'true';
+    const inv = bV.getAttribute('aria-pressed') === 'true';
+
+    let re;
+    try {
+      re = new RegExp(rx ? raw : escRe(raw), 'g' + (ci ? 'i' : ''));
+    } catch (e) {
+      out.innerHTML = '<span class="grep-err">// invalid regex — ' + CTF.esc(e.message) + '</span>';
+      status.textContent = 'BAD RE'; status.style.color = '#E8603F';
+      meta.textContent = '// -E regex mode is on — fix the expression or switch it off';
+      return;
+    }
+    status.style.color = '';
+
+    const lines = corpus.value.split('\n');
+    let hits = 0, html = '';
+    lines.forEach((line, i) => {
+      re.lastIndex = 0;
+      const matched = re.test(line);
+      if (matched === inv) return;             // -v flips the keep condition
+      hits++;
+      const body = (!inv && matched) ? highlight(line, re) : CTF.esc(line);
+      html += '<div class="grep-line"><span class="ln">' + (i + 1) +
+        '</span><span class="lt">' + (body || '&nbsp;') + '</span></div>';
+    });
+
+    out.innerHTML = hits
+      ? html
+      : '<span class="grep-idle">// no lines ' + (inv ? 'without' : 'matching') + ' ' +
+        (rx ? '/' + CTF.esc(raw) + '/' : '"' + CTF.esc(raw) + '"') + '</span>';
+    status.textContent = hits + (hits === 1 ? ' LINE' : ' LINES');
+    const flags = [ci ? 'i' : '', inv ? 'v' : '', rx ? 'E' : ''].filter(Boolean).join('');
+    meta.textContent = '// grep' + (flags ? ' -' + flags : '') + ' matched ' + hits + ' of ' + lines.length + ' lines';
+  }
+
+  [bI, bE, bV].forEach(b => b.addEventListener('click', () => toggle(b)));
+  pat.addEventListener('input', render);
+  corpus.addEventListener('input', render);
+  render();
 })();
 </script>
 
