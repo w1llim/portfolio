@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ops Lab — William Lam</title>
-<meta name="description" content="Interactive security &amp; CTF lab — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool. All client-side; nothing is uploaded.">
+<meta name="description" content="Interactive security &amp; CTF lab, ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool. All client-side; nothing is uploaded.">
 <link rel="canonical" href="https://w1llim.github.io/portfolio/ops.html">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Ops Lab — William Lam">
-<meta property="og:description" content="Twenty-one interactive security &amp; CTF modules — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool.">
+<meta property="og:description" content="Twenty-one interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://w1llim.github.io/portfolio/ops.html">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ops Lab — William Lam">
-<meta name="twitter:description" content="Twenty-one interactive security &amp; CTF modules — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool.">
+<meta name="twitter:description" content="Twenty-one interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
 <meta name="theme-color" content="#211A10">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -257,6 +257,16 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 /* ops lab · rows 3-4 */
 .ops-solo{margin-top:20px}
 .ops-grid3{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;align-items:stretch}
+
+/* stage dividers — label the pipeline: observe → extract → decode → crypto → synthesize */
+.ops-stage{
+  display:flex;align-items:center;gap:14px;
+  margin:clamp(48px,7vw,84px) 0 20px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--kraft-dim);
+}
+.ops-stage::after{content:"";flex:1;height:1px;background:var(--line)}
+.ops-stage b{color:var(--phos);font-weight:400;white-space:nowrap}
+.sec-head+.ops-stage{margin-top:0}
 
 /* metadata inspector (exiftool) */
 .exif-drop{
@@ -611,6 +621,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       <span class="count">21 live modules · Interactive</span>
     </div>
 
+    <div class="ops-stage reveal"><b>stage 01 · observe</b> — watch the perimeter, map the range</div>
+
     <div class="ops-grid">
 
       <!-- packet monitor -->
@@ -627,167 +639,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
         </div>
       </div>
 
-      <!-- caesar cipher -->
-      <div class="panel cipher reveal d1">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>caesar --interactive</span>
-          <span class="right">ROT-N</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="cipherIn">Plaintext / ciphertext</label>
-            <textarea id="cipherIn" spellcheck="false">Meet at the flagpole at 0900.</textarea>
-          </div>
-          <div>
-            <label for="cipherShift">Shift key</label>
-            <div class="shift-row">
-              <input type="range" id="cipherShift" min="0" max="25" value="3">
-              <div class="shift-val" id="shiftVal">+3</div>
-            </div>
-          </div>
-          <div class="mode-row" role="group" aria-label="Cipher mode">
-            <button class="mode-btn active" id="modeEnc" type="button">Encrypt ▸</button>
-            <button class="mode-btn" id="modeDec" type="button">◂ Decrypt</button>
-          </div>
-          <div class="alpha-map" id="alphaMap" aria-hidden="true"></div>
-          <div>
-            <label for="cipherOut">Output</label>
-            <div class="cipher-out" id="cipherOut" aria-live="polite"></div>
-          </div>
-          <button type="button" class="pipe-btn copy-btn" data-copy-target="cipherOut">⧉ copy</button>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- vigenère cracker -->
-    <div class="ops-solo">
-      <div class="panel reveal">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>vigenere --crack · IC + chi-squared</span>
-          <span class="right" id="vigStatus">READY</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="vigIn">Ciphertext — polyalphabetic substitution, key repeats over the letters</label>
-            <textarea id="vigIn" spellcheck="false" style="min-height:110px">VYC FNWEB ZGHKP WMM CIOGQ DOST KFT EOBP BDZ KJZJT MVG JCRKSV RETGH OVCIL VKJ ADGHCTR PM HJV MAW ZKSPPKM PVYG MVG IGKXF DVDDKS OZBCBUJK YCW HJV NPVYCXC BNGV SC SXZKMCGXR YZRWHIV RLN WSNRW QXTQIC IAS GECBR PTVYZL HJV AXIVGI YCW RKJADOSTJ MJK DNRLH YCT KFT YZCX RWX EWZAZ UFQNL UHL LLKEL CXVP IAS NRXN WCI NFXES VYC HXQTVR PZSPK KTXHU YGH VCPKYRM OV KFT HZF CGQKOTP LTTF VYC GBJGI ZTYCTV KXWBKXFI TBF KFT IOEBYVX AWJR QX RGCGKXFGU UXMVQLR PGM FVJPR PGWMGX HJV CCXAA SPTTYU KFT VWRYCG TBF UGHVCXVPH HIT GJPGG HFP IAS UVADGR HCYV AWFUCC ASTV RDH GQ KFPM TTVOJXBEP YCTZAJGH AOU VLDNUJ JGVGON KM LHFM NGIA FGCGPUZA VTTG CP R QWHFV BCN ESPXRW EWMV RWBG QEC</textarea>
-          </div>
-          <button type="button" class="btn" id="vigAnalyze">Analyse key length ▸</button>
-          <div>
-            <label id="vigLensLabel" style="display:none">Candidate key lengths, ranked by index of coincidence — pick one to attempt a crack</label>
-            <div class="vig-lens" id="vigLens"></div>
-          </div>
-          <div style="display:none" id="vigKeyRow">
-            <label for="vigKey">Recovered key — edit by hand to nudge a near-miss crack</label>
-            <input id="vigKey" type="text" autocomplete="off" spellcheck="false">
-          </div>
-          <div>
-            <label for="vigOut">Decoded plaintext</label>
-            <div class="cipher-out" id="vigOut">—</div>
-          </div>
-          <div class="copy-row">
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="vigOut">⧉ copy plaintext</button>
-          </div>
-          <div class="panel-note" id="vigMeta">// index of coincidence ranks candidate key lengths; each is then broken column-by-column with chi-squared English scoring — approximate on short or skewed text</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- frequency analysis + substitution solver -->
-    <div class="ops-solo">
-      <div class="panel reveal">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span><span id="freqTitle">freq --analyze · substitution solver</span></span>
-          <span class="right" id="freqStatus">READY</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="freqSrc">stdin — analyse your own text, or pipe in another tool's output</label>
-            <select id="freqSrc" class="grep-src">
-              <option value="paste">paste · type your own text below</option>
-              <option value="strings">strings · xxd + strings file analyzer</option>
-              <option value="magic">magic --decode · every codec's output</option>
-              <option value="xor">xor --brute · candidate plaintexts</option>
-              <option value="hexdump">xxd · raw hex dump</option>
-            </select>
-          </div>
-          <div>
-            <label for="freqIn" id="freqInLabel">Ciphertext — classic monoalphabetic substitution</label>
-            <textarea id="freqIn" spellcheck="false">ZIOL OL Q ESQLLOE LXWLZOZXZOGF EOHITK VITKT TCTKN STZZTK DQHL ZG Q ROYYTKTFZ STZZTK EGFLOLZTFZSN ZIKGXUIGXZ ZIT VIGST DTLLQUT LG ZIQZ YKTJXTFEN QFQSNLOL EQF EKQEA OZ ZIT DGLZ EGDDGF STZZTK OF TFUSOLI OL T YGSSGVTR WN Z Q G QFR O YSQU OL YSQU{YK3JX3FEN_C1LX4S1M3R}</textarea>
-          </div>
-          <div class="freq-bars" id="freqBars" aria-hidden="true"></div>
-          <div class="mode-row" style="gap:8px">
-            <button type="button" class="btn ghost" id="freqGuess" style="flex:1">Quick-guess by frequency ▸</button>
-            <button type="button" class="btn ghost" id="freqClear" style="flex:1">Clear mapping</button>
-          </div>
-          <div>
-            <label>Substitution key — cipher letter above, your plaintext guess below</label>
-            <div class="subst-grid" id="substGrid"></div>
-          </div>
-          <div>
-            <label for="freqOut">Decoded preview</label>
-            <div class="cipher-out" id="freqOut">—</div>
-          </div>
-          <div class="copy-row">
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="freqOut">⧉ copy preview</button>
-          </div>
-          <div class="panel-note">// quick-guess maps observed letters onto English frequency order (ETAOIN…) as a starting point — refine it by hand</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="ops-grid2">
-
-      <!-- sha-256 avalanche -->
-      <div class="panel reveal">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>sha256 --avalanche</span>
-          <span class="right">WEB CRYPTO</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="hashIn">Message</label>
-            <textarea id="hashIn" spellcheck="false">Attack at dawn</textarea>
-          </div>
-          <div>
-            <label for="hashOut">SHA-256 digest · 256 bits</label>
-            <div class="hash-out" id="hashOut"></div>
-          </div>
-          <button type="button" class="pipe-btn copy-btn" data-copy-target="hashOut">⧉ copy</button>
-          <div class="hash-bits" id="hashBits" aria-hidden="true"></div>
-          <div class="panel-note" id="hashStat">// edit one character — watch ~half the bits flip</div>
-        </div>
-      </div>
-
-      <!-- password audit -->
-      <div class="panel reveal d1">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>passwd --audit · offline</span>
-          <span class="right">100 GH/s</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="pwIn">Test passphrase — invent one, not your real creds</label>
-            <input id="pwIn" type="text" autocomplete="off" spellcheck="false" maxlength="64" placeholder="hunter2">
-          </div>
-          <div class="pw-chips" aria-hidden="true">
-            <span id="cLow">a–z</span><span id="cUp">A–Z</span><span id="cDig">0–9</span><span id="cSym">#!?</span>
-          </div>
-          <div>
-            <div class="pw-rail"><div class="pw-fill" id="pwFill"></div></div>
-            <div class="pw-verdict" id="pwVerdict" aria-live="polite">// awaiting input</div>
-          </div>
-          <dl class="svc-record" style="margin-top:0">
-            <div><dt>Entropy</dt><dd id="pwBits">0 bits</dd></div>
-            <div><dt>Charset pool</dt><dd id="pwPool">0 symbols</dd></div>
-            <div><dt>Offline crack time</dt><dd class="hl" id="pwCrack">—</dd></div>
-          </dl>
-          <div class="panel-note">// runs 100% in-browser — nothing leaves this page</div>
-        </div>
-      </div>
-
       <!-- recon scan simulation -->
-      <div class="panel reveal d2">
+      <div class="panel reveal d1">
         <div class="term-bar">
           <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>recon --sim · training range</span>
           <span class="right" id="scanStatus">IDLE</span>
@@ -798,6 +651,44 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
         </div>
       </div>
 
+    </div>
+
+    <div class="ops-stage reveal"><b>stage 02 · extract</b> — drop an artifact; strings, metadata, coordinates &amp; hidden payloads come out, ready to pipe downstream</div>
+
+    <!-- hexdump + strings -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>xxd + strings · drop a file</span>
+          <span class="right" id="dumpStatus">NO FILE</span>
+        </div>
+        <div class="panel-body">
+          <label class="exif-drop" id="dumpDrop" for="dumpFile" tabindex="0" role="button" aria-label="Choose or drop any file to hex-dump it and extract strings">
+            <b>Drop any file · or click to browse</b>
+            Hex-dumped and scanned for printable strings in your browser —
+            the first move on any mystery CTF file. Nothing is uploaded.
+          </label>
+          <input type="file" id="dumpFile" style="display:none">
+          <div class="dump-grid" id="dumpResult" hidden>
+            <div class="dump-col">
+              <h5><span>Hex dump</span><span id="dumpRange"></span></h5>
+              <div class="dump-out" id="dumpOut"></div>
+              <div class="copy-row" style="margin-top:8px">
+                <button type="button" class="pipe-btn" data-pipe="hexdump">xxd ▸ grep</button>
+                <button type="button" class="pipe-btn copy-btn" data-copy-target="dumpOut">⧉ copy</button>
+              </div>
+            </div>
+            <div class="dump-col">
+              <h5><span>Strings ≥ 4</span><span id="dumpStrCount"></span></h5>
+              <div class="strings-out" id="stringsOut"></div>
+              <div class="copy-row" style="margin-top:8px">
+                <button type="button" class="pipe-btn" data-pipe="strings">strings ▸ grep</button>
+                <button type="button" class="pipe-btn copy-btn" data-copy-target="stringsOut">⧉ copy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- metadata inspector (exiftool) -->
@@ -911,85 +802,35 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       </div>
     </div>
 
-    <!-- jwt decoder -->
+    <!-- qr code decoder -->
     <div class="ops-solo">
       <div class="panel reveal">
         <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>jwt --decode · no verify</span>
-          <span class="right" id="jwtAlg">—</span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>qr --decode · drop an image</span>
+          <span class="right" id="qrStatus">NO FILE</span>
         </div>
         <div class="panel-body">
-          <div>
-            <label for="jwtIn">Paste a JSON Web Token</label>
-            <textarea id="jwtIn" spellcheck="false">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3aWxsaWFtLmxhbSIsInJvbGUiOiJjdW8iLCJ1bml0IjoiSEFIU0FDVSIsImlhdCI6MTc4NDAwMDAwMCwiZXhwIjoxNzg0MDg2NDAwfQ.3q0Z8kY2mF4wJ1nQh6xVd9pRsLtCzE7bAoIuKgWyN5M</textarea>
+          <label class="exif-drop" id="qrDrop" for="qrFile" tabindex="0" role="button" aria-label="Choose or drop an image containing a QR code to decode it">
+            <b>Drop a QR code · or click to browse</b>
+            Located and decoded in your browser via jsQR. Nothing is uploaded.
+          </label>
+          <input type="file" id="qrFile" accept="image/*" style="display:none">
+          <div id="qrResult" hidden>
+            <div style="display:flex;gap:14px;align-items:flex-start;margin-top:14px">
+              <div class="stego-preview" id="qrPreviewWrap"><img id="qrPreview" alt="Preview of the dropped image"></div>
+              <div style="flex:1;min-width:0">
+                <label for="qrOut">Decoded payload</label>
+                <div class="cipher-out" id="qrOut">—</div>
+              </div>
+            </div>
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="qrOut" style="margin-top:12px">⧉ copy payload</button>
           </div>
-          <div class="jwt-part head"><div class="lab">Header</div><pre id="jwtHead">—</pre></div>
-          <div class="jwt-part body"><div class="lab">Payload</div><pre id="jwtBody">—</pre></div>
-          <div class="copy-row">
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="jwtHead">⧉ copy header</button>
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="jwtBody">⧉ copy payload</button>
-          </div>
-          <div class="panel-note" id="jwtMeta">// signature is never verified — decode only</div>
+          <div class="panel-note">// finder-pattern detection, perspective correction and Reed-Solomon error correction — all client-side</div>
         </div>
       </div>
     </div>
 
-    <div class="ops-grid3">
-
-      <!-- rsa toy solver -->
-      <div class="panel reveal">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>rsa --toy · small-n textbook RSA</span>
-          <span class="right" id="rsaStatus">READY</span>
-        </div>
-        <div class="panel-body">
-          <div class="rsa-fields">
-            <div>
-              <label for="rsaN">n</label>
-              <input id="rsaN" type="text" autocomplete="off" spellcheck="false" value="10256211210943">
-            </div>
-            <div>
-              <label for="rsaE">e</label>
-              <input id="rsaE" type="text" autocomplete="off" spellcheck="false" value="65537">
-            </div>
-            <div>
-              <label for="rsaC">c</label>
-              <input id="rsaC" type="text" autocomplete="off" spellcheck="false" value="3580763390261">
-            </div>
-          </div>
-          <button type="button" class="btn" id="rsaRun">Factor n &amp; decrypt ▸</button>
-          <dl class="svc-record" id="rsaResult"></dl>
-          <div class="copy-row">
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="rsaMsgText" style="display:none" id="rsaCopyBtn">⧉ copy message</button>
-          </div>
-          <div class="panel-note" id="rsaMeta">// Pollard's rho + Miller-Rabin, entirely client-side — only tractable because this n is deliberately small; that's the whole point of RSA key sizes</div>
-        </div>
-      </div>
-
-      <!-- timestamp / epoch converter -->
-      <div class="panel reveal d1">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>date --epoch · timestamp converter</span>
-          <span class="right" id="tsStatus">—</span>
-        </div>
-        <div class="panel-body">
-          <div class="ts-fields">
-            <div>
-              <label for="tsEpoch">Epoch (seconds or ms)</label>
-              <input id="tsEpoch" type="text" autocomplete="off" spellcheck="false" placeholder="1784000000">
-            </div>
-            <div>
-              <label for="tsLocal">Date &amp; time</label>
-              <input id="tsLocal" type="datetime-local" step="1">
-            </div>
-          </div>
-          <button type="button" class="btn ghost" id="tsNow" style="text-align:center">Use current time ▸</button>
-          <dl class="svc-record" id="tsResult"></dl>
-          <div class="panel-note">// edit either field — the other updates live; useful for correlating JWT iat/exp and log timestamps</div>
-        </div>
-      </div>
-
-    </div>
+    <div class="ops-stage reveal"><b>stage 03 · decode</b> — feed extracted blobs through every codec, then escalate: single shift → single byte → repeating key → full substitution</div>
 
     <!-- cipher multitool / magic decoder -->
     <div class="ops-solo">
@@ -1041,6 +882,140 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
         </div>
       </div>
 
+      <!-- caesar cipher -->
+      <div class="panel cipher reveal d1">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>caesar --interactive</span>
+          <span class="right">ROT-N</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="cipherIn">Plaintext / ciphertext</label>
+            <textarea id="cipherIn" spellcheck="false">Meet at the flagpole at 0900.</textarea>
+          </div>
+          <div>
+            <label for="cipherShift">Shift key</label>
+            <div class="shift-row">
+              <input type="range" id="cipherShift" min="0" max="25" value="3">
+              <div class="shift-val" id="shiftVal">+3</div>
+            </div>
+          </div>
+          <div class="mode-row" role="group" aria-label="Cipher mode">
+            <button class="mode-btn active" id="modeEnc" type="button">Encrypt ▸</button>
+            <button class="mode-btn" id="modeDec" type="button">◂ Decrypt</button>
+          </div>
+          <div class="alpha-map" id="alphaMap" aria-hidden="true"></div>
+          <div>
+            <label for="cipherOut">Output</label>
+            <div class="cipher-out" id="cipherOut" aria-live="polite"></div>
+          </div>
+          <button type="button" class="pipe-btn copy-btn" data-copy-target="cipherOut">⧉ copy</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- vigenère cracker -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>vigenere --crack · IC + chi-squared</span>
+          <span class="right" id="vigStatus">READY</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="vigIn">Ciphertext — polyalphabetic substitution, key repeats over the letters</label>
+            <textarea id="vigIn" spellcheck="false" style="min-height:110px">VYC FNWEB ZGHKP WMM CIOGQ DOST KFT EOBP BDZ KJZJT MVG JCRKSV RETGH OVCIL VKJ ADGHCTR PM HJV MAW ZKSPPKM PVYG MVG IGKXF DVDDKS OZBCBUJK YCW HJV NPVYCXC BNGV SC SXZKMCGXR YZRWHIV RLN WSNRW QXTQIC IAS GECBR PTVYZL HJV AXIVGI YCW RKJADOSTJ MJK DNRLH YCT KFT YZCX RWX EWZAZ UFQNL UHL LLKEL CXVP IAS NRXN WCI NFXES VYC HXQTVR PZSPK KTXHU YGH VCPKYRM OV KFT HZF CGQKOTP LTTF VYC GBJGI ZTYCTV KXWBKXFI TBF KFT IOEBYVX AWJR QX RGCGKXFGU UXMVQLR PGM FVJPR PGWMGX HJV CCXAA SPTTYU KFT VWRYCG TBF UGHVCXVPH HIT GJPGG HFP IAS UVADGR HCYV AWFUCC ASTV RDH GQ KFPM TTVOJXBEP YCTZAJGH AOU VLDNUJ JGVGON KM LHFM NGIA FGCGPUZA VTTG CP R QWHFV BCN ESPXRW EWMV RWBG QEC</textarea>
+          </div>
+          <button type="button" class="btn" id="vigAnalyze">Analyse key length ▸</button>
+          <div>
+            <label id="vigLensLabel" style="display:none">Candidate key lengths, ranked by index of coincidence — pick one to attempt a crack</label>
+            <div class="vig-lens" id="vigLens"></div>
+          </div>
+          <div style="display:none" id="vigKeyRow">
+            <label for="vigKey">Recovered key — edit by hand to nudge a near-miss crack</label>
+            <input id="vigKey" type="text" autocomplete="off" spellcheck="false">
+          </div>
+          <div>
+            <label for="vigOut">Decoded plaintext</label>
+            <div class="cipher-out" id="vigOut">—</div>
+          </div>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="vigOut">⧉ copy plaintext</button>
+          </div>
+          <div class="panel-note" id="vigMeta">// index of coincidence ranks candidate key lengths; each is then broken column-by-column with chi-squared English scoring — approximate on short or skewed text</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- frequency analysis + substitution solver -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span><span id="freqTitle">freq --analyze · substitution solver</span></span>
+          <span class="right" id="freqStatus">READY</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="freqSrc">stdin — analyse your own text, or pipe in another tool's output</label>
+            <select id="freqSrc" class="grep-src">
+              <option value="paste">paste · type your own text below</option>
+              <option value="strings">strings · xxd + strings file analyzer</option>
+              <option value="magic">magic --decode · every codec's output</option>
+              <option value="xor">xor --brute · candidate plaintexts</option>
+              <option value="hexdump">xxd · raw hex dump</option>
+            </select>
+          </div>
+          <div>
+            <label for="freqIn" id="freqInLabel">Ciphertext — classic monoalphabetic substitution</label>
+            <textarea id="freqIn" spellcheck="false">ZIOL OL Q ESQLLOE LXWLZOZXZOGF EOHITK VITKT TCTKN STZZTK DQHL ZG Q ROYYTKTFZ STZZTK EGFLOLZTFZSN ZIKGXUIGXZ ZIT VIGST DTLLQUT LG ZIQZ YKTJXTFEN QFQSNLOL EQF EKQEA OZ ZIT DGLZ EGDDGF STZZTK OF TFUSOLI OL T YGSSGVTR WN Z Q G QFR O YSQU OL YSQU{YK3JX3FEN_C1LX4S1M3R}</textarea>
+          </div>
+          <div class="freq-bars" id="freqBars" aria-hidden="true"></div>
+          <div class="mode-row" style="gap:8px">
+            <button type="button" class="btn ghost" id="freqGuess" style="flex:1">Quick-guess by frequency ▸</button>
+            <button type="button" class="btn ghost" id="freqClear" style="flex:1">Clear mapping</button>
+          </div>
+          <div>
+            <label>Substitution key — cipher letter above, your plaintext guess below</label>
+            <div class="subst-grid" id="substGrid"></div>
+          </div>
+          <div>
+            <label for="freqOut">Decoded preview</label>
+            <div class="cipher-out" id="freqOut">—</div>
+          </div>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="freqOut">⧉ copy preview</button>
+          </div>
+          <div class="panel-note">// quick-guess maps observed letters onto English frequency order (ETAOIN…) as a starting point — refine it by hand</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ops-stage reveal"><b>stage 04 · crypto &amp; identity</b> — hash it, name it, audit it · break a toy key, read a token, pin its timestamps</div>
+
+    <div class="ops-grid2">
+
+      <!-- sha-256 avalanche -->
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>sha256 --avalanche</span>
+          <span class="right">WEB CRYPTO</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="hashIn">Message</label>
+            <textarea id="hashIn" spellcheck="false">Attack at dawn</textarea>
+          </div>
+          <div>
+            <label for="hashOut">SHA-256 digest · 256 bits</label>
+            <div class="hash-out" id="hashOut"></div>
+          </div>
+          <button type="button" class="pipe-btn copy-btn" data-copy-target="hashOut">⧉ copy</button>
+          <div class="hash-bits" id="hashBits" aria-hidden="true"></div>
+          <div class="panel-note" id="hashStat">// edit one character — watch ~half the bits flip</div>
+        </div>
+      </div>
+
       <!-- hash identifier -->
       <div class="panel reveal d1">
         <div class="term-bar">
@@ -1058,47 +1033,119 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
         </div>
       </div>
 
+      <!-- password audit -->
+      <div class="panel reveal d2">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>passwd --audit · offline</span>
+          <span class="right">100 GH/s</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="pwIn">Test passphrase — invent one, not your real creds</label>
+            <input id="pwIn" type="text" autocomplete="off" spellcheck="false" maxlength="64" placeholder="hunter2">
+          </div>
+          <div class="pw-chips" aria-hidden="true">
+            <span id="cLow">a–z</span><span id="cUp">A–Z</span><span id="cDig">0–9</span><span id="cSym">#!?</span>
+          </div>
+          <div>
+            <div class="pw-rail"><div class="pw-fill" id="pwFill"></div></div>
+            <div class="pw-verdict" id="pwVerdict" aria-live="polite">// awaiting input</div>
+          </div>
+          <dl class="svc-record" style="margin-top:0">
+            <div><dt>Entropy</dt><dd id="pwBits">0 bits</dd></div>
+            <div><dt>Charset pool</dt><dd id="pwPool">0 symbols</dd></div>
+            <div><dt>Offline crack time</dt><dd class="hl" id="pwCrack">—</dd></div>
+          </dl>
+          <div class="panel-note">// runs 100% in-browser — nothing leaves this page</div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- hexdump + strings -->
+    <!-- rsa toy solver -->
     <div class="ops-solo">
       <div class="panel reveal">
         <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>xxd + strings · drop a file</span>
-          <span class="right" id="dumpStatus">NO FILE</span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>rsa --toy · small-n textbook RSA</span>
+          <span class="right" id="rsaStatus">READY</span>
         </div>
         <div class="panel-body">
-          <label class="exif-drop" id="dumpDrop" for="dumpFile" tabindex="0" role="button" aria-label="Choose or drop any file to hex-dump it and extract strings">
-            <b>Drop any file · or click to browse</b>
-            Hex-dumped and scanned for printable strings in your browser —
-            the first move on any mystery CTF file. Nothing is uploaded.
-          </label>
-          <input type="file" id="dumpFile" style="display:none">
-          <div class="dump-grid" id="dumpResult" hidden>
-            <div class="dump-col">
-              <h5><span>Hex dump</span><span id="dumpRange"></span></h5>
-              <div class="dump-out" id="dumpOut"></div>
-              <div class="copy-row" style="margin-top:8px">
-                <button type="button" class="pipe-btn" data-pipe="hexdump">xxd ▸ grep</button>
-                <button type="button" class="pipe-btn copy-btn" data-copy-target="dumpOut">⧉ copy</button>
-              </div>
+          <div class="rsa-fields">
+            <div>
+              <label for="rsaN">n</label>
+              <input id="rsaN" type="text" autocomplete="off" spellcheck="false" value="10256211210943">
             </div>
-            <div class="dump-col">
-              <h5><span>Strings ≥ 4</span><span id="dumpStrCount"></span></h5>
-              <div class="strings-out" id="stringsOut"></div>
-              <div class="copy-row" style="margin-top:8px">
-                <button type="button" class="pipe-btn" data-pipe="strings">strings ▸ grep</button>
-                <button type="button" class="pipe-btn copy-btn" data-copy-target="stringsOut">⧉ copy</button>
-              </div>
+            <div>
+              <label for="rsaE">e</label>
+              <input id="rsaE" type="text" autocomplete="off" spellcheck="false" value="65537">
+            </div>
+            <div>
+              <label for="rsaC">c</label>
+              <input id="rsaC" type="text" autocomplete="off" spellcheck="false" value="3580763390261">
             </div>
           </div>
+          <button type="button" class="btn" id="rsaRun">Factor n &amp; decrypt ▸</button>
+          <dl class="svc-record" id="rsaResult"></dl>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="rsaMsgText" style="display:none" id="rsaCopyBtn">⧉ copy message</button>
+          </div>
+          <div class="panel-note" id="rsaMeta">// Pollard's rho + Miller-Rabin, entirely client-side — only tractable because this n is deliberately small; that's the whole point of RSA key sizes</div>
         </div>
       </div>
     </div>
 
     <div class="ops-grid3">
 
-      <!-- flag format hunter -->
+      <!-- jwt decoder -->
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>jwt --decode · no verify</span>
+          <span class="right" id="jwtAlg">—</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="jwtIn">Paste a JSON Web Token</label>
+            <textarea id="jwtIn" spellcheck="false">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3aWxsaWFtLmxhbSIsInJvbGUiOiJjdW8iLCJ1bml0IjoiSEFIU0FDVSIsImlhdCI6MTc4NDAwMDAwMCwiZXhwIjoxNzg0MDg2NDAwfQ.3q0Z8kY2mF4wJ1nQh6xVd9pRsLtCzE7bAoIuKgWyN5M</textarea>
+          </div>
+          <div class="jwt-part head"><div class="lab">Header</div><pre id="jwtHead">—</pre></div>
+          <div class="jwt-part body"><div class="lab">Payload</div><pre id="jwtBody">—</pre></div>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="jwtHead">⧉ copy header</button>
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="jwtBody">⧉ copy payload</button>
+          </div>
+          <div class="panel-note" id="jwtMeta">// signature is never verified — decode only</div>
+        </div>
+      </div>
+
+      <!-- timestamp / epoch converter -->
+      <div class="panel reveal d1">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>date --epoch · timestamp converter</span>
+          <span class="right" id="tsStatus">—</span>
+        </div>
+        <div class="panel-body">
+          <div class="ts-fields">
+            <div>
+              <label for="tsEpoch">Epoch (seconds or ms)</label>
+              <input id="tsEpoch" type="text" autocomplete="off" spellcheck="false" placeholder="1784000000">
+            </div>
+            <div>
+              <label for="tsLocal">Date &amp; time</label>
+              <input id="tsLocal" type="datetime-local" step="1">
+            </div>
+          </div>
+          <button type="button" class="btn ghost" id="tsNow" style="text-align:center">Use current time ▸</button>
+          <dl class="svc-record" id="tsResult"></dl>
+          <div class="panel-note">// edit either field — the other updates live; useful for correlating JWT iat/exp and log timestamps</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ops-stage reveal"><b>stage 05 · synthesize</b> — every stdout above pipes in here: hunt flags, grep the streams, diff what changed</div>
+
+    <!-- flag format hunter -->
+    <div class="ops-solo">
       <div class="panel reveal">
         <div class="term-bar">
           <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span><span id="hunterTitle">flaghunter --scan · find any flag</span></span>
@@ -1123,33 +1170,6 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
           <div class="panel-note" id="hunterMeta">// scans for word{...} shapes — known CTF platform prefixes (flag, CTF, HTB, THM, picoCTF…) get a High-confidence badge</div>
         </div>
       </div>
-
-      <!-- qr code decoder -->
-      <div class="panel reveal d1">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>qr --decode · drop an image</span>
-          <span class="right" id="qrStatus">NO FILE</span>
-        </div>
-        <div class="panel-body">
-          <label class="exif-drop" id="qrDrop" for="qrFile" tabindex="0" role="button" aria-label="Choose or drop an image containing a QR code to decode it">
-            <b>Drop a QR code · or click to browse</b>
-            Located and decoded in your browser via jsQR. Nothing is uploaded.
-          </label>
-          <input type="file" id="qrFile" accept="image/*" style="display:none">
-          <div id="qrResult" hidden>
-            <div style="display:flex;gap:14px;align-items:flex-start;margin-top:14px">
-              <div class="stego-preview" id="qrPreviewWrap"><img id="qrPreview" alt="Preview of the dropped image"></div>
-              <div style="flex:1;min-width:0">
-                <label for="qrOut">Decoded payload</label>
-                <div class="cipher-out" id="qrOut">—</div>
-              </div>
-            </div>
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="qrOut" style="margin-top:12px">⧉ copy payload</button>
-          </div>
-          <div class="panel-note">// finder-pattern detection, perspective correction and Reed-Solomon error correction — all client-side</div>
-        </div>
-      </div>
-
     </div>
 
     <!-- grep pattern search -->
