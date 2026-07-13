@@ -382,6 +382,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .mw-card.mw-pending{border-style:dashed;border-color:var(--line);background:rgba(20,15,8,.5);box-shadow:none}
 .mw-card.mw-pending .mw-badge{color:var(--kraft-dim);border-color:var(--line)}
 .mw-card.mw-pending .corner{border-color:var(--kraft-dim)}
+.mw-card.jump-highlight{animation:jumpFlash 1.6s ease}
 @media(max-width:820px){.mw-body{grid-template-columns:1fr}}
 
 /* ---------- projects ---------- */
@@ -898,7 +899,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <span class="count">HSC capstone · Highest weighting</span>
     </div>
 
-    <div class="mw-card reveal">
+    <div class="mw-card reveal" data-mw="1">
       <span class="corner tl"></span><span class="corner tr"></span>
       <span class="corner bl"></span><span class="corner br"></span>
       <div class="mw-badge mono">CAPSTONE · ENT-CMP · YEAR 12 · TASK 3</div>
@@ -932,7 +933,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       </div>
     </div>
 
-    <div class="mw-card mw-pending reveal d1">
+    <div class="mw-card mw-pending reveal d1" data-mw="2">
       <span class="corner tl"></span><span class="corner tr"></span>
       <span class="corner bl"></span><span class="corner br"></span>
       <div class="mw-badge mono">CAPSTONE · SFT-ENG · YEAR 12 · TASK 3</div>
@@ -1358,8 +1359,8 @@ setTimeout(() => typeLines(), reduceMotion ? 0 : 600);
 const SHELL = {
   help: [
     'available commands:',
-    '  whoami   mission   cadets   kungfu',
-    '  projects contact   ls        clear',
+    '  whoami   mission   cadets     kungfu',
+    '  projects majorworks contact   ls   clear',
   ],
   whoami: ['william.lam — YEAR 12 // SYDNEY, AU // HSC 2026'],
   mission: [
@@ -1385,14 +1386,20 @@ const PROJECTS = [
   { title: 'E-Commerce Data Dashboard', tag: 'MS Access + Excel', desc: 'A ~500,000-row e-commerce dataset normalised to 3NF across a five-table Access schema, live-linked into an Excel dashboard — revenue targets, regional comparisons, top/bottom products.' },
   { title: 'LearnerHours', tag: 'offline PWA', desc: 'An installable, offline-capable PWA for logging L-plate driving hours — full session CRUD, SHA-256 hashed local login, DOMPurify XSS sanitisation, and a service worker caching the app shell.' },
 ];
-function jumpToProject(n) {
-  const card = document.querySelector('.proj-card[data-proj="' + n + '"]');
+const MAJORWORKS = [
+  { title: 'WAILA', tag: '"What Am I Looking At?" — Figma prototype, ENT-CMP Y12 T3', status: 'SUBMITTED', desc: 'AI part-ID app for mechanics — point a camera at a vehicle part, get instant identification with audio feedback, and request stock without leaving the job. Built end to end: real client interview, iterated on feedback, high-fidelity Figma prototype, 5-entity relational schema, Cisco Packet Tracer network. Submitted 30 Jun 2026.' },
+  { title: 'Software Engineering Major Work', tag: 'SFT-ENG Y12 T3', status: 'IN PROGRESS', desc: '[ awaiting declassification ] — due 24 Jul 2026.' },
+];
+function jumpTo(selector) {
+  const card = document.querySelector(selector);
   if (!card) return;
   card.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
   card.classList.remove('jump-highlight');
   void card.offsetWidth;
   card.classList.add('jump-highlight');
 }
+function jumpToProject(n) { jumpTo('.proj-card[data-proj="' + n + '"]'); }
+function jumpToMajorWork(n) { jumpTo('.mw-card[data-mw="' + n + '"]'); }
 let typedSpan = null;
 const kb = document.getElementById('termKb');
 
@@ -1432,6 +1439,20 @@ function runCommand(raw) {
       shellPrint('PRJ-' + String(n).padStart(2, '0') + '  ' + p.title, 'dim');
       shellPrint(p.desc, 'dim');
       jumpToProject(n);
+    }
+  }
+  else if (cmd === 'majorworks') {
+    MAJORWORKS.forEach((m, i) => shellPrint('MW-' + String(i + 1).padStart(2, '0') + '  ' + m.title + ' — ' + m.tag + ' [' + m.status + ']', 'dim'));
+    shellPrint("type 'majorworks <n>' for details, e.g. majorworks 1", 'dim');
+  }
+  else if (cmd.startsWith('majorworks ')) {
+    const n = parseInt(cmd.split(' ')[1], 10);
+    const m = MAJORWORKS[n - 1];
+    if (!m) { shellPrint('no major work MW-' + cmd.split(' ')[1], 'dim'); }
+    else {
+      shellPrint('MW-' + String(n).padStart(2, '0') + '  ' + m.title + ' [' + m.status + ']', 'dim');
+      shellPrint(m.desc, 'dim');
+      jumpToMajorWork(n);
     }
   }
   else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd === 'help' || cmd === 'ls' ? 'dim' : '')); }
