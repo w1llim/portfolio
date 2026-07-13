@@ -267,6 +267,14 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .ops-stage::after{content:"";flex:1;height:1px;background:var(--line)}
 .ops-stage b{color:var(--phos);font-weight:400;white-space:nowrap}
 .sec-head+.ops-stage{margin-top:0}
+/* below ~640px the stage blurb no longer fits beside the nowrap label —
+   letting it wrap in-line centers it against the tall wrapped block and
+   reads as broken, so stack label and blurb on their own full-width rows */
+@media(max-width:640px){
+  .ops-stage{flex-wrap:wrap;align-items:flex-start;row-gap:6px}
+  .ops-stage::after{display:none}
+  .ops-stage .note{flex-basis:100%}
+}
 
 /* metadata inspector (exiftool) */
 .exif-drop{
@@ -521,6 +529,16 @@ textarea[readonly]:focus{border-color:var(--line)}
 @media(max-width:940px){.ops-grid,.ops-grid2,.ops-grid3{grid-template-columns:1fr}}
 @media(max-width:720px){.exif-grid,.dump-grid{grid-template-columns:1fr}}
 
+/* on narrow screens the status badge (esp. dynamic text like "THREAT
+   BLOCKED") crowds the module title into an unreadable ellipsis clip —
+   let the title wrap onto its own line instead of truncating */
+@media(max-width:560px){
+  .panel .term-bar{flex-wrap:wrap;row-gap:4px}
+  .panel .term-bar>span:first-child{
+    white-space:normal;overflow:visible;text-overflow:clip;flex-basis:100%;
+  }
+}
+
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40px,6vw,80px)}
 .foot-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--kraft-dim)}
@@ -621,7 +639,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       <span class="count">21 live modules · Interactive</span>
     </div>
 
-    <div class="ops-stage reveal"><b>stage 01 · observe</b> — watch the perimeter, map the range</div>
+    <div class="ops-stage reveal"><b>stage 01 · observe</b> <span class="note">— watch the perimeter, map the range</span></div>
 
     <div class="ops-grid">
 
@@ -653,7 +671,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
     </div>
 
-    <div class="ops-stage reveal"><b>stage 02 · extract</b> — drop an artifact; strings, metadata, coordinates &amp; hidden payloads come out, ready to pipe downstream</div>
+    <div class="ops-stage reveal"><b>stage 02 · extract</b> <span class="note">— drop an artifact; strings, metadata, coordinates &amp; hidden payloads come out, ready to pipe downstream</span></div>
 
     <!-- hexdump + strings -->
     <div class="ops-solo">
@@ -830,7 +848,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       </div>
     </div>
 
-    <div class="ops-stage reveal"><b>stage 03 · decode</b> — feed extracted blobs through every codec, then escalate: single shift → single byte → repeating key → full substitution</div>
+    <div class="ops-stage reveal"><b>stage 03 · decode</b> <span class="note">— feed extracted blobs through every codec, then escalate: single shift → single byte → repeating key → full substitution</span></div>
 
     <!-- cipher multitool / magic decoder -->
     <div class="ops-solo">
@@ -991,7 +1009,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       </div>
     </div>
 
-    <div class="ops-stage reveal"><b>stage 04 · crypto &amp; identity</b> — hash it, name it, audit it · break a toy key, read a token, pin its timestamps</div>
+    <div class="ops-stage reveal"><b>stage 04 · crypto &amp; identity</b> <span class="note">— hash it, name it, audit it · break a toy key, read a token, pin its timestamps</span></div>
 
     <div class="ops-grid2">
 
@@ -1142,7 +1160,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
     </div>
 
-    <div class="ops-stage reveal"><b>stage 05 · synthesize</b> — every stdout above pipes in here: hunt flags, grep the streams, diff what changed</div>
+    <div class="ops-stage reveal"><b>stage 05 · synthesize</b> <span class="note">— every stdout above pipes in here: hunt flags, grep the streams, diff what changed</span></div>
 
     <!-- flag format hunter -->
     <div class="ops-solo">
