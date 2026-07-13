@@ -199,6 +199,9 @@ h1.name .accent{color:var(--phos);text-shadow:0 0 24px var(--phos-dim)}
 .term-bar .lights{display:flex;gap:6px;margin-right:6px}
 .term-bar .lights i{width:9px;height:9px;border-radius:50%;background:var(--line)}
 .term-bar .lights i:first-child{background:var(--phos);opacity:.7}
+.term-bar{justify-content:space-between}
+.term-min{background:none;border:0;color:var(--kraft-dim);font-family:var(--mono);font-size:13px;line-height:1;cursor:pointer;padding:2px 4px}
+.term-min:hover{color:var(--phos)}
 .term-body{padding:18px 18px 22px;min-height:262px;max-height:320px;overflow-y:auto;color:var(--kraft)}
 .term{cursor:text;position:relative}
 #termKb{position:absolute;width:1px;height:1px;opacity:0;border:0;padding:0}
@@ -208,6 +211,17 @@ h1.name .accent{color:var(--phos);text-shadow:0 0 24px var(--phos-dim)}
 .term-body .dim{color:var(--kraft-dim)}
 .caret{display:inline-block;width:8px;height:15px;background:var(--phos);vertical-align:-2px;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
+
+/* ---------- docked (always-on) terminal ---------- */
+.term.docked{
+  position:fixed;right:18px;bottom:18px;z-index:1000;
+  width:300px;max-width:calc(100vw - 36px);
+  animation:none;box-shadow:0 20px 50px rgba(0,0,0,.6),0 0 0 1px rgba(140,245,107,.08);
+}
+.term.docked .term-body{min-height:0;max-height:38vh}
+.term.minimized .term-body,.term.minimized #termKb{display:none}
+@media(max-width:600px){.term.docked{right:12px;bottom:12px;width:calc(100vw - 24px)}}
+.term-slot{position:relative}
 
 .hero-foot{
   display:flex;justify-content:space-between;align-items:center;gap:16px;
@@ -652,13 +666,15 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       </div>
     </div>
 
-    <div class="term" id="termShell" aria-label="Interactive terminal — William's profile boot sequence; type help for commands">
-      <div class="term-bar">
-        <span class="lights"><i></i><i></i><i></i></span>
-        wlam@hsc-2026 : ~/profile
+    <div class="term-slot" id="termSlot">
+      <div class="term" id="termShell" aria-label="Interactive terminal — William's profile boot sequence; type help for commands, cd to navigate">
+        <div class="term-bar">
+          <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/profile</span>
+          <button type="button" class="term-min" id="termMin" aria-label="Minimize terminal">_</button>
+        </div>
+        <div class="term-body" id="terminal" aria-hidden="true"></div>
+        <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
       </div>
-      <div class="term-body" id="terminal" aria-hidden="true"></div>
-      <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
     </div>
   </div>
 
@@ -1361,6 +1377,7 @@ const SHELL = {
     'available commands:',
     '  whoami   mission   cadets     kungfu',
     '  projects majorworks contact   ls   clear',
+    "  cd <dir> — jump to a section, e.g. cd kungfu. ls to list.",
   ],
   whoami: ['william.lam — YEAR 12 // SYDNEY, AU // HSC 2026'],
   mission: [
@@ -1375,7 +1392,19 @@ const SHELL = {
     'github.com/w1llim // linkedin: in/thew1llim // instagram: willim_2008',
     'status: inbox monitored — open a channel anytime',
   ],
-  ls: ['mission/  coursework/  command/  kungfu/  major-works/  projects/  timeline/  toolkit/  ops-lab/  contact/'],
+  ls: ['top/  mission/  coursework/  command/  kungfu/  majorworks/  projects/  timeline/  toolkit/  ops-lab/  contact/'],
+};
+const SECTIONS = {
+  top: 'top', home: 'top', '~': 'top', '/': 'top',
+  mission: 'mission',
+  coursework: 'coursework',
+  command: 'command', cadets: 'command',
+  kungfu: 'kungfu',
+  majorworks: 'majorworks', 'major-works': 'majorworks',
+  projects: 'projects',
+  timeline: 'timeline',
+  toolkit: 'toolkit',
+  contact: 'contact',
 };
 const PROJECTS = [
   { title: 'Math Quest', tag: 'CLI arithmetic quiz (Python)', desc: 'Command-line arithmetic quiz game — a lives/streak system, a boss fight with harder expressions, a one-time calculator power-up earned by a 5-streak, and scores persisted to a stats file between runs.' },
@@ -1455,6 +1484,22 @@ function runCommand(raw) {
       jumpToMajorWork(n);
     }
   }
+  else if (cmd === 'cd' || cmd.startsWith('cd ')) {
+    const target = cmd.slice(2).trim().replace(/^~?\/+/, '').replace(/\/+$/, '');
+    if (!target || SECTIONS[target] === 'top') {
+      document.getElementById('top').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      shellPrint('~', 'dim');
+    } else if (target === 'ops-lab' || target === 'ops') {
+      shellPrint('redirecting to ops-lab...', 'dim');
+      setTimeout(() => { window.location.href = 'ops.html'; }, reduceMotion ? 0 : 450);
+    } else if (SECTIONS[target]) {
+      document.getElementById(SECTIONS[target]).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      shellPrint('~/' + target, 'dim');
+    } else {
+      shellPrint('cd: no such directory: ' + target, 'dim');
+      shellPrint("type 'ls' to see available directories", 'dim');
+    }
+  }
   else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd === 'help' || cmd === 'ls' ? 'dim' : '')); }
   else { shellPrint('sh: command not found: ' + cmd.split(' ')[0], 'dim'); shellPrint("type 'help' for commands", 'dim'); }
   newPromptLine();
@@ -1463,6 +1508,29 @@ document.getElementById('termShell').addEventListener('click', () => kb.focus({ 
 kb.addEventListener('input', () => { if (typedSpan) typedSpan.textContent = kb.value; });
 kb.addEventListener('keydown', e => {
   if (e.key === 'Enter' && typedSpan) { runCommand(kb.value); kb.value = ''; }
+});
+
+/* ================= always-on terminal: dock on scroll + minimize ================= */
+const termShellEl = document.getElementById('termShell');
+const termMinBtn = document.getElementById('termMin');
+function setMinimized(min) {
+  termShellEl.classList.toggle('minimized', min);
+  termMinBtn.textContent = min ? '▢' : '_';
+  termMinBtn.setAttribute('aria-label', min ? 'Restore terminal' : 'Minimize terminal');
+}
+const heroIO = new IntersectionObserver(entries => {
+  const heroVisible = entries[0].isIntersecting;
+  const wasDocked = termShellEl.classList.contains('docked');
+  termShellEl.classList.toggle('docked', !heroVisible);
+  if (!heroVisible && !wasDocked) setMinimized(true); // dock quietly as a small chip
+  else if (heroVisible) setMinimized(false); // back in the hero, always expanded
+}, { threshold: 0 });
+heroIO.observe(document.getElementById('top'));
+termMinBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  const min = !termShellEl.classList.contains('minimized');
+  setMinimized(min);
+  if (!min) kb.focus({ preventScroll: true });
 });
 
 /* ================= scroll reveals / bars / stamp / badge ================= */
