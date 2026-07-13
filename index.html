@@ -394,6 +394,8 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
   transition:border-color .3s;
 }
 .proj-card:hover{border-color:rgba(140,245,107,.35)}
+.proj-card.jump-highlight{animation:jumpFlash 1.6s ease}
+@keyframes jumpFlash{0%,100%{border-color:rgba(140,245,107,.25);box-shadow:none}20%,60%{border-color:var(--phos);box-shadow:0 0 0 1px var(--phos)}}
 .proj-head{
   display:flex;justify-content:space-between;font-family:var(--mono);
   font-size:11px;letter-spacing:.16em;color:var(--kraft-dim);margin-bottom:6px;
@@ -952,7 +954,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
     </div>
 
     <div class="proj-grid">
-      <div class="proj-card live reveal">
+      <div class="proj-card live reveal" data-proj="1">
         <div class="proj-head"><span>PRJ-01</span><span class="proj-status live">DEPLOYED</span></div>
         <h3 class="proj-title">Math Quest</h3>
         <div class="proj-meta mono">SFT-ENG · Year 11 · 10 Apr 2025</div>
@@ -960,7 +962,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         <div class="proj-tags mono"><span>Python</span><span>CLI</span><span>File I/O</span></div>
         <a class="proj-foot mono proj-link" href="https://github.com/w1llim/portfolio/tree/main/projects/software-engineering/year-11/task-1" target="_blank" rel="noopener">View source ↗</a>
       </div>
-      <div class="proj-card live reveal d1">
+      <div class="proj-card live reveal d1" data-proj="2">
         <div class="proj-head"><span>PRJ-02</span><span class="proj-status live">DEPLOYED</span></div>
         <h3 class="proj-title">Enterprise Network &amp; Threat Model</h3>
         <div class="proj-meta mono">ENT-CMP · Year 11 · 28 Apr 2025</div>
@@ -974,7 +976,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         </div>
         <div class="proj-video"></div>
       </div>
-      <div class="proj-card live reveal d2">
+      <div class="proj-card live reveal d2" data-proj="3">
         <div class="proj-head"><span>PRJ-03</span><span class="proj-status live">DEPLOYED</span></div>
         <h3 class="proj-title">Guru Driving School</h3>
         <div class="proj-meta mono">ENT-CMP · Year 11 · 9 May 2025</div>
@@ -988,7 +990,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         </div>
         <div class="proj-video"></div>
       </div>
-      <div class="proj-card live reveal">
+      <div class="proj-card live reveal" data-proj="4">
         <div class="proj-head"><span>PRJ-04</span><span class="proj-status live">DEPLOYED</span></div>
         <h3 class="proj-title">Smart Garage</h3>
         <div class="proj-meta mono">SFT-ENG · Year 11 · 3 Jul 2025</div>
@@ -1002,7 +1004,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         </div>
         <div class="proj-video"></div>
       </div>
-      <div class="proj-card live reveal d1">
+      <div class="proj-card live reveal d1" data-proj="5">
         <div class="proj-head"><span>PRJ-05</span><span class="proj-status live">DEPLOYED</span></div>
         <h3 class="proj-title">Case Study: 2022 Optus Data Breach</h3>
         <div class="proj-meta mono">SFT-ENG · Year 12 · 12 Dec 2025</div>
@@ -1010,7 +1012,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         <div class="proj-tags mono"><span>Cybersecurity</span><span>Case Study</span><span>Secure Coding</span></div>
         <a class="mono proj-link" style="margin-top:10px" href="https://github.com/w1llim/portfolio/tree/main/projects/software-engineering/year-12/task-1" target="_blank" rel="noopener">View source ↗</a>
       </div>
-      <div class="proj-card live reveal d2">
+      <div class="proj-card live reveal d2" data-proj="6">
         <div class="proj-head"><span>PRJ-06</span><span class="proj-status live">DEPLOYED</span></div>
         <h3 class="proj-title">E-Commerce Data Dashboard</h3>
         <div class="proj-meta mono">ENT-CMP · Year 12 · 31 Mar 2026</div>
@@ -1024,7 +1026,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         </div>
         <div class="proj-video"></div>
       </div>
-      <div class="proj-card live reveal">
+      <div class="proj-card live reveal" data-proj="7">
         <div class="proj-head"><span>PRJ-07</span><span class="proj-status live">DEPLOYED</span></div>
         <h3 class="proj-title">LearnerHours</h3>
         <div class="proj-meta mono">SFT-ENG · Year 12 · 1 Apr 2026</div>
@@ -1357,7 +1359,7 @@ const SHELL = {
   help: [
     'available commands:',
     '  whoami   mission   cadets   kungfu',
-    '  contact  ls        clear',
+    '  projects contact   ls        clear',
   ],
   whoami: ['william.lam — YEAR 12 // SYDNEY, AU // HSC 2026'],
   mission: [
@@ -1367,9 +1369,30 @@ const SHELL = {
   ],
   cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100', 'service record: CDTREC 2021 -> CUO 2026'],
   kungfu: ['白鶴派 pak hok pai — white crane, since 2020', 'armament: dao (single sabre) // aux: lion dance'],
-  contact: ['williamlam986@gmail.com', 'github.com/w1llim // linkedin: in/thew1llim'],
+  contact: [
+    'williamlam986@gmail.com',
+    'github.com/w1llim // linkedin: in/thew1llim // instagram: willim_2008',
+    'status: inbox monitored — open a channel anytime',
+  ],
   ls: ['mission/  coursework/  command/  kungfu/  major-works/  projects/  timeline/  toolkit/  ops-lab/  contact/'],
 };
+const PROJECTS = [
+  { title: 'Math Quest', tag: 'CLI arithmetic quiz (Python)', desc: 'Command-line arithmetic quiz game — a lives/streak system, a boss fight with harder expressions, a one-time calculator power-up earned by a 5-streak, and scores persisted to a stats file between runs.' },
+  { title: 'Enterprise Network & Threat Model', tag: 'Packet Tracer', desc: 'A four-department LAN built and secured in Cisco Packet Tracer — WPA2, port security, MAC locking — paired with a full threat analysis, 5x5 risk matrix and mitigation plan.' },
+  { title: 'Guru Driving School', tag: 'UX prototype, Adobe XD', desc: 'High-fidelity website prototype built in Adobe XD for a fictional driving school — wireframed and click-tested end to end, with an accessibility/privacy analysis and a full testing & evaluation pass.' },
+  { title: 'Smart Garage', tag: 'micro:bit + radio + sensors', desc: 'Two micro:bits over radio: a remote sends enter/leave commands, the garage unit drives a servo door and neopixel lights, and an ultrasonic sensor beeps the car to a stop.' },
+  { title: 'Case Study: 2022 Optus Data Breach', tag: 'cybersecurity case study', desc: 'Written analysis of the Optus breach — an unauthenticated public API and an IDOR vulnerability that exposed 9.8M customer records. Breaks down which CIA-triad principles failed and mitigations.' },
+  { title: 'E-Commerce Data Dashboard', tag: 'MS Access + Excel', desc: 'A ~500,000-row e-commerce dataset normalised to 3NF across a five-table Access schema, live-linked into an Excel dashboard — revenue targets, regional comparisons, top/bottom products.' },
+  { title: 'LearnerHours', tag: 'offline PWA', desc: 'An installable, offline-capable PWA for logging L-plate driving hours — full session CRUD, SHA-256 hashed local login, DOMPurify XSS sanitisation, and a service worker caching the app shell.' },
+];
+function jumpToProject(n) {
+  const card = document.querySelector('.proj-card[data-proj="' + n + '"]');
+  if (!card) return;
+  card.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  card.classList.remove('jump-highlight');
+  void card.offsetWidth;
+  card.classList.add('jump-highlight');
+}
 let typedSpan = null;
 const kb = document.getElementById('termKb');
 
@@ -1397,6 +1420,20 @@ function runCommand(raw) {
   if (cmd === '') {}
   else if (cmd === 'clear') { termEl.innerHTML = ''; }
   else if (cmd.startsWith('sudo')) { shellPrint('permission denied: nice try.', 'dim'); }
+  else if (cmd === 'projects') {
+    PROJECTS.forEach((p, i) => shellPrint('PRJ-' + String(i + 1).padStart(2, '0') + '  ' + p.title + ' — ' + p.tag, 'dim'));
+    shellPrint("type 'projects <n>' for details, e.g. projects 1", 'dim');
+  }
+  else if (cmd.startsWith('projects ')) {
+    const n = parseInt(cmd.split(' ')[1], 10);
+    const p = PROJECTS[n - 1];
+    if (!p) { shellPrint('no project PRJ-' + cmd.split(' ')[1], 'dim'); }
+    else {
+      shellPrint('PRJ-' + String(n).padStart(2, '0') + '  ' + p.title, 'dim');
+      shellPrint(p.desc, 'dim');
+      jumpToProject(n);
+    }
+  }
   else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd === 'help' || cmd === 'ls' ? 'dim' : '')); }
   else { shellPrint('sh: command not found: ' + cmd.split(' ')[0], 'dim'); shellPrint("type 'help' for commands", 'dim'); }
   newPromptLine();
