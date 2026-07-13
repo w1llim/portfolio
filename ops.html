@@ -260,7 +260,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 
 /* stage dividers — label the pipeline: observe → extract → decode → crypto → synthesize */
 .ops-stage{
-  display:flex;align-items:center;gap:14px;
+  display:flex;align-items:center;gap:14px;scroll-margin-top:78px;
   margin:clamp(48px,7vw,84px) 0 20px;
   font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--kraft-dim);
 }
@@ -639,7 +639,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       <span class="count">21 live modules · Interactive</span>
     </div>
 
-    <div class="ops-stage reveal"><b>stage 01 · observe</b> <span class="note">— watch the perimeter, map the range</span></div>
+    <div class="ops-stage reveal" id="stage-observe"><b>stage 01 · observe</b> <span class="note">— watch the perimeter, map the range</span></div>
 
     <div class="ops-grid">
 
@@ -671,7 +671,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
     </div>
 
-    <div class="ops-stage reveal"><b>stage 02 · extract</b> <span class="note">— drop an artifact; strings, metadata, coordinates &amp; hidden payloads come out, ready to pipe downstream</span></div>
+    <div class="ops-stage reveal" id="stage-extract"><b>stage 02 · extract</b> <span class="note">— drop an artifact; strings, metadata, coordinates &amp; hidden payloads come out, ready to pipe downstream</span></div>
 
     <!-- hexdump + strings -->
     <div class="ops-solo">
@@ -848,7 +848,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       </div>
     </div>
 
-    <div class="ops-stage reveal"><b>stage 03 · decode</b> <span class="note">— feed extracted blobs through every codec, then escalate: single shift → single byte → repeating key → full substitution</span></div>
+    <div class="ops-stage reveal" id="stage-decode"><b>stage 03 · decode</b> <span class="note">— feed extracted blobs through every codec, then escalate: single shift → single byte → repeating key → full substitution</span></div>
 
     <!-- cipher multitool / magic decoder -->
     <div class="ops-solo">
@@ -1009,7 +1009,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       </div>
     </div>
 
-    <div class="ops-stage reveal"><b>stage 04 · crypto &amp; identity</b> <span class="note">— hash it, name it, audit it · break a toy key, read a token, pin its timestamps</span></div>
+    <div class="ops-stage reveal" id="stage-crypto"><b>stage 04 · crypto &amp; identity</b> <span class="note">— hash it, name it, audit it · break a toy key, read a token, pin its timestamps</span></div>
 
     <div class="ops-grid2">
 
@@ -1160,7 +1160,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
     </div>
 
-    <div class="ops-stage reveal"><b>stage 05 · synthesize</b> <span class="note">— every stdout above pipes in here: hunt flags, grep the streams, diff what changed</span></div>
+    <div class="ops-stage reveal" id="stage-synthesize"><b>stage 05 · synthesize</b> <span class="note">— every stdout above pipes in here: hunt flags, grep the streams, diff what changed</span></div>
 
     <!-- flag format hunter -->
     <div class="ops-solo">
@@ -3710,6 +3710,7 @@ const SHELL = {
     '  whoami   mission   cadets   kungfu',
     '  contact  ls        clear',
     "  cd <dir> — jump to a section, e.g. cd kungfu. ls to list.",
+    "  cd ops-lab/<stage> — jump to a lab stage. ls ops-lab to list.",
   ],
   whoami: ['william.lam — YEAR 12 // SYDNEY, AU // HSC 2026'],
   mission: [
@@ -3724,8 +3725,13 @@ const SHELL = {
     'github.com/w1llim // linkedin: in/thew1llim // instagram: willim_2008',
     'status: inbox monitored — open a channel anytime',
   ],
-  ls: ['ops-lab/  mission/  coursework/  command/  kungfu/  majorworks/  projects/  timeline/  toolkit/  contact/'],
+  ls: [
+    'ops-lab/  mission  coursework  command  kungfu  majorworks  projects  timeline  toolkit  contact',
+    "ls ops-lab to list the lab's stages",
+  ],
+  'ls ops-lab': ['observe  extract  decode  crypto  synthesize', "cd ops-lab/<stage> to jump to one, e.g. cd ops-lab/decode"],
 };
+SHELL['ls ops-lab/'] = SHELL['ls ops-lab'];
 const SECTIONS = {
   ops: 'here', 'ops-lab': 'here', '~': 'here', '/': 'here',
   top: 'top', home: 'top', main: 'top',
@@ -3734,6 +3740,14 @@ const SECTIONS = {
   kungfu: 'kungfu', majorworks: 'majorworks', 'major-works': 'majorworks',
   projects: 'projects', timeline: 'timeline', toolkit: 'toolkit', contact: 'contact',
 };
+const STAGES = { observe: 'stage-observe', extract: 'stage-extract', decode: 'stage-decode', crypto: 'stage-crypto', synthesize: 'stage-synthesize' };
+// re-align cross-page #stage-* anchors once layout settles (reveal animations shift positions)
+if (/^#stage-/.test(location.hash)) {
+  window.addEventListener('load', () => {
+    const el = document.getElementById(location.hash.slice(1));
+    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'auto', block: 'start' }), 60);
+  });
+}
 const termEl = document.getElementById('terminal');
 let typedSpan = null;
 const kb = document.getElementById('termKb');
@@ -3761,8 +3775,15 @@ function runCommand(raw) {
   else if (cmd.startsWith('sudo')) { shellPrint('permission denied: nice try.', 'dim'); }
   else if (cmd === 'cd' || cmd.startsWith('cd ')) {
     const target = cmd.slice(2).trim().replace(/^~?\/+/, '').replace(/\/+$/, '');
+    const stageMatch = target.match(/^(?:ops-lab|ops)\/(.+)$/);
     const dest = !target ? 'here' : SECTIONS[target];
-    if (!dest) {
+    if (stageMatch && STAGES[stageMatch[1]]) {
+      document.getElementById(STAGES[stageMatch[1]]).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      shellPrint('~/ops-lab/' + stageMatch[1], 'dim');
+    } else if (STAGES[target]) {
+      document.getElementById(STAGES[target]).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      shellPrint('~/ops-lab/' + target, 'dim');
+    } else if (!dest) {
       shellPrint('cd: no such directory: ' + target, 'dim');
       shellPrint("type 'ls' to see available directories", 'dim');
     } else if (dest === 'here') {
@@ -3774,7 +3795,7 @@ function runCommand(raw) {
       setTimeout(() => { window.location.href = href; }, reduceMotion ? 0 : 450);
     }
   }
-  else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd === 'help' || cmd === 'ls' ? 'dim' : '')); }
+  else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd.startsWith('help') || cmd.startsWith('ls') ? 'dim' : '')); }
   else { shellPrint('sh: command not found: ' + cmd.split(' ')[0], 'dim'); shellPrint("type 'help' for commands", 'dim'); }
   newPromptLine();
 }
