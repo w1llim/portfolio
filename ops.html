@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ops Lab — William Lam</title>
-<meta name="description" content="Interactive security &amp; CTF lab — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool. All client-side; nothing is uploaded.">
+<meta name="description" content="Interactive security &amp; CTF lab — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool. All client-side; nothing is uploaded.">
 <link rel="canonical" href="https://w1llim.github.io/portfolio/ops.html">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Ops Lab — William Lam">
-<meta property="og:description" content="Twenty interactive security &amp; CTF modules — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool.">
+<meta property="og:description" content="Twenty-one interactive security &amp; CTF modules — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://w1llim.github.io/portfolio/ops.html">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ops Lab — William Lam">
-<meta name="twitter:description" content="Twenty interactive security &amp; CTF modules — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool.">
+<meta name="twitter:description" content="Twenty-one interactive security &amp; CTF modules — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool.">
 <meta name="theme-color" content="#211A10">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -474,6 +474,10 @@ textarea[readonly]:focus{border-color:var(--line)}
 .ts-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 @media(max-width:520px){.ts-fields{grid-template-columns:1fr}}
 
+/* geo coordinate locator */
+.geo-fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.geo-fields{grid-template-columns:1fr}}
+
 /* diff / compare */
 .diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .diff-grid .side-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px;margin-bottom:7px}
@@ -557,7 +561,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
   <div class="wrap">
     <div class="sec-head reveal">
       <h2 data-scramble-scroll><span class="hash">#</span>Ops Lab</h2>
-      <span class="count">20 live modules · Interactive</span>
+      <span class="count">21 live modules · Interactive</span>
     </div>
 
     <div class="ops-grid">
@@ -788,6 +792,35 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
               <dl class="svc-record exif-tags" id="exifTags"></dl>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- geo coordinate locator -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>geo --locate · lat/lon lookup</span>
+          <span class="right" id="geoStatus">READY</span>
+        </div>
+        <div class="panel-body">
+          <div class="geo-fields">
+            <div>
+              <label for="geoLat">Latitude — paste "lat, lon" here to fill both fields at once</label>
+              <input id="geoLat" type="text" autocomplete="off" spellcheck="false" value="-33.8568">
+            </div>
+            <div>
+              <label for="geoLon">Longitude</label>
+              <input id="geoLon" type="text" autocomplete="off" spellcheck="false" value="151.2153">
+            </div>
+          </div>
+          <dl class="svc-record" id="geoResult"></dl>
+          <span id="geoSummaryText" style="display:none"></span>
+          <div class="copy-row">
+            <a class="pipe-btn" id="geoMapLink" href="#" target="_blank" rel="noopener noreferrer" style="display:none;text-decoration:none">▸ view on map</a>
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="geoSummaryText" id="geoCopyBtn" style="display:none">⧉ copy summary</button>
+          </div>
+          <div class="panel-note" id="geoMeta">// nearest-city lookup against ~120 major world cities via the haversine formula — not a full reverse-geocoder, but enough to place a coordinate dropped in a CTF challenge or a photo's EXIF data</div>
         </div>
       </div>
     </div>
@@ -3332,6 +3365,166 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
   ['dragenter', 'dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('drag'); }));
   ['dragleave', 'drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('drag'); }));
   drop.addEventListener('drop', e => { if (e.dataTransfer.files[0]) handle(e.dataTransfer.files[0]); });
+})();
+
+/* ================= geo coordinate locator ================= */
+/* Not a full reverse-geocoder — that needs either a network call (which
+   breaks every other tool's "nothing leaves this page" promise) or a
+   multi-megabyte offline dataset. Instead: haversine distance to ~120
+   major world cities, which is exactly enough to place a coordinate
+   dropped in a CTF challenge or pulled from a photo's EXIF GPS tag —
+   "23km from Nairobi, Kenya" is a real, verifiable answer. */
+(function geoLocate() {
+  const latInput = document.getElementById('geoLat');
+  const lonInput = document.getElementById('geoLon');
+  const resultEl = document.getElementById('geoResult');
+  const summaryEl = document.getElementById('geoSummaryText');
+  const mapLink = document.getElementById('geoMapLink');
+  const copyBtn = document.getElementById('geoCopyBtn');
+  const status = document.getElementById('geoStatus');
+  const meta = document.getElementById('geoMeta');
+
+  // [name, country, lat, lon] — major cities, curated for global spread
+  const CITIES = [
+    ['Cairo','Egypt',30.0444,31.2357],['Lagos','Nigeria',6.5244,3.3792],['Nairobi','Kenya',-1.2921,36.8219],
+    ['Johannesburg','South Africa',-26.2041,28.0473],['Cape Town','South Africa',-33.9249,18.4241],
+    ['Casablanca','Morocco',33.5731,-7.5898],['Addis Ababa','Ethiopia',9.0320,38.7469],['Accra','Ghana',5.6037,-0.1870],
+    ['Algiers','Algeria',36.7538,3.0588],['Tunis','Tunisia',36.8065,10.1815],['Kinshasa','DR Congo',-4.4419,15.2663],
+    ['Dakar','Senegal',14.7167,-17.4677],['Khartoum','Sudan',15.5007,32.5599],['Luanda','Angola',-8.8390,13.2894],
+    ['Dar es Salaam','Tanzania',-6.7924,39.2083],['Kampala','Uganda',0.3476,32.5825],['Abidjan','Ivory Coast',5.3600,-4.0083],
+    ['Dubai','UAE',25.2048,55.2708],['Riyadh','Saudi Arabia',24.7136,46.6753],['Tehran','Iran',35.6892,51.3890],
+    ['Baghdad','Iraq',33.3152,44.3661],['Tel Aviv','Israel',32.0853,34.7818],['Istanbul','Turkey',41.0082,28.9784],
+    ['Ankara','Turkey',39.9334,32.8597],['Doha','Qatar',25.2854,51.5310],['Amman','Jordan',31.9454,35.9284],
+    ['Beirut','Lebanon',33.8938,35.5018],['Kuwait City','Kuwait',29.3759,47.9774],['Muscat','Oman',23.5880,58.3829],
+    ['London','UK',51.5074,-0.1278],['Paris','France',48.8566,2.3522],['Berlin','Germany',52.5200,13.4050],
+    ['Madrid','Spain',40.4168,-3.7038],['Rome','Italy',41.9028,12.4964],['Amsterdam','Netherlands',52.3676,4.9041],
+    ['Vienna','Austria',48.2082,16.3738],['Moscow','Russia',55.7558,37.6173],['Warsaw','Poland',52.2297,21.0122],
+    ['Stockholm','Sweden',59.3293,18.0686],['Oslo','Norway',59.9139,10.7522],['Copenhagen','Denmark',55.6761,12.5683],
+    ['Helsinki','Finland',60.1699,24.9384],['Dublin','Ireland',53.3498,-6.2603],['Lisbon','Portugal',38.7223,-9.1393],
+    ['Athens','Greece',37.9838,23.7275],['Prague','Czechia',50.0755,14.4378],['Budapest','Hungary',47.4979,19.0402],
+    ['Zurich','Switzerland',47.3769,8.5417],['Brussels','Belgium',50.8503,4.3517],['Bucharest','Romania',44.4268,26.1025],
+    ['Kyiv','Ukraine',50.4501,30.5234],['Belgrade','Serbia',44.7866,20.4489],['Sofia','Bulgaria',42.6977,23.3219],
+    ['Reykjavik','Iceland',64.1466,-21.9426],['Edinburgh','UK',55.9533,-3.1883],['Barcelona','Spain',41.3874,2.1686],
+    ['Milan','Italy',45.4642,9.1900],['Munich','Germany',48.1351,11.5820],['Hamburg','Germany',53.5511,9.9937],
+    ['Tokyo','Japan',35.6762,139.6503],['Beijing','China',39.9042,116.4074],['Shanghai','China',31.2304,121.4737],
+    ['Hong Kong','China',22.3193,114.1694],['Seoul','South Korea',37.5665,126.9780],['Singapore','Singapore',1.3521,103.8198],
+    ['Bangkok','Thailand',13.7563,100.5018],['Jakarta','Indonesia',-6.2088,106.8456],['Manila','Philippines',14.5995,120.9842],
+    ['Kuala Lumpur','Malaysia',3.1390,101.6869],['Hanoi','Vietnam',21.0278,105.8342],['Ho Chi Minh City','Vietnam',10.8231,106.6297],
+    ['New Delhi','India',28.6139,77.2090],['Mumbai','India',19.0760,72.8777],['Bangalore','India',12.9716,77.5946],
+    ['Kolkata','India',22.5726,88.3639],['Karachi','Pakistan',24.8607,67.0011],['Dhaka','Bangladesh',23.8103,90.4125],
+    ['Colombo','Sri Lanka',6.9271,79.8612],['Kathmandu','Nepal',27.7172,85.3240],['Taipei','Taiwan',25.0330,121.5654],
+    ['Ulaanbaatar','Mongolia',47.8864,106.9057],['Almaty','Kazakhstan',43.2220,76.8512],['Tashkent','Uzbekistan',41.2995,69.2401],
+    ['Sydney','Australia',-33.8688,151.2093],['Melbourne','Australia',-37.8136,144.9631],['Brisbane','Australia',-27.4698,153.0251],
+    ['Perth','Australia',-31.9505,115.8605],['Adelaide','Australia',-34.9285,138.6007],['Canberra','Australia',-35.2809,149.1300],
+    ['Auckland','New Zealand',-36.8485,174.7633],['Wellington','New Zealand',-41.2865,174.7762],
+    ['Suva','Fiji',-18.1416,178.4419],['Port Moresby','Papua New Guinea',-9.4438,147.1803],
+    ['New York','USA',40.7128,-74.0060],['Los Angeles','USA',34.0522,-118.2437],['Chicago','USA',41.8781,-87.6298],
+    ['Houston','USA',29.7604,-95.3698],['San Francisco','USA',37.7749,-122.4194],['Seattle','USA',47.6062,-122.3321],
+    ['Miami','USA',25.7617,-80.1918],['Washington DC','USA',38.9072,-77.0369],['Boston','USA',42.3601,-71.0589],
+    ['Denver','USA',39.7392,-104.9903],['Atlanta','USA',33.7490,-84.3880],['Las Vegas','USA',36.1699,-115.1398],
+    ['Anchorage','USA',61.2181,-149.9003],['Honolulu','USA',21.3069,-157.8583],
+    ['Toronto','Canada',43.6532,-79.3832],['Vancouver','Canada',49.2827,-123.1207],['Montreal','Canada',45.5019,-73.5674],
+    ['Ottawa','Canada',45.4215,-75.6972],['Mexico City','Mexico',19.4326,-99.1332],['Guadalajara','Mexico',20.6597,-103.3496],
+    ['Havana','Cuba',23.1136,-82.3666],['Panama City','Panama',8.9824,-79.5199],['San Jose','Costa Rica',9.9281,-84.0907],
+    ['São Paulo','Brazil',-23.5505,-46.6333],['Rio de Janeiro','Brazil',-22.9068,-43.1729],['Brasília','Brazil',-15.8267,-47.9218],
+    ['Buenos Aires','Argentina',-34.6037,-58.3816],['Santiago','Chile',-33.4489,-70.6693],['Lima','Peru',-12.0464,-77.0428],
+    ['Bogotá','Colombia',4.7110,-74.0721],['Caracas','Venezuela',10.4806,-66.9036],['Quito','Ecuador',-0.1807,-78.4678],
+    ['Montevideo','Uruguay',-34.9011,-56.1645],['La Paz','Bolivia',-16.5000,-68.1500],['Asunción','Paraguay',-25.2637,-57.5759],
+  ];
+
+  const toRad = d => d * Math.PI / 180;
+  const toDeg = r => r * 180 / Math.PI;
+  function haversine(lat1, lon1, lat2, lon2) {
+    const R = 6371;
+    const dLat = toRad(lat2 - lat1), dLon = toRad(lon2 - lon1);
+    const a = Math.sin(dLat / 2) ** 2 + Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.sin(dLon / 2) ** 2;
+    return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  }
+  function bearing(lat1, lon1, lat2, lon2) {
+    const y = Math.sin(toRad(lon2 - lon1)) * Math.cos(toRad(lat2));
+    const x = Math.cos(toRad(lat1)) * Math.sin(toRad(lat2)) - Math.sin(toRad(lat1)) * Math.cos(toRad(lat2)) * Math.cos(toRad(lon2 - lon1));
+    return (toDeg(Math.atan2(y, x)) + 360) % 360;
+  }
+  const COMPASS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  function compass(deg) { return COMPASS[Math.round(deg / 22.5) % 16]; }
+  function dms(deg, isLat) {
+    const hemi = isLat ? (deg >= 0 ? 'N' : 'S') : (deg >= 0 ? 'E' : 'W');
+    const abs = Math.abs(deg);
+    const d = Math.floor(abs);
+    const mFull = (abs - d) * 60;
+    const m = Math.floor(mFull);
+    const s = ((mFull - m) * 60).toFixed(2);
+    return d + '°' + m + "'" + s + '"' + hemi;
+  }
+  function row(label, value, hl) {
+    const div = document.createElement('div');
+    div.innerHTML = '<dt>' + CTF.esc(label) + '</dt><dd' + (hl ? ' class="hl"' : '') + '>' + CTF.esc(value) + '</dd>';
+    return div;
+  }
+
+  function render() {
+    const latRaw = latInput.value.trim(), lonRaw = lonInput.value.trim();
+    resultEl.innerHTML = '';
+    mapLink.style.display = 'none';
+    copyBtn.style.display = 'none';
+    if (!latRaw && !lonRaw) {
+      status.textContent = 'READY';
+      meta.textContent = '// nearest-city lookup against ~120 major world cities via the haversine formula — not a full reverse-geocoder, but enough to place a coordinate dropped in a CTF challenge or a photo’s EXIF data';
+      return;
+    }
+    const lat = parseFloat(latRaw), lon = parseFloat(lonRaw);
+    if (!isFinite(lat) || !isFinite(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
+      resultEl.appendChild(row('Error', 'latitude must be -90..90 and longitude -180..180'));
+      status.textContent = 'INVALID'; status.style.color = '#E8603F';
+      return;
+    }
+    status.style.color = '';
+    let nearest = null;
+    for (const [name, country, clat, clon] of CITIES) {
+      const d = haversine(lat, lon, clat, clon);
+      if (!nearest || d < nearest.d) nearest = { name, country, clat, clon, d };
+    }
+    const brg = bearing(lat, lon, nearest.clat, nearest.clon);
+    const utmZone = Math.floor((lon + 180) / 6) + 1;
+    const utmBand = lat >= 0 ? 'N' : 'S';
+    const utcOffset = lon / 15;
+    const utcLabel = (utcOffset >= 0 ? '+' : '') + utcOffset.toFixed(1) + 'h (rough — actual timezones follow political borders, not longitude)';
+
+    resultEl.appendChild(row('Decimal', lat.toFixed(6) + ', ' + lon.toFixed(6)));
+    resultEl.appendChild(row('DMS', dms(lat, true) + ' ' + dms(lon, false)));
+    resultEl.appendChild(row('Hemisphere', (lat >= 0 ? 'Northern' : 'Southern') + ' / ' + (lon >= 0 ? 'Eastern' : 'Western')));
+    resultEl.appendChild(row('UTM zone (approx.)', utmZone + utmBand));
+    resultEl.appendChild(row('Estimated UTC offset', utcLabel));
+    const nearLabel = nearest.d < 1 ? Math.round(nearest.d * 1000) + ' m' : nearest.d.toFixed(1) + ' km';
+    resultEl.appendChild(row('Nearest known city', nearest.name + ', ' + nearest.country, true));
+    resultEl.appendChild(row('Distance & bearing', nearLabel + ' ' + compass(brg) + ' (' + brg.toFixed(0) + '°)'));
+
+    if (nearest.d > 300) {
+      meta.textContent = '// nearest indexed city is ' + Math.round(nearest.d) + 'km away — this point is likely remote, oceanic, or just outside this tool’s ~120-city coverage';
+    } else {
+      meta.textContent = '// haversine distance to the closest of ~120 indexed major cities — great-circle straight line, not driving distance';
+    }
+
+    mapLink.href = 'https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '#map=12/' + lat.toFixed(5) + '/' + lon.toFixed(5);
+    mapLink.style.display = '';
+    summaryEl.textContent = [
+      'Coordinates: ' + lat.toFixed(6) + ', ' + lon.toFixed(6) + ' (' + dms(lat, true) + ' ' + dms(lon, false) + ')',
+      'Nearest known city: ' + nearest.name + ', ' + nearest.country + ' — ' + nearLabel + ' ' + compass(brg),
+      'UTM zone: ' + utmZone + utmBand + ' · Estimated UTC offset: ' + utcLabel,
+    ].join('\n');
+    copyBtn.style.display = '';
+    status.textContent = nearest.d < 1 ? 'PRECISE' : (nearest.d.toFixed(0) + ' KM FROM ' + nearest.name.toUpperCase());
+  }
+
+  function parseCombined(input) {
+    const m = input.value.match(/^\s*(-?\d+\.?\d*)\s*[,;]\s*(-?\d+\.?\d*)\s*$/);
+    if (!m) return false;
+    latInput.value = m[1]; lonInput.value = m[2];
+    return true;
+  }
+  latInput.addEventListener('input', () => { parseCombined(latInput); render(); });
+  lonInput.addEventListener('input', render);
+  render();
 })();
 </script>
 
