@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ops Lab — William Lam</title>
-<meta name="description" content="Interactive security &amp; CTF lab — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer and a grep pattern search. All client-side; nothing is uploaded.">
+<meta name="description" content="Interactive security &amp; CTF lab — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer and a grep pattern search. All client-side; nothing is uploaded.">
 <link rel="canonical" href="https://w1llim.github.io/portfolio/ops.html">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Ops Lab — William Lam">
-<meta property="og:description" content="Thirteen interactive security &amp; CTF modules — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer and a grep pattern search.">
+<meta property="og:description" content="Twelve interactive security &amp; CTF modules — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer and a grep pattern search.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://w1llim.github.io/portfolio/ops.html">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ops Lab — William Lam">
-<meta name="twitter:description" content="Thirteen interactive security &amp; CTF modules — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, Base64, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer and a grep pattern search.">
+<meta name="twitter:description" content="Twelve interactive security &amp; CTF modules — packet monitor, ciphers, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, JWT decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer and a grep pattern search.">
 <meta name="theme-color" content="#211A10">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -337,13 +337,6 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .jwt-part.body pre{color:var(--phos)}
 .jwt-part.sig pre{color:var(--kraft-dim)}
 
-/* base64 codec */
-.b64-out{
-  background:rgba(140,245,107,.06);border:1px solid rgba(140,245,107,.3);
-  font-family:var(--mono);font-size:13px;line-height:1.6;color:var(--phos);
-  padding:12px;min-height:72px;word-break:break-all;white-space:pre-wrap;
-}
-
 /* ---------- ctf toolkit (rows 5-6) ---------- */
 /* magic multitool decoder */
 .magic-list{display:flex;flex-direction:column;border:1px solid var(--line);max-height:360px;overflow-y:auto}
@@ -486,7 +479,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
   <div class="wrap">
     <div class="sec-head reveal">
       <h2 data-scramble-scroll><span class="hash">#</span>Ops Lab</h2>
-      <span class="count">13 live modules · Interactive</span>
+      <span class="count">12 live modules · Interactive</span>
     </div>
 
     <div class="ops-grid">
@@ -643,9 +636,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       </div>
     </div>
 
-    <div class="ops-grid3">
-
-      <!-- jwt decoder -->
+    <!-- jwt decoder -->
+    <div class="ops-solo">
       <div class="panel reveal">
         <div class="term-bar">
           <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>jwt --decode · no verify</span>
@@ -661,29 +653,6 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
           <div class="panel-note" id="jwtMeta">// signature is never verified — decode only</div>
         </div>
       </div>
-
-      <!-- base64 codec -->
-      <div class="panel reveal d1">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>base64 --codec · utf-8</span>
-          <span class="right" id="b64Status">ENCODE</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="b64In">Input</label>
-            <textarea id="b64In" spellcheck="false">Meet at the flagpole at 0900.</textarea>
-          </div>
-          <div class="mode-row" role="group" aria-label="Base64 mode">
-            <button class="mode-btn active" id="b64Enc" type="button">Encode ▸</button>
-            <button class="mode-btn" id="b64Dec" type="button">◂ Decode</button>
-          </div>
-          <div>
-            <label for="b64Out">Output</label>
-            <div class="b64-out" id="b64Out" aria-live="polite"></div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
     <!-- cipher multitool / magic decoder -->
@@ -1571,43 +1540,6 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
     notes.push('signature NOT verified');
     meta.textContent = '// ' + notes.join(' · ');
   }
-  input.addEventListener('input', render);
-  render();
-})();
-
-/* ================= base64 codec ================= */
-/* UTF-8-safe base64 both ways — the encode path round-trips multibyte
-   characters instead of throwing on them. */
-(function base64() {
-  const input = document.getElementById('b64In');
-  const out = document.getElementById('b64Out');
-  const encBtn = document.getElementById('b64Enc');
-  const decBtn = document.getElementById('b64Dec');
-  const status = document.getElementById('b64Status');
-  let mode = 'enc';
-
-  function render() {
-    const v = input.value;
-    if (!v) { out.textContent = ' '; return; }
-    try {
-      out.style.color = '';
-      out.textContent = mode === 'enc'
-        ? btoa(unescape(encodeURIComponent(v)))
-        : decodeURIComponent(escape(atob(v.trim())));
-    } catch (e) {
-      out.style.color = '#E8603F';
-      out.textContent = mode === 'enc' ? 'could not encode input' : 'invalid base64 input';
-    }
-  }
-  function setMode(m) {
-    mode = m;
-    encBtn.classList.toggle('active', m === 'enc');
-    decBtn.classList.toggle('active', m === 'dec');
-    status.textContent = m === 'enc' ? 'ENCODE' : 'DECODE';
-    render();
-  }
-  encBtn.addEventListener('click', () => setMode('enc'));
-  decBtn.addEventListener('click', () => setMode('dec'));
   input.addEventListener('input', render);
   render();
 })();
