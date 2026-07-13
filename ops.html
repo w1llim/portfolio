@@ -398,6 +398,23 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 
 /* grep pattern search */
 .grep-controls{display:flex;flex-direction:column;gap:12px}
+.grep-src{
+  width:100%;background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--kraft);
+  font-family:var(--mono);font-size:13px;line-height:1.6;padding:11px 34px 11px 12px;cursor:pointer;
+  -webkit-appearance:none;appearance:none;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%238CF56B' stroke-width='1.5'/></svg>");
+  background-repeat:no-repeat;background-position:right 12px center;
+}
+.grep-src:focus{border-color:var(--phos)}
+.grep-src option{background:var(--bark-2);color:var(--kraft)}
+.grep-src.piped{border-color:rgba(140,245,107,.4);color:var(--phos)}
+.pipe-btn{
+  align-self:flex-start;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  padding:6px 12px;border:1px solid var(--line);background:none;color:var(--kraft-dim);cursor:pointer;transition:all .2s;
+}
+.pipe-btn:hover{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+textarea[readonly]{opacity:.9;cursor:default}
+textarea[readonly]:focus{border-color:var(--line)}
 .grep-out{
   border:1px dashed var(--line);background:rgba(0,0,0,.35);padding:10px 12px;
   font-family:var(--mono);font-size:12px;line-height:1.75;max-height:300px;overflow:auto;
@@ -682,6 +699,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
             <textarea id="magicIn" spellcheck="false">666c61677b6d346731635f643363306433727d</textarea>
           </div>
           <div class="magic-list" id="magicList" aria-live="polite"></div>
+          <button type="button" class="pipe-btn" data-pipe="magic">magic ▸ grep</button>
           <div class="panel-note">// base64 · base32 · base58 · hex · binary · decimal · url · rot13 · rot47 · atbash · morse · reverse — all client-side</div>
         </div>
       </div>
@@ -701,6 +719,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
             <textarea id="xorIn" spellcheck="false">3c363b3d21226a28056b29052d696e3127</textarea>
           </div>
           <div class="xor-list" id="xorList" aria-live="polite"></div>
+          <button type="button" class="pipe-btn" data-pipe="xor">xor ▸ grep</button>
           <div class="panel-note">// classic single-byte XOR break — frequency-scored, top matches first</div>
         </div>
       </div>
@@ -741,10 +760,12 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
             <div class="dump-col">
               <h5><span>Hex dump</span><span id="dumpRange"></span></h5>
               <div class="dump-out" id="dumpOut"></div>
+              <button type="button" class="pipe-btn" data-pipe="hexdump">xxd ▸ grep</button>
             </div>
             <div class="dump-col">
               <h5><span>Strings ≥ 4</span><span id="dumpStrCount"></span></h5>
               <div class="strings-out" id="stringsOut"></div>
+              <button type="button" class="pipe-btn" data-pipe="strings">strings ▸ grep</button>
             </div>
           </div>
         </div>
@@ -755,12 +776,22 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
     <div class="ops-solo">
       <div class="panel reveal">
         <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>grep --pattern · search any text</span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span><span id="grepTitle">grep --pattern · search any text</span></span>
           <span class="right" id="grepStatus">IDLE</span>
         </div>
         <div class="panel-body">
           <div>
-            <label for="grepCorpus">Text to search — paste a log, a dump, a wordlist, anything</label>
+            <label for="grepSrc">stdin — search your own text, or pipe in another tool's output</label>
+            <select id="grepSrc" class="grep-src">
+              <option value="paste">paste · type your own text below</option>
+              <option value="strings">strings · xxd + strings file analyzer</option>
+              <option value="magic">magic --decode · every codec's output</option>
+              <option value="xor">xor --brute · candidate plaintexts</option>
+              <option value="hexdump">xxd · raw hex dump</option>
+            </select>
+          </div>
+          <div>
+            <label for="grepCorpus" id="grepCorpusLabel">Text to search — paste a log, a dump, a wordlist, anything</label>
             <textarea id="grepCorpus" spellcheck="false">auth.log — 2026-07-13
 [00:04:12] sshd: Accepted password for root from 10.0.0.4
 [00:04:19] sshd: Failed password for admin from 10.0.0.9
@@ -1601,6 +1632,21 @@ const CTF = (function () {
   return { FLAG, esc, bytesToText, printableRatio };
 })();
 
+/* ================= pipe bus ================= */
+/* A tiny stdout->stdin bus that lets one tool's output be piped into
+   another, shell-style (strings | grep, magic | grep, …). Producers
+   publish their latest text under a stream id; grep subscribes and reads
+   whichever stream is selected. Everything stays in-page. */
+const Pipe = (function () {
+  const streams = {};      // id -> latest text
+  const subs = [];         // fns notified on any publish
+  return {
+    publish(id, text) { streams[id] = text || ''; subs.forEach(fn => fn(id)); },
+    get(id) { return streams[id] || ''; },
+    onUpdate(fn) { subs.push(fn); },
+  };
+})();
+
 /* ================= magic multi-codec decoder ================= */
 /* Runs the input through every common CTF codec at once and floats the
    readable results (and anything shaped like a flag) to the top. Pure
@@ -1687,7 +1733,7 @@ const CTF = (function () {
   function render() {
     const raw = input.value;
     list.innerHTML = '';
-    if (!raw.trim()) { list.innerHTML = '<div class="magic-empty">// paste something encoded above</div>'; status.textContent = 'READY'; return; }
+    if (!raw.trim()) { list.innerHTML = '<div class="magic-empty">// paste something encoded above</div>'; status.textContent = 'READY'; Pipe.publish('magic', ''); return; }
     const cands = [];
     for (const [name, fn, isByte] of CODECS) {
       let out; try { out = fn(raw); } catch (e) { out = null; }
@@ -1700,8 +1746,9 @@ const CTF = (function () {
       cands.push({ name, out, ratio, flag, score });
     }
     cands.sort((a, b) => b.score - a.score);
-    if (!cands.length) { list.innerHTML = '<div class="magic-empty">// nothing decoded to readable text — try another codec</div>'; status.textContent = 'NO MATCH'; return; }
+    if (!cands.length) { list.innerHTML = '<div class="magic-empty">// nothing decoded to readable text — try another codec</div>'; status.textContent = 'NO MATCH'; Pipe.publish('magic', ''); return; }
     status.textContent = cands.some(c => c.flag) ? 'FLAG?' : cands.length + ' HITS';
+    Pipe.publish('magic', cands.map(c => c.name + ': ' + c.out).join('\n'));
     for (const c of cands) {
       const row = document.createElement('div');
       row.className = 'magic-row' + (c.flag ? ' flag' : c.ratio >= 0.85 ? ' hit' : '');
@@ -1741,7 +1788,7 @@ const CTF = (function () {
     list.innerHTML = '';
     if (!/^[0-9a-fA-F]+$/.test(t) || t.length < 2 || t.length % 2) {
       list.innerHTML = '<div class="magic-empty">// paste even-length hex ciphertext</div>';
-      status.textContent = 'HEX?'; return;
+      status.textContent = 'HEX?'; Pipe.publish('xor', ''); return;
     }
     const cipher = new Uint8Array(t.length / 2);
     for (let i = 0; i < cipher.length; i++) cipher[i] = parseInt(t.substr(i * 2, 2), 16);
@@ -1755,6 +1802,7 @@ const CTF = (function () {
     results.sort((a, b) => b.sc - a.sc);
     const top = results.slice(0, 6);
     status.textContent = '0x' + top[0].k.toString(16).toUpperCase().padStart(2, '0') + ' BEST';
+    Pipe.publish('xor', top.map(r => '0x' + r.k.toString(16).toUpperCase().padStart(2, '0') + ': ' + r.text).join('\n'));
     for (const r of top) {
       const row = document.createElement('div');
       row.className = 'xor-cand' + (r.flag ? ' flag' : '');
@@ -1853,22 +1901,25 @@ const CTF = (function () {
 
   function renderDump(bytes) {
     const n = Math.min(bytes.length, DUMP_CAP);
-    let html = '';
+    let html = '', text = '';
     for (let off = 0; off < n; off += 16) {
       let hexpart = '', asc = '';
       for (let i = 0; i < 16; i++) {
         if (off + i < n) {
           const b = bytes[off + i];
           hexpart += hex2(b) + ' ';
-          asc += (b >= 32 && b <= 126) ? CTF.esc(String.fromCharCode(b)) : '.';
+          asc += (b >= 32 && b <= 126) ? String.fromCharCode(b) : '.';
         } else { hexpart += '   '; asc += ' '; }
         if (i === 7) hexpart += ' ';
       }
-      html += '<span class="off">' + off.toString(16).padStart(8, '0') + '</span>  ' +
-        hexpart + ' <span class="asc">' + asc + '</span>\n';
+      const offLabel = off.toString(16).padStart(8, '0');
+      html += '<span class="off">' + offLabel + '</span>  ' +
+        hexpart + ' <span class="asc">' + CTF.esc(asc) + '</span>\n';
+      text += offLabel + '  ' + hexpart + ' ' + asc + '\n';
     }
     dumpOut.innerHTML = html;
     rangeEl.textContent = '0x000–0x' + (n - 1).toString(16).toUpperCase();
+    Pipe.publish('hexdump', text);
   }
 
   function renderStrings(bytes) {
@@ -1886,6 +1937,7 @@ const CTF = (function () {
     stringsOut.innerHTML = found.length
       ? found.map(s => CTF.FLAG.test(s) ? '<span class="flag">' + CTF.esc(s) + '</span>' : CTF.esc(s)).join('\n')
       : '<span class="off">// no printable runs of 4+ characters</span>';
+    Pipe.publish('strings', found.join('\n'));
   }
 
   function handle(file) {
@@ -1912,9 +1964,12 @@ const CTF = (function () {
 })();
 
 /* ================= grep pattern search ================= */
-/* Searches the pasted text for a user-supplied pattern. The hard rule:
-   with no pattern there is nothing to grep for, so it stays idle and
-   runs nothing — grep only fires once the user actually types one.
+/* Searches text for a user-supplied pattern. The hard rule: with no
+   pattern there is nothing to grep for, so it stays idle and runs
+   nothing — grep only fires once the user actually types one.
+   stdin can be your own pasted text, or piped live from another module
+   (strings | grep, magic | grep, xor | grep, xxd | grep) via the pipe
+   bus — the way you'd actually chain these on a real box.
    Literal by default; -E switches to full regex, -i ignores case,
    -v inverts. Matches are highlighted, lines numbered like grep -n. */
 (function grepSearch() {
@@ -1923,11 +1978,28 @@ const CTF = (function () {
   const out = document.getElementById('grepOut');
   const status = document.getElementById('grepStatus');
   const meta = document.getElementById('grepMeta');
+  const src = document.getElementById('grepSrc');
+  const title = document.getElementById('grepTitle');
+  const corpusLabel = document.getElementById('grepCorpusLabel');
   const bI = document.getElementById('grepI');
   const bE = document.getElementById('grepE');
   const bV = document.getElementById('grepV');
 
+  const TITLES = {
+    paste: 'grep --pattern · search any text',
+    strings: 'strings | grep', magic: 'magic --decode | grep',
+    xor: 'xor --brute | grep', hexdump: 'xxd | grep',
+  };
+  const LABELS = {
+    paste: 'Text to search — paste a log, a dump, a wordlist, anything',
+    strings: 'Piped from strings · read-only — drop a file in the xxd + strings module to fill this',
+    magic: 'Piped from magic --decode · read-only — decode a blob in that module to fill this',
+    xor: 'Piped from xor --brute · read-only — paste hex ciphertext in that module to fill this',
+    hexdump: 'Piped from the xxd hex dump · read-only — drop a file in the xxd + strings module to fill this',
+  };
+
   const escRe = s => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  let pasteBuffer = corpus.value;   // preserves your own text across pipe switches
 
   function toggle(btn) {
     const on = btn.getAttribute('aria-pressed') !== 'true';
@@ -1948,13 +2020,41 @@ const CTF = (function () {
     return html + CTF.esc(line.slice(last));
   }
 
+  // Point stdin at a source: paste (editable) or a live pipe (read-only,
+  // mirroring that tool's current output).
+  function applySource() {
+    const s = src.value;
+    if (s === 'paste') {
+      corpus.readOnly = false;
+      corpus.value = pasteBuffer;
+      src.classList.remove('piped');
+    } else {
+      corpus.readOnly = true;
+      corpus.value = Pipe.get(s);
+      src.classList.add('piped');
+    }
+    title.textContent = TITLES[s];
+    corpusLabel.textContent = LABELS[s];
+    render();
+  }
+
   function render() {
     const raw = pat.value;
+    const s = src.value;
+    const emptyPipe = s !== 'paste' && !corpus.value;
     // The core requirement: no pattern from the user → don't grep at all.
     if (!raw) {
-      out.innerHTML = '<span class="grep-idle">// idle — enter a pattern above to search</span>';
+      out.innerHTML = '<span class="grep-idle">// ' + (emptyPipe
+        ? s + ' has no output yet — run that tool, then enter a pattern'
+        : 'idle — enter a pattern above to search') + '</span>';
       status.textContent = 'IDLE'; status.style.color = '';
       meta.textContent = '// nothing runs until you enter a pattern — matches highlighted, -n line numbers, all client-side';
+      return;
+    }
+    if (emptyPipe) {
+      out.innerHTML = '<span class="grep-idle">// ' + s + ' has produced no output to grep yet — run that tool first</span>';
+      status.textContent = 'NO INPUT'; status.style.color = '';
+      meta.textContent = '// stdin is piped from ' + s + ' — it is currently empty';
       return;
     }
 
@@ -1991,12 +2091,29 @@ const CTF = (function () {
         (rx ? '/' + CTF.esc(raw) + '/' : '"' + CTF.esc(raw) + '"') + '</span>';
     status.textContent = hits + (hits === 1 ? ' LINE' : ' LINES');
     const flags = [ci ? 'i' : '', inv ? 'v' : '', rx ? 'E' : ''].filter(Boolean).join('');
-    meta.textContent = '// grep' + (flags ? ' -' + flags : '') + ' matched ' + hits + ' of ' + lines.length + ' lines';
+    const pipeTag = s === 'paste' ? '' : s + ' | ';
+    meta.textContent = '// ' + pipeTag + 'grep' + (flags ? ' -' + flags : '') + ' matched ' + hits + ' of ' + lines.length + ' lines';
   }
 
+  // "▸ grep" buttons on the producer panels: point stdin at that stream
+  // and jump the user to grep with the cursor in the pattern box.
+  document.querySelectorAll('.pipe-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      src.value = btn.dataset.pipe;
+      applySource();
+      const panel = pat.closest('.panel');
+      if (panel) panel.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+      pat.focus();
+    });
+  });
+
+  // Re-mirror a live pipe when its upstream tool re-renders.
+  Pipe.onUpdate(id => { if (src.value === id) { corpus.value = Pipe.get(id); render(); } });
+
   [bI, bE, bV].forEach(b => b.addEventListener('click', () => toggle(b)));
+  src.addEventListener('change', applySource);
   pat.addEventListener('input', render);
-  corpus.addEventListener('input', render);
+  corpus.addEventListener('input', () => { if (src.value === 'paste') pasteBuffer = corpus.value; render(); });
   render();
 })();
 </script>
