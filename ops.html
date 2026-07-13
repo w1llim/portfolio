@@ -1610,6 +1610,32 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
     if (y < 13.8e9) return Math.ceil(y / 1e9) + 'B years';
     return 'heat death of the universe';
   }
+  // Walk the string char-by-char: a fresh unpredictable character is worth
+  // the full per-char entropy, but one that just repeats the previous char
+  // ("aaaa") or continues an ascending/descending run ("abcd", "4321") only
+  // costs an attacker a handful of guesses to extend — so it adds ~1 bit,
+  // not log2(pool). This is what stops raw length from inflating the score.
+  function walkBits(v, perChar) {
+    if (!v.length) return 0;
+    let bits = perChar;
+    for (let i = 1; i < v.length; i++) {
+      const c = v.charCodeAt(i), p = v.charCodeAt(i - 1);
+      bits += (c === p || c === p + 1 || c === p - 1) ? 1 : perChar;
+    }
+    return bits;
+  }
+  // Smallest period the whole string is a repeat of ("abcabc" -> 3,
+  // "aaaa" -> 1). A repeated block is only as strong as one block plus a
+  // little for the repeat count, no matter how many times it's pasted.
+  function smallestPeriod(v) {
+    for (let p = 1; p <= v.length >> 1; p++) {
+      if (v.length % p) continue;
+      let ok = true;
+      for (let i = p; i < v.length; i++) if (v[i] !== v[i - p]) { ok = false; break; }
+      if (ok) return p;
+    }
+    return v.length;
+  }
   function update() {
     const v = input.value;
     const sets = [[/[a-z]/, 26, 'cLow'], [/[A-Z]/, 26, 'cUp'], [/[0-9]/, 10, 'cDig'], [/[^a-zA-Z0-9]/, 33, 'cSym']];
@@ -1619,7 +1645,25 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
       document.getElementById(id).classList.toggle('hit', hit);
       if (hit) pool += n;
     });
-    const bits = v ? v.length * Math.log2(pool) : 0;
+    const perChar = pool ? Math.log2(pool) : 0;
+    // Naive charset entropy is only an upper bound — the real figure is the
+    // cheapest way an attacker can actually reach the string. Take the min
+    // of the naive bound, the repeat/sequence-discounted walk, and a
+    // repeated-block collapse. A genuinely random long passphrase trips none
+    // of the discounts and keeps its full length-driven entropy.
+    const naive = v ? v.length * perChar : 0;
+    let bits = naive;
+    if (v) {
+      bits = Math.min(bits, walkBits(v, perChar));
+      const period = smallestPeriod(v);
+      if (period < v.length) {
+        bits = Math.min(bits, walkBits(v.slice(0, period), perChar) + Math.log2(v.length / period + 1));
+      }
+    }
+    // Only call it out when repetition/patterns dominate (effective entropy
+    // well under half-ish the naive figure) — an incidental double letter in
+    // an otherwise strong passphrase shouldn't get scolded.
+    const penalized = v.length > 0 && bits < naive * 0.7;
     const common = COMMON.includes(v.toLowerCase());
     bitsEl.textContent = bits.toFixed(1) + ' bits';
     poolEl.textContent = pool + ' symbols';
@@ -1629,9 +1673,13 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
     else {
       crack = human(Math.pow(2, bits - 1) / RATE);
       pct = Math.min(bits / 96 * 100, 100);
-      if (bits < 28) { color = '#E8603F'; text = 'CRITICAL — trivially crackable'; }
-      else if (bits < 40) { color = '#E8823F'; text = 'WEAK — coffee-break crack'; }
-      else if (bits < 60) { color = '#E0B33C'; text = 'FAIR — resists casual attack'; }
+      // When repetition/patterns dragged the entropy well below what the
+      // length + charset would suggest, say so — that's the exact case where
+      // "just add more characters" fails and the user deserves to know why.
+      const why = penalized ? ' — length padded by repetition/patterns' : '';
+      if (bits < 28) { color = '#E8603F'; text = 'CRITICAL — trivially crackable' + why; }
+      else if (bits < 40) { color = '#E8823F'; text = 'WEAK — coffee-break crack' + why; }
+      else if (bits < 60) { color = '#E0B33C'; text = 'FAIR — resists casual attack' + why; }
       else if (bits < 80) { color = '#B8D94A'; text = 'STRONG — serious rig required'; }
       else { color = '#8CF56B'; text = 'HARDENED — outlives the attacker'; }
     }
