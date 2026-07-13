@@ -659,17 +659,21 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
     <div class="ops-solo">
       <div class="panel reveal">
         <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>magic --decode · run every codec</span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span><span id="magicTitle">magic --decode · run every codec</span></span>
           <span class="right" id="magicStatus">READY</span>
         </div>
         <div class="panel-body">
           <div>
-            <label for="magicIn">Paste an encoded blob — it's decoded every way at once, readable results float to the top</label>
+            <label for="magicIn" id="magicLabel">Paste an encoded blob — it's decoded every way at once, readable results float to the top</label>
             <textarea id="magicIn" spellcheck="false">666c61677b6d346731635f643363306433727d</textarea>
+          </div>
+          <div class="mode-row" role="group" aria-label="Magic mode">
+            <button class="mode-btn active" id="magicDec" type="button">◂ Decode</button>
+            <button class="mode-btn" id="magicEnc" type="button">Encode ▸</button>
           </div>
           <div class="magic-list" id="magicList" aria-live="polite"></div>
           <button type="button" class="pipe-btn" data-pipe="magic">magic ▸ grep</button>
-          <div class="panel-note">// base64 · base32 · base58 · hex · binary · decimal · url · rot13 · rot47 · atbash · morse · reverse — all client-side</div>
+          <div class="panel-note">// base64 · base32 · base58 · hex · binary · decimal · url · rot13 · rot47 · atbash · morse · reverse — decodes &amp; encodes, all client-side</div>
         </div>
       </div>
     </div>
@@ -1662,10 +1666,55 @@ const Pipe = (function () {
     ['from morse', fromMorse, true], ['reverse', reverse, false],
   ];
 
-  function render() {
-    const raw = input.value;
-    list.innerHTML = '';
-    if (!raw.trim()) { list.innerHTML = '<div class="magic-empty">// paste something encoded above</div>'; status.textContent = 'READY'; Pipe.publish('magic', ''); return; }
+  // --- encoders (the inverse direction) ---
+  const bytesOf = s => new TextEncoder().encode(s);           // UTF-8, round-trips the decoders
+  const toBase64 = s => { let bin = ''; for (const x of bytesOf(s)) bin += String.fromCharCode(x); return btoa(bin); };
+  const toBase32 = s => {
+    let bits = ''; for (const x of bytesOf(s)) bits += x.toString(2).padStart(8, '0');
+    let out = ''; for (let i = 0; i < bits.length; i += 5) out += B32[parseInt(bits.slice(i, i + 5).padEnd(5, '0'), 2)];
+    while (out.length % 8) out += '='; return out;
+  };
+  const toBase58 = s => {
+    const b = bytesOf(s); if (!b.length) return '';
+    let num = 0n; for (const x of b) num = num * 256n + BigInt(x);
+    let out = ''; while (num > 0n) { out = B58[Number(num % 58n)] + out; num /= 58n; }
+    for (let i = 0; i < b.length && b[i] === 0; i++) out = '1' + out;
+    return out;
+  };
+  const toHex = s => [...bytesOf(s)].map(x => x.toString(16).padStart(2, '0')).join('');
+  const toBinary = s => [...bytesOf(s)].map(x => x.toString(2).padStart(8, '0')).join(' ');
+  const toDecimal = s => [...bytesOf(s)].join(' ');
+  const toUrl = s => encodeURIComponent(s);
+  const R_MORSE = Object.fromEntries(Object.entries(MORSE).map(([k, v]) => [v, k]));
+  const toMorse = s => s.toUpperCase().split('').map(c => c === ' ' ? '/' : R_MORSE[c]).filter(Boolean).join(' ');
+
+  const ENCODERS = [
+    ['to base64', toBase64], ['to base32', toBase32], ['to base58', toBase58],
+    ['to hex', toHex], ['to binary', toBinary], ['to decimal', toDecimal],
+    ['url encode', toUrl], ['rot13', rot13], ['rot47', rot47],
+    ['atbash', atbash], ['to morse', toMorse], ['reverse', reverse],
+  ];
+
+  const decBtn = document.getElementById('magicDec');
+  const encBtn = document.getElementById('magicEnc');
+  const title = document.getElementById('magicTitle');
+  const label = document.getElementById('magicLabel');
+  const TITLE = { dec: 'magic --decode · run every codec', enc: 'magic --encode · every codec at once' };
+  const LABEL = {
+    dec: "Paste an encoded blob — it's decoded every way at once, readable results float to the top",
+    enc: "Type text — it's encoded every way at once (base64, hex, morse, rot…), ready to copy",
+  };
+  let mode = 'dec';
+
+  function rowEl(name, val, cls) {
+    const row = document.createElement('div');
+    row.className = 'magic-row' + (cls ? ' ' + cls : '');
+    const disp = val.length > 300 ? val.slice(0, 300) + '…' : val;
+    row.innerHTML = '<span class="magic-tag">' + name + '</span><span class="magic-val">' + CTF.esc(disp) + '</span>';
+    return row;
+  }
+
+  function renderDecode(raw) {
     const cands = [];
     for (const [name, fn, isByte] of CODECS) {
       let out; try { out = fn(raw); } catch (e) { out = null; }
@@ -1681,14 +1730,41 @@ const Pipe = (function () {
     if (!cands.length) { list.innerHTML = '<div class="magic-empty">// nothing decoded to readable text — try another codec</div>'; status.textContent = 'NO MATCH'; Pipe.publish('magic', ''); return; }
     status.textContent = cands.some(c => c.flag) ? 'FLAG?' : cands.length + ' HITS';
     Pipe.publish('magic', cands.map(c => c.name + ': ' + c.out).join('\n'));
-    for (const c of cands) {
-      const row = document.createElement('div');
-      row.className = 'magic-row' + (c.flag ? ' flag' : c.ratio >= 0.85 ? ' hit' : '');
-      const disp = c.out.length > 300 ? c.out.slice(0, 300) + '…' : c.out;
-      row.innerHTML = '<span class="magic-tag">' + c.name + '</span><span class="magic-val">' + CTF.esc(disp) + '</span>';
-      list.appendChild(row);
-    }
+    for (const c of cands) list.appendChild(rowEl(c.name, c.out, c.flag ? 'flag' : c.ratio >= 0.85 ? 'hit' : ''));
   }
+
+  function renderEncode(raw) {
+    const rows = [];
+    for (const [name, fn] of ENCODERS) {
+      let out; try { out = fn(raw); } catch (e) { out = null; }
+      if (out == null || out === '') continue;
+      rows.push({ name, out });
+    }
+    status.textContent = rows.length + ' FORMS';
+    Pipe.publish('magic', rows.map(r => r.name + ': ' + r.out).join('\n'));
+    for (const r of rows) list.appendChild(rowEl(r.name, r.out, 'hit'));
+  }
+
+  function render() {
+    const raw = input.value;
+    list.innerHTML = '';
+    if (!raw.trim()) {
+      list.innerHTML = '<div class="magic-empty">// ' + (mode === 'dec' ? 'paste something encoded above' : 'type something to encode above') + '</div>';
+      status.textContent = 'READY'; Pipe.publish('magic', ''); return;
+    }
+    mode === 'enc' ? renderEncode(raw) : renderDecode(raw);
+  }
+
+  function setMode(m) {
+    mode = m;
+    decBtn.classList.toggle('active', m === 'dec');
+    encBtn.classList.toggle('active', m === 'enc');
+    title.textContent = TITLE[m];
+    label.textContent = LABEL[m];
+    render();
+  }
+  decBtn.addEventListener('click', () => setMode('dec'));
+  encBtn.addEventListener('click', () => setMode('enc'));
   input.addEventListener('input', render);
   render();
 })();
