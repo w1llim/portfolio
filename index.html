@@ -1375,8 +1375,8 @@ setTimeout(() => typeLines(), reduceMotion ? 0 : 600);
 const SHELL = {
   help: [
     'available commands:',
-    '  whoami   mission   cadets     kungfu',
-    '  projects majorworks contact   ls   clear',
+    '  whoami   mission     cadets   kungfu   fastfetch',
+    '  projects majorworks  contact  ls       clear',
     "  cd <dir> — jump to a section, e.g. cd kungfu. ls to list.",
     "  cd ops-lab/<stage> — jump to a lab stage. ls ops-lab to list.",
   ],
@@ -1401,6 +1401,26 @@ const SHELL = {
 };
 SHELL['ls ops-lab/'] = SHELL['ls ops-lab'];
 const STAGES = { observe: 'stage-observe', extract: 'stage-extract', decode: 'stage-decode', crypto: 'stage-crypto', synthesize: 'stage-synthesize' };
+const FASTFETCH = [
+  ['    /\\', 'ok'],
+  ['   /  \\', 'ok'],
+  ['  / /\\ \\', 'ok'],
+  [' /_/  \\_\\', 'ok'],
+  ['', ''],
+  ['william@hsc-2026', ''],
+  ['-----------------', 'dim'],
+  ['OS: HSC 2026 (NSW · Sydney, AU)', ''],
+  ['Host: HAHSACU — Australian Army Cadets', ''],
+  ['Kernel: CUO 6.2026 (Company Commander)', ''],
+  ['Uptime: 6 yrs (2021 → present)', ''],
+  ['Packages: 6 (HSC modules), 7 (projects), 2 (majorworks)', ''],
+  ['Shell: pak-hok-pai — white crane (2020~)', ''],
+  ['CPU: Cybersecurity Mgmt + Security Eng (dual major)', ''],
+  ['Target: UNSW BIS/BCompSc — ETA 2027', ''],
+  ['Locale: en_AU.UTF-8', ''],
+  ['', ''],
+  ['███████████████████', 'ok'],
+];
 const SECTIONS = {
   top: 'top', home: 'top', '~': 'top', '/': 'top',
   mission: 'mission',
@@ -1490,6 +1510,9 @@ function runCommand(raw) {
       shellPrint(m.desc, 'dim');
       jumpToMajorWork(n);
     }
+  }
+  else if (cmd === 'fastfetch' || cmd === 'neofetch') {
+    FASTFETCH.forEach(([text, cls]) => shellPrint(text, cls));
   }
   else if (cmd === 'cd' || cmd.startsWith('cd ')) {
     const target = cmd.slice(2).trim().replace(/^~?\/+/, '').replace(/\/+$/, '');

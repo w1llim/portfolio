@@ -3707,8 +3707,8 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
 const SHELL = {
   help: [
     'available commands:',
-    '  whoami   mission   cadets   kungfu',
-    '  contact  ls        clear',
+    '  whoami   mission     cadets   kungfu   fastfetch',
+    '  contact  ls          clear',
     "  cd <dir> — jump to a section, e.g. cd kungfu. ls to list.",
     "  cd ops-lab/<stage> — jump to a lab stage. ls ops-lab to list.",
   ],
@@ -3741,6 +3741,26 @@ const SECTIONS = {
   projects: 'projects', timeline: 'timeline', toolkit: 'toolkit', contact: 'contact',
 };
 const STAGES = { observe: 'stage-observe', extract: 'stage-extract', decode: 'stage-decode', crypto: 'stage-crypto', synthesize: 'stage-synthesize' };
+const FASTFETCH = [
+  ['    /\\', 'ok'],
+  ['   /  \\', 'ok'],
+  ['  / /\\ \\', 'ok'],
+  [' /_/  \\_\\', 'ok'],
+  ['', ''],
+  ['william@ops-lab', ''],
+  ['-----------------', 'dim'],
+  ['OS: HSC 2026 (NSW · Sydney, AU)', ''],
+  ['Host: HAHSACU — Australian Army Cadets', ''],
+  ['Kernel: CUO 6.2026 (Company Commander)', ''],
+  ['Uptime: 6 yrs (2021 → present)', ''],
+  ['Packages: 21 (ops-lab modules)', ''],
+  ['Shell: pak-hok-pai — white crane (2020~)', ''],
+  ['CPU: Cybersecurity Mgmt + Security Eng (dual major)', ''],
+  ['Target: UNSW BIS/BCompSc — ETA 2027', ''],
+  ['Locale: en_AU.UTF-8', ''],
+  ['', ''],
+  ['███████████████████', 'ok'],
+];
 // re-align cross-page #stage-* anchors once layout settles (reveal animations shift positions)
 if (/^#stage-/.test(location.hash)) {
   window.addEventListener('load', () => {
@@ -3773,6 +3793,9 @@ function runCommand(raw) {
   if (cmd === '') {}
   else if (cmd === 'clear') { termEl.innerHTML = ''; }
   else if (cmd.startsWith('sudo')) { shellPrint('permission denied: nice try.', 'dim'); }
+  else if (cmd === 'fastfetch' || cmd === 'neofetch') {
+    FASTFETCH.forEach(([text, cls]) => shellPrint(text, cls));
+  }
   else if (cmd === 'cd' || cmd.startsWith('cd ')) {
     const target = cmd.slice(2).trim().replace(/^~?\/+/, '').replace(/\/+$/, '');
     const stageMatch = target.match(/^(?:ops-lab|ops)\/(.+)$/);
