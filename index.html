@@ -1583,11 +1583,12 @@ const countIO = new IntersectionObserver(entries => {
     if (!e.isIntersecting) return;
     countIO.unobserve(countEl);
     const target = +countEl.dataset.target;
-    if (reduceMotion) { countEl.textContent = target; return; }
+    if (reduceMotion) { countEl.textContent = target + '+'; return; }
     const start = performance.now(), dur = 1600;
     (function frame(now) {
       const p = Math.min((now - start) / dur, 1);
-      countEl.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      const val = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      countEl.textContent = p < 1 ? val : val + '+';
       if (p < 1) requestAnimationFrame(frame);
     })(start);
   });
