@@ -147,14 +147,11 @@ section{padding-bottom:clamp(80px,10vw,150px);position:relative}
 .post-foot{margin-top:16px;font-size:10.5px;color:var(--kraft-dim);letter-spacing:.12em}
 .blog-note{margin-top:clamp(30px,4vw,48px);font-size:11.5px;color:var(--kraft-dim);letter-spacing:.1em}
 
-/* ---------- terminal window ---------- */
+/* ---------- always-on (docked) terminal ---------- */
 .term{
   border:1px solid var(--line);background:rgba(20,15,8,.85);
-  box-shadow:0 24px 60px rgba(0,0,0,.5),0 0 0 1px rgba(140,245,107,.05);
   font-family:var(--mono);font-size:13.5px;line-height:1.75;
-  animation:float 7s ease-in-out infinite;
 }
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .term-bar{
   display:flex;align-items:center;gap:8px;padding:10px 14px;justify-content:space-between;
   border-bottom:1px solid var(--line);color:var(--kraft-dim);font-size:11px;letter-spacing:.08em;
@@ -167,7 +164,7 @@ section{padding-bottom:clamp(80px,10vw,150px);position:relative}
 .term-min,.term-full{background:none;border:0;color:var(--kraft-dim);font-family:var(--mono);font-size:13px;line-height:1;cursor:pointer;padding:2px 4px}
 .term-min:hover,.term-full:hover{color:var(--phos)}
 .term-full{font-size:14px}
-.term-body{padding:18px 18px 22px;min-height:262px;max-height:320px;overflow-y:auto;color:var(--kraft)}
+.term-body{padding:18px 18px 22px;overflow-y:auto;color:var(--kraft)}
 .term{cursor:text;position:relative}
 #termKb{position:absolute;width:1px;height:1px;opacity:0;border:0;padding:0}
 .term-body .ln{display:block;white-space:pre-wrap;word-break:break-word}
@@ -176,13 +173,10 @@ section{padding-bottom:clamp(80px,10vw,150px);position:relative}
 .term-body .dim{color:var(--kraft-dim)}
 .caret{display:inline-block;width:8px;height:15px;background:var(--phos);vertical-align:-2px;animation:blink 1s steps(1) infinite}
 @keyframes blink{50%{opacity:0}}
-.term-slot{position:relative;margin:0 0 clamp(44px,6vw,68px)}
-
-/* docked (always-on) terminal */
 .term.docked{
   position:fixed;right:18px;bottom:18px;z-index:1000;
   width:300px;max-width:calc(100vw - 36px);
-  animation:none;box-shadow:0 20px 50px rgba(0,0,0,.6),0 0 0 1px rgba(140,245,107,.08);
+  box-shadow:0 20px 50px rgba(0,0,0,.6),0 0 0 1px rgba(140,245,107,.08);
 }
 .term.docked .term-body{min-height:0;max-height:38vh}
 .term.minimized .term-body,.term.minimized #termKb{display:none}
@@ -224,6 +218,18 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 </head>
 <body>
 
+<div class="term docked minimized" id="termShell" aria-label="Interactive terminal — type help for commands, cd to navigate">
+  <div class="term-bar">
+    <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/blog</span>
+    <span class="term-btns">
+      <button type="button" class="term-full" id="termFull" aria-label="Fullscreen terminal" title="Fullscreen (or type: fullscreen)">⛶</button>
+      <button type="button" class="term-min" id="termMin" aria-label="Restore terminal">▢</button>
+    </span>
+  </div>
+  <div class="term-body" id="terminal" aria-hidden="true"></div>
+  <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
+</div>
+
 <header>
   <div class="wrap nav">
     <a class="mark" href="index.html"><span class="bracket">[</span>W.LAM<span class="bracket">]</span></a>
@@ -256,20 +262,6 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
     </div>
 
     <p class="blog-intro reveal d1">Field notes from the build: <b>cyber security</b> write-ups, <b>software engineering</b> devlogs, <b>cadet command</b> lessons and the road through <b>HSC 2026</b>. Nothing's published yet — this page is scaffolding for posts still being drafted.</p>
-
-    <div class="term-slot" id="termSlot">
-      <div class="term" id="termShell" aria-label="Interactive terminal — type help for commands, cd to navigate">
-        <div class="term-bar">
-          <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/blog</span>
-          <span class="term-btns">
-            <button type="button" class="term-full" id="termFull" aria-label="Fullscreen terminal" title="Fullscreen (or type: fullscreen)">⛶</button>
-            <button type="button" class="term-min" id="termMin" aria-label="Minimize terminal">_</button>
-          </span>
-        </div>
-        <div class="term-body" id="terminal" aria-hidden="true"></div>
-        <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
-      </div>
-    </div>
 
     <div class="blog-grid">
       <div class="post-card reveal">
@@ -567,23 +559,13 @@ kb.addEventListener('keydown', e => {
   if (e.key === 'Enter' && typedSpan) { runCommand(kb.value); kb.value = ''; }
 });
 
-/* ================= dock on scroll + minimize ================= */
+/* ================= minimize ================= */
 const termMinBtn = document.getElementById('termMin');
-const dockAnchor = document.querySelector('#blog .sec-head');
 function setMinimized(min) {
   termShellEl.classList.toggle('minimized', min);
   termMinBtn.textContent = min ? '▢' : '_';
   termMinBtn.setAttribute('aria-label', min ? 'Restore terminal' : 'Minimize terminal');
 }
-const dockIO = new IntersectionObserver(entries => {
-  if (termShellEl.classList.contains('fullscreen')) return; // never dock/minimize while fullscreen
-  const visible = entries[0].isIntersecting;
-  const wasDocked = termShellEl.classList.contains('docked');
-  termShellEl.classList.toggle('docked', !visible);
-  if (!visible && !wasDocked) setMinimized(true); // dock quietly as a small chip
-  else if (visible) setMinimized(false);          // back in the page, always expanded
-}, { threshold: 0 });
-dockIO.observe(dockAnchor);
 termMinBtn.addEventListener('click', e => {
   e.stopPropagation();
   const min = !termShellEl.classList.contains('minimized');
@@ -601,12 +583,6 @@ function setFullscreen(full) {
   termFullBtn.setAttribute('aria-label', full ? 'Exit fullscreen terminal' : 'Fullscreen terminal');
   termFullBtn.setAttribute('title', full ? 'Exit fullscreen (esc, or type: windowed)' : 'Fullscreen (or type: fullscreen)');
   if (full) { kb.focus({ preventScroll: true }); termEl.scrollTop = termEl.scrollHeight; }
-  else { // restore the right docked/expanded state for the current scroll position
-    const r = dockAnchor.getBoundingClientRect();
-    const visible = r.bottom > 0 && r.top < window.innerHeight;
-    termShellEl.classList.toggle('docked', !visible);
-    setMinimized(!visible);
-  }
 }
 termFullBtn.addEventListener('click', e => {
   e.stopPropagation();
