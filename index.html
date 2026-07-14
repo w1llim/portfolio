@@ -229,7 +229,7 @@ h1.name .accent{color:var(--phos);text-shadow:0 0 24px var(--phos-dim)}
 /* Fills the viewport height, but only grows as wide as the page content
    (capped to the .wrap max-width). Overrides docked + floating styles. */
 .term.fullscreen{
-  position:fixed;top:0;left:50%;transform:translateX(-50%);
+  position:fixed;top:0;left:50%;right:auto;bottom:auto;transform:translateX(-50%);
   z-index:2000;margin:0;animation:none;
   width:calc(100vw - 40px);max-width:1240px;
   height:100dvh;max-height:100dvh;
