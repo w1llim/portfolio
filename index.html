@@ -660,7 +660,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <a href="#timeline">Timeline</a>
       <a href="#toolkit">Toolkit</a>
       <a href="ops.html">Ops Lab &#8599;</a>
-      <a href="blog.html">Blog</a>
+      <a href="blog.html">Blog &#8599;</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="status mono"><span class="dot"></span>System online</div>
@@ -1418,7 +1418,7 @@ const SHELL = {
     'status: inbox monitored — open a channel anytime',
   ],
   ls: [
-    'top  mission  coursework  command  kungfu  majorworks  projects  timeline  toolkit  ops-lab/  contact',
+    'top  mission  coursework  command  kungfu  majorworks  projects  timeline  toolkit  ops-lab/  blog  contact',
     "ls ops-lab to list the lab's stages",
   ],
   'ls ops-lab': ['observe  extract  decode  crypto  synthesize', "cd ops-lab/<stage> to jump to one, e.g. cd ops-lab/decode"],
@@ -1559,6 +1559,9 @@ function runCommand(raw) {
     } else if (target === 'ops-lab' || target === 'ops') {
       shellPrint('redirecting to ops-lab...', 'dim');
       setTimeout(() => { window.location.href = 'ops.html'; }, reduceMotion ? 0 : 450);
+    } else if (target === 'blog') {
+      shellPrint('redirecting to blog...', 'dim');
+      setTimeout(() => { window.location.href = 'blog.html'; }, reduceMotion ? 0 : 450);
     } else if (SECTIONS[target]) {
       document.getElementById(SECTIONS[target]).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       shellPrint('~/' + target, 'dim');
