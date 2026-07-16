@@ -1014,7 +1014,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
             <button type="button" class="pipe-btn" data-pipe="magic">magic ▸ grep</button>
             <button type="button" class="pipe-btn copy-btn" id="magicCopyTop">⧉ copy top result</button>
           </div>
-          <div class="panel-note">// base64 · base32 · base58 · hex · binary · decimal · url · rot13 · rot47 · atbash · morse · reverse — decodes &amp; encodes, all client-side</div>
+          <div class="panel-note">// base64 · base64url · base32 · base58 · base45 · base36 · ascii85 · hex · binary · decimal · a1z26 · bacon · nato · braille · html · unicode · quoted-printable · url · rot13/18/47 · atbash · morse · reverse — decodes &amp; encodes, all client-side</div>
         </div>
       </div>
     </div>
@@ -2149,7 +2149,14 @@ const Pipe = (function () {
 
   const B32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
   const B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+  const B45 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';       // RFC 9285 (EU digital certs)
+  const B36U = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const MORSE = { '.-':'A','-...':'B','-.-.':'C','-..':'D','.':'E','..-.':'F','--.':'G','....':'H','..':'I','.---':'J','-.-':'K','.-..':'L','--':'M','-.':'N','---':'O','.--.':'P','--.-':'Q','.-.':'R','...':'S','-':'T','..-':'U','...-':'V','.--':'W','-..-':'X','-.--':'Y','--..':'Z','-----':'0','.----':'1','..---':'2','...--':'3','....-':'4','.....':'5','-....':'6','--...':'7','---..':'8','----.':'9' };
+  const NATO = { alpha:'A',bravo:'B',charlie:'C',delta:'D',echo:'E',foxtrot:'F',golf:'G',hotel:'H',india:'I',juliett:'J',juliet:'J',kilo:'K',lima:'L',mike:'M',november:'N',oscar:'O',papa:'P',quebec:'Q',romeo:'R',sierra:'S',tango:'T',uniform:'U',victor:'V',whiskey:'W',xray:'X',yankee:'Y',zulu:'Z',zero:'0',one:'1',two:'2',three:'3',four:'4',five:'5',six:'6',seven:'7',eight:'8',nine:'9',niner:'9' };
+  const NATO_ENC = { A:'Alpha',B:'Bravo',C:'Charlie',D:'Delta',E:'Echo',F:'Foxtrot',G:'Golf',H:'Hotel',I:'India',J:'Juliett',K:'Kilo',L:'Lima',M:'Mike',N:'November',O:'Oscar',P:'Papa',Q:'Quebec',R:'Romeo',S:'Sierra',T:'Tango',U:'Uniform',V:'Victor',W:'Whiskey',X:'Xray',Y:'Yankee',Z:'Zulu','0':'Zero','1':'One','2':'Two','3':'Three','4':'Four','5':'Five','6':'Six','7':'Seven','8':'Eight','9':'Nine' };
+  const BRAILLE = { '⠁':'a','⠃':'b','⠉':'c','⠙':'d','⠑':'e','⠋':'f','⠛':'g','⠓':'h','⠊':'i','⠚':'j','⠅':'k','⠇':'l','⠍':'m','⠝':'n','⠕':'o','⠏':'p','⠟':'q','⠗':'r','⠎':'s','⠞':'t','⠥':'u','⠧':'v','⠺':'w','⠭':'x','⠽':'y','⠵':'z','⠀':' ' };
+  const BRAILLE_ENC = Object.fromEntries(Object.entries(BRAILLE).map(([k, v]) => [v, k]));
+  const BRAILLE_NUM = '⠼', BR_D2L = { '1':'a','2':'b','3':'c','4':'d','5':'e','6':'f','7':'g','8':'h','9':'i','0':'j' }, BR_L2D = { a:'1',b:'2',c:'3',d:'4',e:'5',f:'6',g:'7',h:'8',i:'9',j:'0' };
 
   const fromBase64 = s => {
     let t = s.replace(/\s+/g, '');
@@ -2211,14 +2218,135 @@ const Pipe = (function () {
       word.trim().split(/\s+/).map(code => MORSE[code] || '').join('')
     ).join(' ').trim() || null;
   };
+  const rot5 = s => s.replace(/[0-9]/g, d => String.fromCharCode(48 + (d.charCodeAt(0) - 48 + 5) % 10));
+  const rot18 = s => rot5(rot13(s));       // ROT13 letters + ROT5 digits, self-inverse
+
+  // base64url — only fires when a URL-safe char (- or _) is present, so it
+  // doesn't just duplicate the standard base64 decoder that always runs.
+  const fromBase64Url = s => {
+    let t = s.replace(/\s+/g, '');
+    if (!/^[A-Za-z0-9_-]+={0,2}$/.test(t) || t.length < 4 || !/[-_]/.test(t)) return null;
+    t = t.replace(/-/g, '+').replace(/_/g, '/').replace(/=+$/, '');
+    if (t.length % 4 === 1) return null;
+    while (t.length % 4) t += '=';
+    try { const bin = atob(t); const b = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) b[i] = bin.charCodeAt(i); return CTF.bytesToText(b); }
+    catch (e) { return null; }
+  };
+  // Adobe ASCII85 (<~ … ~>). Raw/undelimited input is only accepted when it
+  // carries a symbol outside the base64 alphabet, to avoid firing on plain text.
+  const fromAscii85 = s => {
+    let t = s.trim(); const wrapped = /^<~[\s\S]*~>$/.test(t);
+    if (wrapped) t = t.slice(2, -2);
+    t = t.replace(/\s+/g, ''); if (!t.length) return null;
+    if (!/^[\x21-\x75z]+$/.test(t)) return null;
+    if (!wrapped && !/[!-*,-<>-@[-`{-~]/.test(t)) return null;
+    const out = []; let i = 0;
+    while (i < t.length) {
+      if (t[i] === 'z') { out.push(0, 0, 0, 0); i++; continue; }
+      let block = t.slice(i, i + 5); const pad = 5 - block.length; block += 'u'.repeat(pad);
+      let num = 0;
+      for (const ch of block) { const v = ch.charCodeAt(0) - 33; if (v < 0 || v > 84) return null; num = num * 85 + v; }
+      if (num > 0xFFFFFFFF) return null;
+      const bytes = [Math.floor(num / 16777216) & 255, Math.floor(num / 65536) & 255, Math.floor(num / 256) & 255, num & 255];
+      for (let k = 0; k < 4 - pad; k++) out.push(bytes[k]);
+      i += 5;
+    }
+    return CTF.bytesToText(new Uint8Array(out));
+  };
+  const fromBase45 = s => {
+    if (/[a-z]/.test(s.trim())) return null;            // base45 is uppercase-only
+    const t = s.trim().toUpperCase();
+    if (!t.length || [...t].some(c => B45.indexOf(c) < 0) || t.length % 3 === 1) return null;
+    const out = [];
+    for (let i = 0; i < t.length; i += 3) {
+      if (i + 3 <= t.length) {
+        const n = B45.indexOf(t[i]) + B45.indexOf(t[i + 1]) * 45 + B45.indexOf(t[i + 2]) * 2025;
+        if (n > 0xFFFF) return null; out.push((n >> 8) & 255, n & 255);
+      } else {
+        const n = B45.indexOf(t[i]) + B45.indexOf(t[i + 1]) * 45;
+        if (n > 0xFF) return null; out.push(n & 255);
+      }
+    }
+    return CTF.bytesToText(new Uint8Array(out));
+  };
+  const fromBase36 = s => {
+    const t = s.trim().toUpperCase();
+    if (!/^[0-9A-Z]+$/.test(t) || t.length < 2 || !/[G-Z]/.test(t)) return null;  // needs G–Z to distinguish from hex/decimal
+    try {
+      let num = 0n; for (const ch of t) num = num * 36n + BigInt(parseInt(ch, 36));
+      const bytes = []; while (num > 0n) { bytes.unshift(Number(num & 255n)); num >>= 8n; }
+      return bytes.length ? CTF.bytesToText(new Uint8Array(bytes)) : null;
+    } catch (e) { return null; }
+  };
+  const fromA1Z26 = s => {
+    const parts = s.trim().split(/[^0-9]+/).filter(Boolean);
+    if (parts.length < 2 || !parts.every(p => +p >= 1 && +p <= 26)) return null;
+    return parts.map(p => String.fromCharCode(64 + +p)).join('');
+  };
+  const fromBacon = s => {                              // 26-letter Baconian, A/B groups of 5
+    const t = s.toUpperCase().replace(/[^AB]/g, '');
+    if (t.length < 5 || t.length % 5) return null;
+    let out = '';
+    for (let i = 0; i < t.length; i += 5) {
+      const n = parseInt(t.slice(i, i + 5).replace(/A/g, '0').replace(/B/g, '1'), 2);
+      if (n > 25) return null; out += String.fromCharCode(65 + n);
+    }
+    return out;
+  };
+  const fromNato = s => {
+    const w = s.toLowerCase().trim().split(/[\s,]+/).filter(Boolean);
+    if (w.length < 2) return null;
+    const m = w.map(x => NATO[x.replace(/-/g, '')]);
+    return m.some(x => x === undefined) ? null : m.join('');
+  };
+  const fromBraille = s => {
+    if (!/[⠀-⣿]/.test(s)) return null;
+    let out = '', num = false;
+    for (const ch of s) {
+      if (ch === BRAILLE_NUM) { num = true; continue; }
+      if (ch === ' ' || ch === '\n') { out += ch; num = false; continue; }
+      const l = BRAILLE[ch];
+      if (l === undefined) { out += /[⠀-⣿]/.test(ch) ? '?' : ch; continue; }
+      if (num && BR_L2D[l]) out += BR_L2D[l]; else { out += l; num = false; }
+    }
+    return out.trim() || null;
+  };
+  const fromHtmlEntities = s => {                       // &#65; &#x41; &amp; … (textarea decodes without executing)
+    if (!/&(#\d+|#x[0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]+);/.test(s)) return null;
+    const ta = document.createElement('textarea'); ta.innerHTML = s;
+    return ta.value === s ? null : ta.value;
+  };
+  const fromUnicodeEscape = s => {                      // \uXXXX \u{XXXX} \xXX U+XXXX
+    if (!/\\u|\\x|U\+/.test(s)) return null;
+    const o = s.replace(/\\u\{([0-9a-fA-F]+)\}/g, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+      .replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+      .replace(/\\x([0-9a-fA-F]{2})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+      .replace(/U\+([0-9a-fA-F]{4,6})/g, (_, h) => String.fromCodePoint(parseInt(h, 16)));
+    return o === s ? null : o;
+  };
+  const fromQuotedPrintable = s => {
+    if (!/=[0-9A-Fa-f]{2}/.test(s)) return null;
+    const t = s.replace(/=\r?\n/g, ''); const bytes = []; let i = 0;
+    while (i < t.length) {
+      if (t[i] === '=' && /^[0-9A-Fa-f]{2}$/.test(t.substr(i + 1, 2))) { bytes.push(parseInt(t.substr(i + 1, 2), 16)); i += 3; }
+      else { bytes.push(t.charCodeAt(i) & 0xFF); i++; }
+    }
+    const out = CTF.bytesToText(new Uint8Array(bytes));
+    return out === s ? null : out;
+  };
 
   const CODECS = [
-    ['from base64', fromBase64, true], ['from base32', fromBase32, true],
-    ['from base58', fromBase58, true], ['from hex', fromHex, true],
+    ['from base64', fromBase64, true], ['from base64url', fromBase64Url, true],
+    ['from base32', fromBase32, true], ['from base58', fromBase58, true],
+    ['from base45', fromBase45, true], ['from base36', fromBase36, true],
+    ['from ascii85', fromAscii85, true], ['from hex', fromHex, true],
     ['from binary', fromBinary, true], ['from decimal', fromDecimal, true],
-    ['url decode', fromUrl, false], ['rot13', rot13, false],
-    ['rot47', rot47, false], ['atbash', atbash, false],
-    ['from morse', fromMorse, true], ['reverse', reverse, false],
+    ['a1z26', fromA1Z26, false], ['from bacon', fromBacon, false],
+    ['from nato', fromNato, false], ['from braille', fromBraille, false],
+    ['html entities', fromHtmlEntities, false], ['unicode escape', fromUnicodeEscape, false],
+    ['quoted-printable', fromQuotedPrintable, false], ['url decode', fromUrl, false],
+    ['rot13', rot13, false], ['rot47', rot47, false], ['rot18', rot18, false],
+    ['atbash', atbash, false], ['from morse', fromMorse, true], ['reverse', reverse, false],
   ];
 
   // --- encoders (the inverse direction) ---
@@ -2242,11 +2370,55 @@ const Pipe = (function () {
   const toUrl = s => encodeURIComponent(s);
   const R_MORSE = Object.fromEntries(Object.entries(MORSE).map(([k, v]) => [v, k]));
   const toMorse = s => s.toUpperCase().split('').map(c => c === ' ' ? '/' : R_MORSE[c]).filter(Boolean).join(' ');
+  const toBase64Url = s => toBase64(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const toAscii85 = s => {
+    const b = bytesOf(s); let out = '<~';
+    for (let i = 0; i < b.length; i += 4) {
+      const block = b.slice(i, i + 4); const pad = 4 - block.length;
+      let num = 0; for (let k = 0; k < 4; k++) num = num * 256 + (block[k] || 0);
+      if (num === 0 && pad === 0) { out += 'z'; continue; }
+      let chars = ''; for (let k = 0; k < 5; k++) { chars = String.fromCharCode(33 + (num % 85)) + chars; num = Math.floor(num / 85); }
+      out += chars.slice(0, 5 - pad);
+    }
+    return out + '~>';
+  };
+  const toBase45 = s => {
+    const b = bytesOf(s); let out = '';
+    for (let i = 0; i < b.length; i += 2) {
+      if (i + 2 <= b.length) { const n = b[i] * 256 + b[i + 1]; out += B45[n % 45] + B45[Math.floor(n / 45) % 45] + B45[Math.floor(n / 2025) % 45]; }
+      else { const n = b[i]; out += B45[n % 45] + B45[Math.floor(n / 45) % 45]; }
+    }
+    return out;
+  };
+  const toBase36 = s => {
+    const b = bytesOf(s); if (!b.length) return '';
+    let num = 0n; for (const x of b) num = num * 256n + BigInt(x);
+    let out = ''; while (num > 0n) { out = B36U[Number(num % 36n)] + out; num /= 36n; }
+    return out || '0';
+  };
+  const toA1Z26 = s => s.toUpperCase().split('').map(c => c >= 'A' && c <= 'Z' ? (c.charCodeAt(0) - 64) : (/\s/.test(c) ? '/' : '')).filter(x => x !== '').join(' ');
+  const toBacon = s => s.toUpperCase().replace(/[^A-Z]/g, '').split('').map(c => (c.charCodeAt(0) - 65).toString(2).padStart(5, '0').replace(/0/g, 'A').replace(/1/g, 'B')).join(' ');
+  const toNato = s => [...s.toUpperCase()].map(c => NATO_ENC[c]).filter(Boolean).join(' ');
+  const toBraille = s => {
+    let out = '', num = false;
+    for (const c of s.toLowerCase()) {
+      if (c >= '0' && c <= '9') { if (!num) { out += BRAILLE_NUM; num = true; } out += BRAILLE_ENC[BR_D2L[c]]; }
+      else { num = false; out += c === ' ' ? '⠀' : (BRAILLE_ENC[c] || ''); }
+    }
+    return out;
+  };
+  const toHtmlEntities = s => [...s].map(c => { const n = c.codePointAt(0); return (n > 126 || n < 32 || '<>&"\''.includes(c)) ? '&#' + n + ';' : c; }).join('');
+  const toUnicodeEscape = s => [...s].map(c => { const n = c.charCodeAt(0); return (n > 126 || n < 32) ? '\\u' + n.toString(16).padStart(4, '0') : c; }).join('');
+  const toQuotedPrintable = s => [...bytesOf(s)].map(b => (b === 61 || b < 32 || b > 126) && b !== 10 && b !== 13 ? '=' + b.toString(16).toUpperCase().padStart(2, '0') : String.fromCharCode(b)).join('');
 
   const ENCODERS = [
-    ['to base64', toBase64], ['to base32', toBase32], ['to base58', toBase58],
-    ['to hex', toHex], ['to binary', toBinary], ['to decimal', toDecimal],
-    ['url encode', toUrl], ['rot13', rot13], ['rot47', rot47],
+    ['to base64', toBase64], ['to base64url', toBase64Url], ['to base32', toBase32],
+    ['to base58', toBase58], ['to base45', toBase45], ['to base36', toBase36],
+    ['to ascii85', toAscii85], ['to hex', toHex], ['to binary', toBinary],
+    ['to decimal', toDecimal], ['a1z26', toA1Z26], ['to bacon', toBacon],
+    ['to nato', toNato], ['to braille', toBraille], ['html entities', toHtmlEntities],
+    ['unicode escape', toUnicodeEscape], ['quoted-printable', toQuotedPrintable],
+    ['url encode', toUrl], ['rot13', rot13], ['rot47', rot47], ['rot18', rot18],
     ['atbash', atbash], ['to morse', toMorse], ['reverse', reverse],
   ];
 
