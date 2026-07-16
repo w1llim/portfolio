@@ -107,6 +107,7 @@ header{
 nav.links{display:flex;gap:clamp(12px,2vw,30px)}
 nav.links a{position:relative;padding:3px 0;color:var(--kraft-dim);transition:color .2s}
 nav.links a:hover{color:var(--phos)}
+nav.links a.current{color:var(--phos)}
 nav.links a::before{content:"/";color:var(--phos);margin-right:5px;opacity:0;transition:opacity .2s}
 nav.links a:hover::before{opacity:1}
 @media(max-width:860px){.status{display:none}}
@@ -200,8 +201,10 @@ h1.name .accent{color:var(--phos);text-shadow:0 0 24px var(--phos-dim)}
 .term-bar .lights i{width:9px;height:9px;border-radius:50%;background:var(--line)}
 .term-bar .lights i:first-child{background:var(--phos);opacity:.7}
 .term-bar{justify-content:space-between}
-.term-min{background:none;border:0;color:var(--kraft-dim);font-family:var(--mono);font-size:13px;line-height:1;cursor:pointer;padding:2px 4px}
-.term-min:hover{color:var(--phos)}
+.term-btns{display:flex;align-items:center;gap:2px}
+.term-min,.term-full{background:none;border:0;color:var(--kraft-dim);font-family:var(--mono);font-size:13px;line-height:1;cursor:pointer;padding:2px 4px}
+.term-min:hover,.term-full:hover{color:var(--phos)}
+.term-full{font-size:14px}
 .term-body{padding:18px 18px 22px;min-height:262px;max-height:320px;overflow-y:auto;color:var(--kraft)}
 .term{cursor:text;position:relative}
 #termKb{position:absolute;width:1px;height:1px;opacity:0;border:0;padding:0}
@@ -222,6 +225,23 @@ h1.name .accent{color:var(--phos);text-shadow:0 0 24px var(--phos-dim)}
 .term.minimized .term-body,.term.minimized #termKb{display:none}
 @media(max-width:600px){.term.docked{right:12px;bottom:12px;width:calc(100vw - 24px)}}
 .term-slot{position:relative}
+
+/* ---------- fullscreen terminal ---------- */
+/* Fills the viewport height, but only grows as wide as the page content
+   (capped to the .wrap max-width). Overrides docked + floating styles. */
+.term.fullscreen{
+  position:fixed;top:0;left:50%;right:auto;bottom:auto;transform:translateX(-50%);
+  z-index:2000;margin:0;animation:none;
+  width:calc(100vw - 40px);max-width:1240px;
+  height:100dvh;max-height:100dvh;
+  display:flex;flex-direction:column;
+  box-shadow:0 0 0 100vmax rgba(6,4,1,.74),0 20px 50px rgba(0,0,0,.6);
+}
+.term.fullscreen .term-body{flex:1 1 auto;min-height:0;max-height:none}
+.term.fullscreen .term-min{display:none}
+body.term-fs-lock{overflow:hidden}
+body.term-fs-lock header{display:none} /* keep the fixed site chrome from bleeding into the terminal's title bar */
+@media(max-width:600px){.term.fullscreen{width:calc(100vw - 16px)}}
 
 .hero-foot{
   display:flex;justify-content:space-between;align-items:center;gap:16px;
@@ -641,6 +661,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <a href="#timeline">Timeline</a>
       <a href="#toolkit">Toolkit</a>
       <a href="ops.html">Ops Lab &#8599;</a>
+      <a href="blog.html">Blog &#8599;</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="status mono"><span class="dot"></span>System online</div>
@@ -670,7 +691,10 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <div class="term" id="termShell" aria-label="Interactive terminal — William's profile boot sequence; type help for commands, cd to navigate">
         <div class="term-bar">
           <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/profile</span>
-          <button type="button" class="term-min" id="termMin" aria-label="Minimize terminal">_</button>
+          <span class="term-btns">
+            <button type="button" class="term-full" id="termFull" aria-label="Fullscreen terminal" title="Fullscreen (or type: fullscreen)">⛶</button>
+            <button type="button" class="term-min" id="termMin" aria-label="Minimize terminal">_</button>
+          </span>
         </div>
         <div class="term-body" id="terminal" aria-hidden="true"></div>
         <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
@@ -1375,9 +1399,11 @@ setTimeout(() => typeLines(), reduceMotion ? 0 : 600);
 const SHELL = {
   help: [
     'available commands:',
-    '  whoami   mission   cadets     kungfu',
-    '  projects majorworks contact   ls   clear',
+    '  whoami   mission     cadets   kungfu   fastfetch',
+    '  projects majorworks  contact  ls       clear',
+    '  fullscreen / windowed — resize the terminal (or use the ⛶ button; esc exits)',
     "  cd <dir> — jump to a section, e.g. cd kungfu. ls to list.",
+    "  cd ops-lab/<stage> — jump to a lab stage. ls ops-lab to list.",
   ],
   whoami: ['william.lam — YEAR 12 // SYDNEY, AU // HSC 2026'],
   mission: [
@@ -1385,15 +1411,41 @@ const SHELL = {
     'MAJORS: cybersecurity mgmt + security engineering',
     'ETA: 2027',
   ],
-  cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100', 'service record: CDTREC 2021 -> CUO 2026'],
+  cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100+', 'service record: CDTREC 2021 -> CUO 2026'],
   kungfu: ['白鶴派 pak hok pai — white crane, since 2020', 'armament: dao (single sabre) // aux: lion dance'],
   contact: [
     'williamlam986@gmail.com',
     'github.com/w1llim // linkedin: in/thew1llim // instagram: willim_2008',
     'status: inbox monitored — open a channel anytime',
   ],
-  ls: ['top/  mission/  coursework/  command/  kungfu/  majorworks/  projects/  timeline/  toolkit/  ops-lab/  contact/'],
+  ls: [
+    'top  mission  coursework  command  kungfu  majorworks  projects  timeline  toolkit  ops-lab/  blog  contact',
+    "ls ops-lab to list the lab's stages",
+  ],
+  'ls ops-lab': ['observe  extract  decode  crypto  synthesize', "cd ops-lab/<stage> to jump to one, e.g. cd ops-lab/decode"],
 };
+SHELL['ls ops-lab/'] = SHELL['ls ops-lab'];
+const STAGES = { observe: 'stage-observe', extract: 'stage-extract', decode: 'stage-decode', crypto: 'stage-crypto', synthesize: 'stage-synthesize' };
+const FASTFETCH = [
+  ['\\_\\  /_/', 'ok'],
+  [' \\ \\/ /', 'ok'],
+  ['  \\  /', 'ok'],
+  ['   \\/', 'ok'],
+  ['', ''],
+  ['william@hsc-2026', ''],
+  ['-----------------', 'dim'],
+  ['OS: HSC 2026 (NSW · Sydney, AU)', ''],
+  ['Host: HAHSACU — Australian Army Cadets', ''],
+  ['Kernel: CUO 6.2026 (Company Commander)', ''],
+  ['Uptime: 6 yrs (2021 → present)', ''],
+  ['Packages: 6 (HSC modules), 7 (projects), 2 (majorworks)', ''],
+  ['Shell: pak-hok-pai — white crane (2020~)', ''],
+  ['CPU: Cybersecurity Mgmt + Security Eng (dual major)', ''],
+  ['Target: UNSW BIS/BCompSc — ETA 2027', ''],
+  ['Locale: en_AU.UTF-8', ''],
+  ['', ''],
+  ['███████████████████', 'ok'],
+];
 const SECTIONS = {
   top: 'top', home: 'top', '~': 'top', '/': 'top',
   mission: 'mission',
@@ -1484,14 +1536,33 @@ function runCommand(raw) {
       jumpToMajorWork(n);
     }
   }
+  else if (cmd === 'fastfetch' || cmd === 'neofetch') {
+    FASTFETCH.forEach(([text, cls]) => shellPrint(text, cls));
+  }
+  else if (cmd === 'fullscreen' || cmd === 'maximize' || cmd === 'fs') {
+    if (termShellEl.classList.contains('fullscreen')) { shellPrint('already fullscreen — type `windowed` or press esc to exit', 'dim'); }
+    else { setFullscreen(true); shellPrint('terminal -> fullscreen // press esc or type `windowed` to exit', 'ok'); }
+  }
+  else if (cmd === 'windowed' || cmd === 'exitfullscreen' || cmd === 'restore' || cmd === 'unmaximize') {
+    if (termShellEl.classList.contains('fullscreen')) { setFullscreen(false); shellPrint('terminal -> windowed', 'dim'); }
+    else { shellPrint('already windowed — type `fullscreen` to expand', 'dim'); }
+  }
   else if (cmd === 'cd' || cmd.startsWith('cd ')) {
     const target = cmd.slice(2).trim().replace(/^~?\/+/, '').replace(/\/+$/, '');
-    if (!target || SECTIONS[target] === 'top') {
+    const stageMatch = target.match(/^(?:ops-lab|ops)\/(.+)$/);
+    if (stageMatch && STAGES[stageMatch[1]]) {
+      shellPrint('redirecting to ops-lab/' + stageMatch[1] + '...', 'dim');
+      setTimeout(() => { window.location.href = 'ops.html#' + STAGES[stageMatch[1]]; }, reduceMotion ? 0 : 450);
+    }
+    else if (!target || SECTIONS[target] === 'top') {
       document.getElementById('top').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       shellPrint('~', 'dim');
     } else if (target === 'ops-lab' || target === 'ops') {
       shellPrint('redirecting to ops-lab...', 'dim');
       setTimeout(() => { window.location.href = 'ops.html'; }, reduceMotion ? 0 : 450);
+    } else if (target === 'blog') {
+      shellPrint('redirecting to blog...', 'dim');
+      setTimeout(() => { window.location.href = 'blog.html'; }, reduceMotion ? 0 : 450);
     } else if (SECTIONS[target]) {
       document.getElementById(SECTIONS[target]).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       shellPrint('~/' + target, 'dim');
@@ -1500,7 +1571,7 @@ function runCommand(raw) {
       shellPrint("type 'ls' to see available directories", 'dim');
     }
   }
-  else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd === 'help' || cmd === 'ls' ? 'dim' : '')); }
+  else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd.startsWith('help') || cmd.startsWith('ls') ? 'dim' : '')); }
   else { shellPrint('sh: command not found: ' + cmd.split(' ')[0], 'dim'); shellPrint("type 'help' for commands", 'dim'); }
   newPromptLine();
 }
@@ -1533,6 +1604,25 @@ termMinBtn.addEventListener('click', e => {
   if (!min) kb.focus({ preventScroll: true });
 });
 
+/* ================= fullscreen toggle ================= */
+const termFullBtn = document.getElementById('termFull');
+function setFullscreen(full) {
+  if (full) setMinimized(false); // can't be minimized + fullscreen at once
+  termShellEl.classList.toggle('fullscreen', full);
+  document.body.classList.toggle('term-fs-lock', full);
+  termFullBtn.textContent = full ? '✕' : '⛶';
+  termFullBtn.setAttribute('aria-label', full ? 'Exit fullscreen terminal' : 'Fullscreen terminal');
+  termFullBtn.setAttribute('title', full ? 'Exit fullscreen (esc, or type: windowed)' : 'Fullscreen (or type: fullscreen)');
+  if (full) { kb.focus({ preventScroll: true }); termEl.scrollTop = termEl.scrollHeight; }
+}
+termFullBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  setFullscreen(!termShellEl.classList.contains('fullscreen'));
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && termShellEl.classList.contains('fullscreen')) setFullscreen(false);
+});
+
 /* ================= scroll reveals / bars / stamp / badge ================= */
 const io = new IntersectionObserver(entries => {
   entries.forEach(e => {
@@ -1548,11 +1638,12 @@ const countIO = new IntersectionObserver(entries => {
     if (!e.isIntersecting) return;
     countIO.unobserve(countEl);
     const target = +countEl.dataset.target;
-    if (reduceMotion) { countEl.textContent = target; return; }
+    if (reduceMotion) { countEl.textContent = target + '+'; return; }
     const start = performance.now(), dur = 1600;
     (function frame(now) {
       const p = Math.min((now - start) / dur, 1);
-      countEl.textContent = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      const val = Math.round(target * (1 - Math.pow(1 - p, 3)));
+      countEl.textContent = p < 1 ? val : val + '+';
       if (p < 1) requestAnimationFrame(frame);
     })(start);
   });

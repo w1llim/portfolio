@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ops Lab — William Lam</title>
-<meta name="description" content="Interactive security &amp; CTF lab — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool. All client-side; nothing is uploaded.">
+<meta name="description" content="Interactive security &amp; CTF lab, ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool. All client-side; nothing is uploaded.">
 <link rel="canonical" href="https://w1llim.github.io/portfolio/ops.html">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Ops Lab — William Lam">
-<meta property="og:description" content="Twenty-one interactive security &amp; CTF modules — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool.">
+<meta property="og:description" content="Twenty-one interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://w1llim.github.io/portfolio/ops.html">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ops Lab — William Lam">
-<meta name="twitter:description" content="Twenty-one interactive security &amp; CTF modules — packet monitor, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, password audit, port-scan sim, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, JWT decoder, RSA toy solver, timestamp converter, a magic multi-codec decoder, single-byte XOR brute-forcer, hash identifier, a hexdump/strings file analyzer, flag hunter, QR decoder, grep pattern search and a diff/compare tool.">
+<meta name="twitter:description" content="Twenty-one interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
 <meta name="theme-color" content="#211A10">
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -89,6 +89,7 @@ header{
 nav.links{display:flex;gap:clamp(12px,2vw,30px)}
 nav.links a{position:relative;padding:3px 0;color:var(--kraft-dim);transition:color .2s}
 nav.links a:hover{color:var(--phos)}
+nav.links a.current{color:var(--phos)}
 nav.links a::before{content:"/";color:var(--phos);margin-right:5px;opacity:0;transition:opacity .2s}
 nav.links a:hover::before{opacity:1}
 @media(max-width:860px){.status{display:none}}
@@ -257,6 +258,24 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 /* ops lab · rows 3-4 */
 .ops-solo{margin-top:20px}
 .ops-grid3{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px;align-items:stretch}
+
+/* stage dividers — label the pipeline: observe → extract → decode → crypto → synthesize */
+.ops-stage{
+  display:flex;align-items:center;gap:14px;scroll-margin-top:78px;
+  margin:clamp(48px,7vw,84px) 0 20px;
+  font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--kraft-dim);
+}
+.ops-stage::after{content:"";flex:1;height:1px;background:var(--line)}
+.ops-stage b{color:var(--phos);font-weight:400;white-space:nowrap}
+.sec-head+.ops-stage{margin-top:0}
+/* below ~640px the stage blurb no longer fits beside the nowrap label —
+   letting it wrap in-line centers it against the tall wrapped block and
+   reads as broken, so stack label and blurb on their own full-width rows */
+@media(max-width:640px){
+  .ops-stage{flex-wrap:wrap;align-items:flex-start;row-gap:6px}
+  .ops-stage::after{display:none}
+  .ops-stage .note{flex-basis:100%}
+}
 
 /* metadata inspector (exiftool) */
 .exif-drop{
@@ -511,6 +530,16 @@ textarea[readonly]:focus{border-color:var(--line)}
 @media(max-width:940px){.ops-grid,.ops-grid2,.ops-grid3{grid-template-columns:1fr}}
 @media(max-width:720px){.exif-grid,.dump-grid{grid-template-columns:1fr}}
 
+/* on narrow screens the status badge (esp. dynamic text like "THREAT
+   BLOCKED") crowds the module title into an unreadable ellipsis clip —
+   let the title wrap onto its own line instead of truncating */
+@media(max-width:560px){
+  .panel .term-bar{flex-wrap:wrap;row-gap:4px}
+  .panel .term-bar>span:first-child{
+    white-space:normal;overflow:visible;text-overflow:clip;flex-basis:100%;
+  }
+}
+
 /* ---------- footer ---------- */
 footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40px,6vw,80px)}
 .foot-meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;color:var(--kraft-dim)}
@@ -550,8 +579,10 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 .term-bar .lights{display:flex;gap:6px;margin-right:6px}
 .term-bar .lights i{width:9px;height:9px;border-radius:50%;background:var(--line)}
 .term-bar .lights i:first-child{background:var(--phos);opacity:.7}
-.term-min{background:none;border:0;color:var(--kraft-dim);font-family:var(--mono);font-size:13px;line-height:1;cursor:pointer;padding:2px 4px}
-.term-min:hover{color:var(--phos)}
+.term-btns{display:flex;align-items:center;gap:2px}
+.term-min,.term-full{background:none;border:0;color:var(--kraft-dim);font-family:var(--mono);font-size:13px;line-height:1;cursor:pointer;padding:2px 4px}
+.term-min:hover,.term-full:hover{color:var(--phos)}
+.term-full{font-size:14px}
 .term-body{padding:18px 18px 22px;color:var(--kraft);overflow-y:auto}
 .term{cursor:text;position:relative}
 #termKb{position:absolute;width:1px;height:1px;opacity:0;border:0;padding:0}
@@ -569,6 +600,21 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 .term.docked .term-body{min-height:0;max-height:38vh}
 .term.minimized .term-body,.term.minimized #termKb{display:none}
 @media(max-width:600px){.term.docked{right:12px;bottom:12px;width:calc(100vw - 24px)}}
+
+/* fullscreen terminal — fills the viewport height, capped to the content width */
+.term.fullscreen{
+  position:fixed;top:0;left:50%;right:auto;bottom:auto;transform:translateX(-50%);
+  z-index:2000;margin:0;
+  width:calc(100vw - 40px);max-width:1240px;
+  height:100dvh;max-height:100dvh;
+  display:flex;flex-direction:column;
+  box-shadow:0 0 0 100vmax rgba(6,4,1,.74),0 20px 50px rgba(0,0,0,.6);
+}
+.term.fullscreen .term-body{flex:1 1 auto;min-height:0;max-height:none}
+.term.fullscreen .term-min{display:none}
+body.term-fs-lock{overflow:hidden}
+body.term-fs-lock header{display:none}
+@media(max-width:600px){.term.fullscreen{width:calc(100vw - 16px)}}
 </style>
 </head>
 <body>
@@ -576,7 +622,10 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 <div class="term docked minimized" id="termShell" aria-label="Interactive terminal — type help for commands, cd to navigate">
   <div class="term-bar">
     <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/ops-lab</span>
-    <button type="button" class="term-min" id="termMin" aria-label="Restore terminal">▢</button>
+    <span class="term-btns">
+      <button type="button" class="term-full" id="termFull" aria-label="Fullscreen terminal" title="Fullscreen (or type: fullscreen)">⛶</button>
+      <button type="button" class="term-min" id="termMin" aria-label="Restore terminal">▢</button>
+    </span>
   </div>
   <div class="term-body" id="terminal" aria-hidden="true"></div>
   <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
@@ -594,6 +643,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       <a href="index.html#projects">Projects</a>
       <a href="index.html#timeline">Timeline</a>
       <a href="index.html#toolkit">Toolkit</a>
+      <a class="current" href="ops.html" aria-current="page">Ops Lab</a>
+      <a href="blog.html">Blog &#8599;</a>
       <a href="index.html#contact">Contact</a>
     </nav>
     <div class="status mono"><span class="dot"></span>Lab online</div>
@@ -611,6 +662,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       <span class="count">21 live modules · Interactive</span>
     </div>
 
+    <div class="ops-stage reveal" id="stage-observe"><b>stage 01 · observe</b> <span class="note">— watch the perimeter, map the range</span></div>
+
     <div class="ops-grid">
 
       <!-- packet monitor -->
@@ -627,167 +680,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
         </div>
       </div>
 
-      <!-- caesar cipher -->
-      <div class="panel cipher reveal d1">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>caesar --interactive</span>
-          <span class="right">ROT-N</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="cipherIn">Plaintext / ciphertext</label>
-            <textarea id="cipherIn" spellcheck="false">Meet at the flagpole at 0900.</textarea>
-          </div>
-          <div>
-            <label for="cipherShift">Shift key</label>
-            <div class="shift-row">
-              <input type="range" id="cipherShift" min="0" max="25" value="3">
-              <div class="shift-val" id="shiftVal">+3</div>
-            </div>
-          </div>
-          <div class="mode-row" role="group" aria-label="Cipher mode">
-            <button class="mode-btn active" id="modeEnc" type="button">Encrypt ▸</button>
-            <button class="mode-btn" id="modeDec" type="button">◂ Decrypt</button>
-          </div>
-          <div class="alpha-map" id="alphaMap" aria-hidden="true"></div>
-          <div>
-            <label for="cipherOut">Output</label>
-            <div class="cipher-out" id="cipherOut" aria-live="polite"></div>
-          </div>
-          <button type="button" class="pipe-btn copy-btn" data-copy-target="cipherOut">⧉ copy</button>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- vigenère cracker -->
-    <div class="ops-solo">
-      <div class="panel reveal">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>vigenere --crack · IC + chi-squared</span>
-          <span class="right" id="vigStatus">READY</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="vigIn">Ciphertext — polyalphabetic substitution, key repeats over the letters</label>
-            <textarea id="vigIn" spellcheck="false" style="min-height:110px">VYC FNWEB ZGHKP WMM CIOGQ DOST KFT EOBP BDZ KJZJT MVG JCRKSV RETGH OVCIL VKJ ADGHCTR PM HJV MAW ZKSPPKM PVYG MVG IGKXF DVDDKS OZBCBUJK YCW HJV NPVYCXC BNGV SC SXZKMCGXR YZRWHIV RLN WSNRW QXTQIC IAS GECBR PTVYZL HJV AXIVGI YCW RKJADOSTJ MJK DNRLH YCT KFT YZCX RWX EWZAZ UFQNL UHL LLKEL CXVP IAS NRXN WCI NFXES VYC HXQTVR PZSPK KTXHU YGH VCPKYRM OV KFT HZF CGQKOTP LTTF VYC GBJGI ZTYCTV KXWBKXFI TBF KFT IOEBYVX AWJR QX RGCGKXFGU UXMVQLR PGM FVJPR PGWMGX HJV CCXAA SPTTYU KFT VWRYCG TBF UGHVCXVPH HIT GJPGG HFP IAS UVADGR HCYV AWFUCC ASTV RDH GQ KFPM TTVOJXBEP YCTZAJGH AOU VLDNUJ JGVGON KM LHFM NGIA FGCGPUZA VTTG CP R QWHFV BCN ESPXRW EWMV RWBG QEC</textarea>
-          </div>
-          <button type="button" class="btn" id="vigAnalyze">Analyse key length ▸</button>
-          <div>
-            <label id="vigLensLabel" style="display:none">Candidate key lengths, ranked by index of coincidence — pick one to attempt a crack</label>
-            <div class="vig-lens" id="vigLens"></div>
-          </div>
-          <div style="display:none" id="vigKeyRow">
-            <label for="vigKey">Recovered key — edit by hand to nudge a near-miss crack</label>
-            <input id="vigKey" type="text" autocomplete="off" spellcheck="false">
-          </div>
-          <div>
-            <label for="vigOut">Decoded plaintext</label>
-            <div class="cipher-out" id="vigOut">—</div>
-          </div>
-          <div class="copy-row">
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="vigOut">⧉ copy plaintext</button>
-          </div>
-          <div class="panel-note" id="vigMeta">// index of coincidence ranks candidate key lengths; each is then broken column-by-column with chi-squared English scoring — approximate on short or skewed text</div>
-        </div>
-      </div>
-    </div>
-
-    <!-- frequency analysis + substitution solver -->
-    <div class="ops-solo">
-      <div class="panel reveal">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span><span id="freqTitle">freq --analyze · substitution solver</span></span>
-          <span class="right" id="freqStatus">READY</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="freqSrc">stdin — analyse your own text, or pipe in another tool's output</label>
-            <select id="freqSrc" class="grep-src">
-              <option value="paste">paste · type your own text below</option>
-              <option value="strings">strings · xxd + strings file analyzer</option>
-              <option value="magic">magic --decode · every codec's output</option>
-              <option value="xor">xor --brute · candidate plaintexts</option>
-              <option value="hexdump">xxd · raw hex dump</option>
-            </select>
-          </div>
-          <div>
-            <label for="freqIn" id="freqInLabel">Ciphertext — classic monoalphabetic substitution</label>
-            <textarea id="freqIn" spellcheck="false">ZIOL OL Q ESQLLOE LXWLZOZXZOGF EOHITK VITKT TCTKN STZZTK DQHL ZG Q ROYYTKTFZ STZZTK EGFLOLZTFZSN ZIKGXUIGXZ ZIT VIGST DTLLQUT LG ZIQZ YKTJXTFEN QFQSNLOL EQF EKQEA OZ ZIT DGLZ EGDDGF STZZTK OF TFUSOLI OL T YGSSGVTR WN Z Q G QFR O YSQU OL YSQU{YK3JX3FEN_C1LX4S1M3R}</textarea>
-          </div>
-          <div class="freq-bars" id="freqBars" aria-hidden="true"></div>
-          <div class="mode-row" style="gap:8px">
-            <button type="button" class="btn ghost" id="freqGuess" style="flex:1">Quick-guess by frequency ▸</button>
-            <button type="button" class="btn ghost" id="freqClear" style="flex:1">Clear mapping</button>
-          </div>
-          <div>
-            <label>Substitution key — cipher letter above, your plaintext guess below</label>
-            <div class="subst-grid" id="substGrid"></div>
-          </div>
-          <div>
-            <label for="freqOut">Decoded preview</label>
-            <div class="cipher-out" id="freqOut">—</div>
-          </div>
-          <div class="copy-row">
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="freqOut">⧉ copy preview</button>
-          </div>
-          <div class="panel-note">// quick-guess maps observed letters onto English frequency order (ETAOIN…) as a starting point — refine it by hand</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="ops-grid2">
-
-      <!-- sha-256 avalanche -->
-      <div class="panel reveal">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>sha256 --avalanche</span>
-          <span class="right">WEB CRYPTO</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="hashIn">Message</label>
-            <textarea id="hashIn" spellcheck="false">Attack at dawn</textarea>
-          </div>
-          <div>
-            <label for="hashOut">SHA-256 digest · 256 bits</label>
-            <div class="hash-out" id="hashOut"></div>
-          </div>
-          <button type="button" class="pipe-btn copy-btn" data-copy-target="hashOut">⧉ copy</button>
-          <div class="hash-bits" id="hashBits" aria-hidden="true"></div>
-          <div class="panel-note" id="hashStat">// edit one character — watch ~half the bits flip</div>
-        </div>
-      </div>
-
-      <!-- password audit -->
-      <div class="panel reveal d1">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>passwd --audit · offline</span>
-          <span class="right">100 GH/s</span>
-        </div>
-        <div class="panel-body">
-          <div>
-            <label for="pwIn">Test passphrase — invent one, not your real creds</label>
-            <input id="pwIn" type="text" autocomplete="off" spellcheck="false" maxlength="64" placeholder="hunter2">
-          </div>
-          <div class="pw-chips" aria-hidden="true">
-            <span id="cLow">a–z</span><span id="cUp">A–Z</span><span id="cDig">0–9</span><span id="cSym">#!?</span>
-          </div>
-          <div>
-            <div class="pw-rail"><div class="pw-fill" id="pwFill"></div></div>
-            <div class="pw-verdict" id="pwVerdict" aria-live="polite">// awaiting input</div>
-          </div>
-          <dl class="svc-record" style="margin-top:0">
-            <div><dt>Entropy</dt><dd id="pwBits">0 bits</dd></div>
-            <div><dt>Charset pool</dt><dd id="pwPool">0 symbols</dd></div>
-            <div><dt>Offline crack time</dt><dd class="hl" id="pwCrack">—</dd></div>
-          </dl>
-          <div class="panel-note">// runs 100% in-browser — nothing leaves this page</div>
-        </div>
-      </div>
-
       <!-- recon scan simulation -->
-      <div class="panel reveal d2">
+      <div class="panel reveal d1">
         <div class="term-bar">
           <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>recon --sim · training range</span>
           <span class="right" id="scanStatus">IDLE</span>
@@ -798,6 +692,44 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
         </div>
       </div>
 
+    </div>
+
+    <div class="ops-stage reveal" id="stage-extract"><b>stage 02 · extract</b> <span class="note">— drop an artifact; strings, metadata, coordinates &amp; hidden payloads come out, ready to pipe downstream</span></div>
+
+    <!-- hexdump + strings -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>xxd + strings · drop a file</span>
+          <span class="right" id="dumpStatus">NO FILE</span>
+        </div>
+        <div class="panel-body">
+          <label class="exif-drop" id="dumpDrop" for="dumpFile" tabindex="0" role="button" aria-label="Choose or drop any file to hex-dump it and extract strings">
+            <b>Drop any file · or click to browse</b>
+            Hex-dumped and scanned for printable strings in your browser —
+            the first move on any mystery CTF file. Nothing is uploaded.
+          </label>
+          <input type="file" id="dumpFile" style="display:none">
+          <div class="dump-grid" id="dumpResult" hidden>
+            <div class="dump-col">
+              <h5><span>Hex dump</span><span id="dumpRange"></span></h5>
+              <div class="dump-out" id="dumpOut"></div>
+              <div class="copy-row" style="margin-top:8px">
+                <button type="button" class="pipe-btn" data-pipe="hexdump">xxd ▸ grep</button>
+                <button type="button" class="pipe-btn copy-btn" data-copy-target="dumpOut">⧉ copy</button>
+              </div>
+            </div>
+            <div class="dump-col">
+              <h5><span>Strings ≥ 4</span><span id="dumpStrCount"></span></h5>
+              <div class="strings-out" id="stringsOut"></div>
+              <div class="copy-row" style="margin-top:8px">
+                <button type="button" class="pipe-btn" data-pipe="strings">strings ▸ grep</button>
+                <button type="button" class="pipe-btn copy-btn" data-copy-target="stringsOut">⧉ copy</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- metadata inspector (exiftool) -->
@@ -911,85 +843,35 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       </div>
     </div>
 
-    <!-- jwt decoder -->
+    <!-- qr code decoder -->
     <div class="ops-solo">
       <div class="panel reveal">
         <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>jwt --decode · no verify</span>
-          <span class="right" id="jwtAlg">—</span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>qr --decode · drop an image</span>
+          <span class="right" id="qrStatus">NO FILE</span>
         </div>
         <div class="panel-body">
-          <div>
-            <label for="jwtIn">Paste a JSON Web Token</label>
-            <textarea id="jwtIn" spellcheck="false">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3aWxsaWFtLmxhbSIsInJvbGUiOiJjdW8iLCJ1bml0IjoiSEFIU0FDVSIsImlhdCI6MTc4NDAwMDAwMCwiZXhwIjoxNzg0MDg2NDAwfQ.3q0Z8kY2mF4wJ1nQh6xVd9pRsLtCzE7bAoIuKgWyN5M</textarea>
+          <label class="exif-drop" id="qrDrop" for="qrFile" tabindex="0" role="button" aria-label="Choose or drop an image containing a QR code to decode it">
+            <b>Drop a QR code · or click to browse</b>
+            Located and decoded in your browser via jsQR. Nothing is uploaded.
+          </label>
+          <input type="file" id="qrFile" accept="image/*" style="display:none">
+          <div id="qrResult" hidden>
+            <div style="display:flex;gap:14px;align-items:flex-start;margin-top:14px">
+              <div class="stego-preview" id="qrPreviewWrap"><img id="qrPreview" alt="Preview of the dropped image"></div>
+              <div style="flex:1;min-width:0">
+                <label for="qrOut">Decoded payload</label>
+                <div class="cipher-out" id="qrOut">—</div>
+              </div>
+            </div>
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="qrOut" style="margin-top:12px">⧉ copy payload</button>
           </div>
-          <div class="jwt-part head"><div class="lab">Header</div><pre id="jwtHead">—</pre></div>
-          <div class="jwt-part body"><div class="lab">Payload</div><pre id="jwtBody">—</pre></div>
-          <div class="copy-row">
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="jwtHead">⧉ copy header</button>
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="jwtBody">⧉ copy payload</button>
-          </div>
-          <div class="panel-note" id="jwtMeta">// signature is never verified — decode only</div>
+          <div class="panel-note">// finder-pattern detection, perspective correction and Reed-Solomon error correction — all client-side</div>
         </div>
       </div>
     </div>
 
-    <div class="ops-grid3">
-
-      <!-- rsa toy solver -->
-      <div class="panel reveal">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>rsa --toy · small-n textbook RSA</span>
-          <span class="right" id="rsaStatus">READY</span>
-        </div>
-        <div class="panel-body">
-          <div class="rsa-fields">
-            <div>
-              <label for="rsaN">n</label>
-              <input id="rsaN" type="text" autocomplete="off" spellcheck="false" value="10256211210943">
-            </div>
-            <div>
-              <label for="rsaE">e</label>
-              <input id="rsaE" type="text" autocomplete="off" spellcheck="false" value="65537">
-            </div>
-            <div>
-              <label for="rsaC">c</label>
-              <input id="rsaC" type="text" autocomplete="off" spellcheck="false" value="3580763390261">
-            </div>
-          </div>
-          <button type="button" class="btn" id="rsaRun">Factor n &amp; decrypt ▸</button>
-          <dl class="svc-record" id="rsaResult"></dl>
-          <div class="copy-row">
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="rsaMsgText" style="display:none" id="rsaCopyBtn">⧉ copy message</button>
-          </div>
-          <div class="panel-note" id="rsaMeta">// Pollard's rho + Miller-Rabin, entirely client-side — only tractable because this n is deliberately small; that's the whole point of RSA key sizes</div>
-        </div>
-      </div>
-
-      <!-- timestamp / epoch converter -->
-      <div class="panel reveal d1">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>date --epoch · timestamp converter</span>
-          <span class="right" id="tsStatus">—</span>
-        </div>
-        <div class="panel-body">
-          <div class="ts-fields">
-            <div>
-              <label for="tsEpoch">Epoch (seconds or ms)</label>
-              <input id="tsEpoch" type="text" autocomplete="off" spellcheck="false" placeholder="1784000000">
-            </div>
-            <div>
-              <label for="tsLocal">Date &amp; time</label>
-              <input id="tsLocal" type="datetime-local" step="1">
-            </div>
-          </div>
-          <button type="button" class="btn ghost" id="tsNow" style="text-align:center">Use current time ▸</button>
-          <dl class="svc-record" id="tsResult"></dl>
-          <div class="panel-note">// edit either field — the other updates live; useful for correlating JWT iat/exp and log timestamps</div>
-        </div>
-      </div>
-
-    </div>
+    <div class="ops-stage reveal" id="stage-decode"><b>stage 03 · decode</b> <span class="note">— feed extracted blobs through every codec, then escalate: single shift → single byte → repeating key → full substitution</span></div>
 
     <!-- cipher multitool / magic decoder -->
     <div class="ops-solo">
@@ -1041,6 +923,140 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
         </div>
       </div>
 
+      <!-- caesar cipher -->
+      <div class="panel cipher reveal d1">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>caesar --interactive</span>
+          <span class="right">ROT-N</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="cipherIn">Plaintext / ciphertext</label>
+            <textarea id="cipherIn" spellcheck="false">Meet at the flagpole at 0900.</textarea>
+          </div>
+          <div>
+            <label for="cipherShift">Shift key</label>
+            <div class="shift-row">
+              <input type="range" id="cipherShift" min="0" max="25" value="3">
+              <div class="shift-val" id="shiftVal">+3</div>
+            </div>
+          </div>
+          <div class="mode-row" role="group" aria-label="Cipher mode">
+            <button class="mode-btn active" id="modeEnc" type="button">Encrypt ▸</button>
+            <button class="mode-btn" id="modeDec" type="button">◂ Decrypt</button>
+          </div>
+          <div class="alpha-map" id="alphaMap" aria-hidden="true"></div>
+          <div>
+            <label for="cipherOut">Output</label>
+            <div class="cipher-out" id="cipherOut" aria-live="polite"></div>
+          </div>
+          <button type="button" class="pipe-btn copy-btn" data-copy-target="cipherOut">⧉ copy</button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- vigenère cracker -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>vigenere --crack · IC + chi-squared</span>
+          <span class="right" id="vigStatus">READY</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="vigIn">Ciphertext — polyalphabetic substitution, key repeats over the letters</label>
+            <textarea id="vigIn" spellcheck="false" style="min-height:110px">VYC FNWEB ZGHKP WMM CIOGQ DOST KFT EOBP BDZ KJZJT MVG JCRKSV RETGH OVCIL VKJ ADGHCTR PM HJV MAW ZKSPPKM PVYG MVG IGKXF DVDDKS OZBCBUJK YCW HJV NPVYCXC BNGV SC SXZKMCGXR YZRWHIV RLN WSNRW QXTQIC IAS GECBR PTVYZL HJV AXIVGI YCW RKJADOSTJ MJK DNRLH YCT KFT YZCX RWX EWZAZ UFQNL UHL LLKEL CXVP IAS NRXN WCI NFXES VYC HXQTVR PZSPK KTXHU YGH VCPKYRM OV KFT HZF CGQKOTP LTTF VYC GBJGI ZTYCTV KXWBKXFI TBF KFT IOEBYVX AWJR QX RGCGKXFGU UXMVQLR PGM FVJPR PGWMGX HJV CCXAA SPTTYU KFT VWRYCG TBF UGHVCXVPH HIT GJPGG HFP IAS UVADGR HCYV AWFUCC ASTV RDH GQ KFPM TTVOJXBEP YCTZAJGH AOU VLDNUJ JGVGON KM LHFM NGIA FGCGPUZA VTTG CP R QWHFV BCN ESPXRW EWMV RWBG QEC</textarea>
+          </div>
+          <button type="button" class="btn" id="vigAnalyze">Analyse key length ▸</button>
+          <div>
+            <label id="vigLensLabel" style="display:none">Candidate key lengths, ranked by index of coincidence — pick one to attempt a crack</label>
+            <div class="vig-lens" id="vigLens"></div>
+          </div>
+          <div style="display:none" id="vigKeyRow">
+            <label for="vigKey">Recovered key — edit by hand to nudge a near-miss crack</label>
+            <input id="vigKey" type="text" autocomplete="off" spellcheck="false">
+          </div>
+          <div>
+            <label for="vigOut">Decoded plaintext</label>
+            <div class="cipher-out" id="vigOut">—</div>
+          </div>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="vigOut">⧉ copy plaintext</button>
+          </div>
+          <div class="panel-note" id="vigMeta">// index of coincidence ranks candidate key lengths; each is then broken column-by-column with chi-squared English scoring — approximate on short or skewed text</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- frequency analysis + substitution solver -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span><span id="freqTitle">freq --analyze · substitution solver</span></span>
+          <span class="right" id="freqStatus">READY</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="freqSrc">stdin — analyse your own text, or pipe in another tool's output</label>
+            <select id="freqSrc" class="grep-src">
+              <option value="paste">paste · type your own text below</option>
+              <option value="strings">strings · xxd + strings file analyzer</option>
+              <option value="magic">magic --decode · every codec's output</option>
+              <option value="xor">xor --brute · candidate plaintexts</option>
+              <option value="hexdump">xxd · raw hex dump</option>
+            </select>
+          </div>
+          <div>
+            <label for="freqIn" id="freqInLabel">Ciphertext — classic monoalphabetic substitution</label>
+            <textarea id="freqIn" spellcheck="false">ZIOL OL Q ESQLLOE LXWLZOZXZOGF EOHITK VITKT TCTKN STZZTK DQHL ZG Q ROYYTKTFZ STZZTK EGFLOLZTFZSN ZIKGXUIGXZ ZIT VIGST DTLLQUT LG ZIQZ YKTJXTFEN QFQSNLOL EQF EKQEA OZ ZIT DGLZ EGDDGF STZZTK OF TFUSOLI OL T YGSSGVTR WN Z Q G QFR O YSQU OL YSQU{YK3JX3FEN_C1LX4S1M3R}</textarea>
+          </div>
+          <div class="freq-bars" id="freqBars" aria-hidden="true"></div>
+          <div class="mode-row" style="gap:8px">
+            <button type="button" class="btn ghost" id="freqGuess" style="flex:1">Quick-guess by frequency ▸</button>
+            <button type="button" class="btn ghost" id="freqClear" style="flex:1">Clear mapping</button>
+          </div>
+          <div>
+            <label>Substitution key — cipher letter above, your plaintext guess below</label>
+            <div class="subst-grid" id="substGrid"></div>
+          </div>
+          <div>
+            <label for="freqOut">Decoded preview</label>
+            <div class="cipher-out" id="freqOut">—</div>
+          </div>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="freqOut">⧉ copy preview</button>
+          </div>
+          <div class="panel-note">// quick-guess maps observed letters onto English frequency order (ETAOIN…) as a starting point — refine it by hand</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ops-stage reveal" id="stage-crypto"><b>stage 04 · crypto &amp; identity</b> <span class="note">— hash it, name it, audit it · break a toy key, read a token, pin its timestamps</span></div>
+
+    <div class="ops-grid2">
+
+      <!-- sha-256 avalanche -->
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>sha256 --avalanche</span>
+          <span class="right">WEB CRYPTO</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="hashIn">Message</label>
+            <textarea id="hashIn" spellcheck="false">Attack at dawn</textarea>
+          </div>
+          <div>
+            <label for="hashOut">SHA-256 digest · 256 bits</label>
+            <div class="hash-out" id="hashOut"></div>
+          </div>
+          <button type="button" class="pipe-btn copy-btn" data-copy-target="hashOut">⧉ copy</button>
+          <div class="hash-bits" id="hashBits" aria-hidden="true"></div>
+          <div class="panel-note" id="hashStat">// edit one character — watch ~half the bits flip</div>
+        </div>
+      </div>
+
       <!-- hash identifier -->
       <div class="panel reveal d1">
         <div class="term-bar">
@@ -1058,47 +1074,119 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
         </div>
       </div>
 
+      <!-- password audit -->
+      <div class="panel reveal d2">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>passwd --audit · offline</span>
+          <span class="right">100 GH/s</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="pwIn">Test passphrase — invent one, not your real creds</label>
+            <input id="pwIn" type="text" autocomplete="off" spellcheck="false" maxlength="64" placeholder="hunter2">
+          </div>
+          <div class="pw-chips" aria-hidden="true">
+            <span id="cLow">a–z</span><span id="cUp">A–Z</span><span id="cDig">0–9</span><span id="cSym">#!?</span>
+          </div>
+          <div>
+            <div class="pw-rail"><div class="pw-fill" id="pwFill"></div></div>
+            <div class="pw-verdict" id="pwVerdict" aria-live="polite">// awaiting input</div>
+          </div>
+          <dl class="svc-record" style="margin-top:0">
+            <div><dt>Entropy</dt><dd id="pwBits">0 bits</dd></div>
+            <div><dt>Charset pool</dt><dd id="pwPool">0 symbols</dd></div>
+            <div><dt>Offline crack time</dt><dd class="hl" id="pwCrack">—</dd></div>
+          </dl>
+          <div class="panel-note">// runs 100% in-browser — nothing leaves this page</div>
+        </div>
+      </div>
+
     </div>
 
-    <!-- hexdump + strings -->
+    <!-- rsa toy solver -->
     <div class="ops-solo">
       <div class="panel reveal">
         <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>xxd + strings · drop a file</span>
-          <span class="right" id="dumpStatus">NO FILE</span>
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>rsa --toy · small-n textbook RSA</span>
+          <span class="right" id="rsaStatus">READY</span>
         </div>
         <div class="panel-body">
-          <label class="exif-drop" id="dumpDrop" for="dumpFile" tabindex="0" role="button" aria-label="Choose or drop any file to hex-dump it and extract strings">
-            <b>Drop any file · or click to browse</b>
-            Hex-dumped and scanned for printable strings in your browser —
-            the first move on any mystery CTF file. Nothing is uploaded.
-          </label>
-          <input type="file" id="dumpFile" style="display:none">
-          <div class="dump-grid" id="dumpResult" hidden>
-            <div class="dump-col">
-              <h5><span>Hex dump</span><span id="dumpRange"></span></h5>
-              <div class="dump-out" id="dumpOut"></div>
-              <div class="copy-row" style="margin-top:8px">
-                <button type="button" class="pipe-btn" data-pipe="hexdump">xxd ▸ grep</button>
-                <button type="button" class="pipe-btn copy-btn" data-copy-target="dumpOut">⧉ copy</button>
-              </div>
+          <div class="rsa-fields">
+            <div>
+              <label for="rsaN">n</label>
+              <input id="rsaN" type="text" autocomplete="off" spellcheck="false" value="10256211210943">
             </div>
-            <div class="dump-col">
-              <h5><span>Strings ≥ 4</span><span id="dumpStrCount"></span></h5>
-              <div class="strings-out" id="stringsOut"></div>
-              <div class="copy-row" style="margin-top:8px">
-                <button type="button" class="pipe-btn" data-pipe="strings">strings ▸ grep</button>
-                <button type="button" class="pipe-btn copy-btn" data-copy-target="stringsOut">⧉ copy</button>
-              </div>
+            <div>
+              <label for="rsaE">e</label>
+              <input id="rsaE" type="text" autocomplete="off" spellcheck="false" value="65537">
+            </div>
+            <div>
+              <label for="rsaC">c</label>
+              <input id="rsaC" type="text" autocomplete="off" spellcheck="false" value="3580763390261">
             </div>
           </div>
+          <button type="button" class="btn" id="rsaRun">Factor n &amp; decrypt ▸</button>
+          <dl class="svc-record" id="rsaResult"></dl>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="rsaMsgText" style="display:none" id="rsaCopyBtn">⧉ copy message</button>
+          </div>
+          <div class="panel-note" id="rsaMeta">// Pollard's rho + Miller-Rabin, entirely client-side — only tractable because this n is deliberately small; that's the whole point of RSA key sizes</div>
         </div>
       </div>
     </div>
 
     <div class="ops-grid3">
 
-      <!-- flag format hunter -->
+      <!-- jwt decoder -->
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>jwt --decode · no verify</span>
+          <span class="right" id="jwtAlg">—</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="jwtIn">Paste a JSON Web Token</label>
+            <textarea id="jwtIn" spellcheck="false">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ3aWxsaWFtLmxhbSIsInJvbGUiOiJjdW8iLCJ1bml0IjoiSEFIU0FDVSIsImlhdCI6MTc4NDAwMDAwMCwiZXhwIjoxNzg0MDg2NDAwfQ.3q0Z8kY2mF4wJ1nQh6xVd9pRsLtCzE7bAoIuKgWyN5M</textarea>
+          </div>
+          <div class="jwt-part head"><div class="lab">Header</div><pre id="jwtHead">—</pre></div>
+          <div class="jwt-part body"><div class="lab">Payload</div><pre id="jwtBody">—</pre></div>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="jwtHead">⧉ copy header</button>
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="jwtBody">⧉ copy payload</button>
+          </div>
+          <div class="panel-note" id="jwtMeta">// signature is never verified — decode only</div>
+        </div>
+      </div>
+
+      <!-- timestamp / epoch converter -->
+      <div class="panel reveal d1">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>date --epoch · timestamp converter</span>
+          <span class="right" id="tsStatus">—</span>
+        </div>
+        <div class="panel-body">
+          <div class="ts-fields">
+            <div>
+              <label for="tsEpoch">Epoch (seconds or ms)</label>
+              <input id="tsEpoch" type="text" autocomplete="off" spellcheck="false" placeholder="1784000000">
+            </div>
+            <div>
+              <label for="tsLocal">Date &amp; time</label>
+              <input id="tsLocal" type="datetime-local" step="1">
+            </div>
+          </div>
+          <button type="button" class="btn ghost" id="tsNow" style="text-align:center">Use current time ▸</button>
+          <dl class="svc-record" id="tsResult"></dl>
+          <div class="panel-note">// edit either field — the other updates live; useful for correlating JWT iat/exp and log timestamps</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ops-stage reveal" id="stage-synthesize"><b>stage 05 · synthesize</b> <span class="note">— every stdout above pipes in here: hunt flags, grep the streams, diff what changed</span></div>
+
+    <!-- flag format hunter -->
+    <div class="ops-solo">
       <div class="panel reveal">
         <div class="term-bar">
           <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span><span id="hunterTitle">flaghunter --scan · find any flag</span></span>
@@ -1123,33 +1211,6 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
           <div class="panel-note" id="hunterMeta">// scans for word{...} shapes — known CTF platform prefixes (flag, CTF, HTB, THM, picoCTF…) get a High-confidence badge</div>
         </div>
       </div>
-
-      <!-- qr code decoder -->
-      <div class="panel reveal d1">
-        <div class="term-bar">
-          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>qr --decode · drop an image</span>
-          <span class="right" id="qrStatus">NO FILE</span>
-        </div>
-        <div class="panel-body">
-          <label class="exif-drop" id="qrDrop" for="qrFile" tabindex="0" role="button" aria-label="Choose or drop an image containing a QR code to decode it">
-            <b>Drop a QR code · or click to browse</b>
-            Located and decoded in your browser via jsQR. Nothing is uploaded.
-          </label>
-          <input type="file" id="qrFile" accept="image/*" style="display:none">
-          <div id="qrResult" hidden>
-            <div style="display:flex;gap:14px;align-items:flex-start;margin-top:14px">
-              <div class="stego-preview" id="qrPreviewWrap"><img id="qrPreview" alt="Preview of the dropped image"></div>
-              <div style="flex:1;min-width:0">
-                <label for="qrOut">Decoded payload</label>
-                <div class="cipher-out" id="qrOut">—</div>
-              </div>
-            </div>
-            <button type="button" class="pipe-btn copy-btn" data-copy-target="qrOut" style="margin-top:12px">⧉ copy payload</button>
-          </div>
-          <div class="panel-note">// finder-pattern detection, perspective correction and Reed-Solomon error correction — all client-side</div>
-        </div>
-      </div>
-
     </div>
 
     <!-- grep pattern search -->
@@ -3841,9 +3902,11 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
 const SHELL = {
   help: [
     'available commands:',
-    '  whoami   mission   cadets   kungfu',
-    '  contact  ls        clear',
+    '  whoami   mission     cadets   kungfu   fastfetch',
+    '  projects majorworks  contact  ls       clear',
+    '  fullscreen / windowed — resize the terminal (or use the ⛶ button; esc exits)',
     "  cd <dir> — jump to a section, e.g. cd kungfu. ls to list.",
+    "  cd ops-lab/<stage> — jump to a lab stage. ls ops-lab to list.",
   ],
   whoami: ['william.lam — YEAR 12 // SYDNEY, AU // HSC 2026'],
   mission: [
@@ -3851,15 +3914,20 @@ const SHELL = {
     'MAJORS: cybersecurity mgmt + security engineering',
     'ETA: 2027',
   ],
-  cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100', 'service record: CDTREC 2021 -> CUO 2026'],
+  cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100+', 'service record: CDTREC 2021 -> CUO 2026'],
   kungfu: ['白鶴派 pak hok pai — white crane, since 2020', 'armament: dao (single sabre) // aux: lion dance'],
   contact: [
     'williamlam986@gmail.com',
     'github.com/w1llim // linkedin: in/thew1llim // instagram: willim_2008',
     'status: inbox monitored — open a channel anytime',
   ],
-  ls: ['ops-lab/  mission/  coursework/  command/  kungfu/  majorworks/  projects/  timeline/  toolkit/  contact/'],
+  ls: [
+    'ops-lab/  mission  coursework  command  kungfu  majorworks  projects  timeline  toolkit  blog  contact',
+    "ls ops-lab to list the lab's stages",
+  ],
+  'ls ops-lab': ['observe  extract  decode  crypto  synthesize', "cd ops-lab/<stage> to jump to one, e.g. cd ops-lab/decode"],
 };
+SHELL['ls ops-lab/'] = SHELL['ls ops-lab'];
 const SECTIONS = {
   ops: 'here', 'ops-lab': 'here', '~': 'here', '/': 'here',
   top: 'top', home: 'top', main: 'top',
@@ -3868,6 +3936,47 @@ const SECTIONS = {
   kungfu: 'kungfu', majorworks: 'majorworks', 'major-works': 'majorworks',
   projects: 'projects', timeline: 'timeline', toolkit: 'toolkit', contact: 'contact',
 };
+const STAGES = { observe: 'stage-observe', extract: 'stage-extract', decode: 'stage-decode', crypto: 'stage-crypto', synthesize: 'stage-synthesize' };
+const FASTFETCH = [
+  ['\\_\\  /_/', 'ok'],
+  [' \\ \\/ /', 'ok'],
+  ['  \\  /', 'ok'],
+  ['   \\/', 'ok'],
+  ['', ''],
+  ['william@ops-lab', ''],
+  ['-----------------', 'dim'],
+  ['OS: HSC 2026 (NSW · Sydney, AU)', ''],
+  ['Host: HAHSACU — Australian Army Cadets', ''],
+  ['Kernel: CUO 6.2026 (Company Commander)', ''],
+  ['Uptime: 6 yrs (2021 → present)', ''],
+  ['Packages: 21 (ops-lab modules)', ''],
+  ['Shell: pak-hok-pai — white crane (2020~)', ''],
+  ['CPU: Cybersecurity Mgmt + Security Eng (dual major)', ''],
+  ['Target: UNSW BIS/BCompSc — ETA 2027', ''],
+  ['Locale: en_AU.UTF-8', ''],
+  ['', ''],
+  ['███████████████████', 'ok'],
+];
+const PROJECTS = [
+  { title: 'Math Quest', tag: 'CLI arithmetic quiz (Python)', desc: 'Command-line arithmetic quiz game — a lives/streak system, a boss fight with harder expressions, a one-time calculator power-up earned by a 5-streak, and scores persisted to a stats file between runs.' },
+  { title: 'Enterprise Network & Threat Model', tag: 'Packet Tracer', desc: 'A four-department LAN built and secured in Cisco Packet Tracer — WPA2, port security, MAC locking — paired with a full threat analysis, 5x5 risk matrix and mitigation plan.' },
+  { title: 'Guru Driving School', tag: 'UX prototype, Adobe XD', desc: 'High-fidelity website prototype built in Adobe XD for a fictional driving school — wireframed and click-tested end to end, with an accessibility/privacy analysis and a full testing & evaluation pass.' },
+  { title: 'Smart Garage', tag: 'micro:bit + radio + sensors', desc: 'Two micro:bits over radio: a remote sends enter/leave commands, the garage unit drives a servo door and neopixel lights, and an ultrasonic sensor beeps the car to a stop.' },
+  { title: 'Case Study: 2022 Optus Data Breach', tag: 'cybersecurity case study', desc: 'Written analysis of the Optus breach — an unauthenticated public API and an IDOR vulnerability that exposed 9.8M customer records. Breaks down which CIA-triad principles failed and mitigations.' },
+  { title: 'E-Commerce Data Dashboard', tag: 'MS Access + Excel', desc: 'A ~500,000-row e-commerce dataset normalised to 3NF across a five-table Access schema, live-linked into an Excel dashboard — revenue targets, regional comparisons, top/bottom products.' },
+  { title: 'LearnerHours', tag: 'offline PWA', desc: 'An installable, offline-capable PWA for logging L-plate driving hours — full session CRUD, SHA-256 hashed local login, DOMPurify XSS sanitisation, and a service worker caching the app shell.' },
+];
+const MAJORWORKS = [
+  { title: 'WAILA', tag: '"What Am I Looking At?" — Figma prototype, ENT-CMP Y12 T3', status: 'SUBMITTED', desc: 'AI part-ID app for mechanics — point a camera at a vehicle part, get instant identification with audio feedback, and request stock without leaving the job. Built end to end: real client interview, iterated on feedback, high-fidelity Figma prototype, 5-entity relational schema, Cisco Packet Tracer network. Submitted 30 Jun 2026.' },
+  { title: 'Software Engineering Major Work', tag: 'SFT-ENG Y12 T3', status: 'IN PROGRESS', desc: '[ awaiting declassification ] — due 24 Jul 2026.' },
+];
+// re-align cross-page #stage-* anchors once layout settles (reveal animations shift positions)
+if (/^#stage-/.test(location.hash)) {
+  window.addEventListener('load', () => {
+    const el = document.getElementById(location.hash.slice(1));
+    if (el) setTimeout(() => el.scrollIntoView({ behavior: 'auto', block: 'start' }), 60);
+  });
+}
 const termEl = document.getElementById('terminal');
 let typedSpan = null;
 const kb = document.getElementById('termKb');
@@ -3893,10 +4002,61 @@ function runCommand(raw) {
   if (cmd === '') {}
   else if (cmd === 'clear') { termEl.innerHTML = ''; }
   else if (cmd.startsWith('sudo')) { shellPrint('permission denied: nice try.', 'dim'); }
+  else if (cmd === 'projects') {
+    PROJECTS.forEach((p, i) => shellPrint('PRJ-' + String(i + 1).padStart(2, '0') + '  ' + p.title + ' — ' + p.tag, 'dim'));
+    shellPrint("type 'projects <n>' for details, e.g. projects 1", 'dim');
+  }
+  else if (cmd.startsWith('projects ')) {
+    const n = parseInt(cmd.split(' ')[1], 10);
+    const p = PROJECTS[n - 1];
+    if (!p) { shellPrint('no project PRJ-' + cmd.split(' ')[1], 'dim'); }
+    else {
+      shellPrint('PRJ-' + String(n).padStart(2, '0') + '  ' + p.title, 'dim');
+      shellPrint(p.desc, 'dim');
+      shellPrint('opening projects on the home page...', 'dim');
+      setTimeout(() => { window.location.href = 'index.html#projects'; }, reduceMotion ? 0 : 500);
+    }
+  }
+  else if (cmd === 'majorworks') {
+    MAJORWORKS.forEach((m, i) => shellPrint('MW-' + String(i + 1).padStart(2, '0') + '  ' + m.title + ' — ' + m.tag + ' [' + m.status + ']', 'dim'));
+    shellPrint("type 'majorworks <n>' for details, e.g. majorworks 1", 'dim');
+  }
+  else if (cmd.startsWith('majorworks ')) {
+    const n = parseInt(cmd.split(' ')[1], 10);
+    const m = MAJORWORKS[n - 1];
+    if (!m) { shellPrint('no major work MW-' + cmd.split(' ')[1], 'dim'); }
+    else {
+      shellPrint('MW-' + String(n).padStart(2, '0') + '  ' + m.title + ' [' + m.status + ']', 'dim');
+      shellPrint(m.desc, 'dim');
+      shellPrint('opening major works on the home page...', 'dim');
+      setTimeout(() => { window.location.href = 'index.html#majorworks'; }, reduceMotion ? 0 : 500);
+    }
+  }
+  else if (cmd === 'fastfetch' || cmd === 'neofetch') {
+    FASTFETCH.forEach(([text, cls]) => shellPrint(text, cls));
+  }
+  else if (cmd === 'fullscreen' || cmd === 'maximize' || cmd === 'fs') {
+    if (termShellEl.classList.contains('fullscreen')) { shellPrint('already fullscreen — type `windowed` or press esc to exit', 'dim'); }
+    else { setFullscreen(true); shellPrint('terminal -> fullscreen // press esc or type `windowed` to exit', 'ok'); }
+  }
+  else if (cmd === 'windowed' || cmd === 'exitfullscreen' || cmd === 'restore' || cmd === 'unmaximize') {
+    if (termShellEl.classList.contains('fullscreen')) { setFullscreen(false); shellPrint('terminal -> windowed', 'dim'); }
+    else { shellPrint('already windowed — type `fullscreen` to expand', 'dim'); }
+  }
   else if (cmd === 'cd' || cmd.startsWith('cd ')) {
     const target = cmd.slice(2).trim().replace(/^~?\/+/, '').replace(/\/+$/, '');
+    const stageMatch = target.match(/^(?:ops-lab|ops)\/(.+)$/);
     const dest = !target ? 'here' : SECTIONS[target];
-    if (!dest) {
+    if (stageMatch && STAGES[stageMatch[1]]) {
+      document.getElementById(STAGES[stageMatch[1]]).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      shellPrint('~/ops-lab/' + stageMatch[1], 'dim');
+    } else if (STAGES[target]) {
+      document.getElementById(STAGES[target]).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+      shellPrint('~/ops-lab/' + target, 'dim');
+    } else if (target === 'blog') {
+      shellPrint('redirecting to blog...', 'dim');
+      setTimeout(() => { window.location.href = 'blog.html'; }, reduceMotion ? 0 : 450);
+    } else if (!dest) {
       shellPrint('cd: no such directory: ' + target, 'dim');
       shellPrint("type 'ls' to see available directories", 'dim');
     } else if (dest === 'here') {
@@ -3908,7 +4068,7 @@ function runCommand(raw) {
       setTimeout(() => { window.location.href = href; }, reduceMotion ? 0 : 450);
     }
   }
-  else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd === 'help' || cmd === 'ls' ? 'dim' : '')); }
+  else if (SHELL[cmd]) { SHELL[cmd].forEach(t => shellPrint(t, cmd.startsWith('help') || cmd.startsWith('ls') ? 'dim' : '')); }
   else { shellPrint('sh: command not found: ' + cmd.split(' ')[0], 'dim'); shellPrint("type 'help' for commands", 'dim'); }
   newPromptLine();
 }
@@ -3929,6 +4089,25 @@ termMinBtn.addEventListener('click', e => {
   const min = !termShellEl.classList.contains('minimized');
   setMinimized(min);
   if (!min) kb.focus({ preventScroll: true });
+});
+
+/* ================= fullscreen toggle ================= */
+const termFullBtn = document.getElementById('termFull');
+function setFullscreen(full) {
+  if (full) setMinimized(false); // can't be minimized + fullscreen at once
+  termShellEl.classList.toggle('fullscreen', full);
+  document.body.classList.toggle('term-fs-lock', full);
+  termFullBtn.textContent = full ? '✕' : '⛶';
+  termFullBtn.setAttribute('aria-label', full ? 'Exit fullscreen terminal' : 'Fullscreen terminal');
+  termFullBtn.setAttribute('title', full ? 'Exit fullscreen (esc, or type: windowed)' : 'Fullscreen (or type: fullscreen)');
+  if (full) { kb.focus({ preventScroll: true }); termEl.scrollTop = termEl.scrollHeight; }
+}
+termFullBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  setFullscreen(!termShellEl.classList.contains('fullscreen'));
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && termShellEl.classList.contains('fullscreen')) setFullscreen(false);
 });
 </script>
 
