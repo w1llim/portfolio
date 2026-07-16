@@ -17,6 +17,8 @@
 <meta name="twitter:title" content="Ops Lab — William Lam">
 <meta name="twitter:description" content="Twenty-one interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
 <meta name="theme-color" content="#211A10">
+<script>/* apply the saved theme before first paint to avoid a flash; dark is the default */
+(function(){try{if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,13 +32,42 @@
   --kraft:#D3C4A2;       /* kraft paper */
   --kraft-dim:#A99B7D;
   --phos:#8CF56B;        /* phosphor green accent */
-  --phos-dim:rgba(140,245,107,.35);
+  --phos-dim:rgba(var(--phos-rgb),.35);
   --threat:#E8603F;      /* hostile packets / alerts */
-  --line:rgba(211,196,162,.16);
+  --line:rgba(var(--kraft-rgb),.16);
+  /* raw channels for the translucent layers, so both themes can reuse the alphas */
+  --bark-rgb:33,26,16;
+  --deep-rgb:20,15,8;    /* recessed panel wells */
+  --kraft-rgb:211,196,162;
+  --phos-rgb:140,245,107;
+  --threat-rgb:232,96,63;
+  --moss-rgb:51,81,47;
   --mono:'JetBrains Mono',monospace;
   --body:'Archivo',sans-serif;
   --disp:'Chakra Petch',sans-serif;
 }
+/* ---------- light theme (field-manual paper) — toggled via header button ---------- */
+html[data-theme="light"]{
+  --bark:#EFE8D6;        /* kraft paper base */
+  --bark-2:#E4DAC0;      /* raised panels */
+  --moss:#8FA878;        /* sage green */
+  --olive:#7A8A5C;
+  --kraft:#2B2316;       /* espresso ink */
+  --kraft-dim:#6B5D45;
+  --phos:#1E7A10;        /* phosphor, dimmed for paper */
+  --threat:#BC4222;
+  --line:rgba(var(--kraft-rgb),.22);
+  --bark-rgb:239,232,214;
+  --deep-rgb:252,249,240;
+  --kraft-rgb:43,35,22;
+  --phos-rgb:30,122,16;
+  --threat-rgb:188,66,34;
+  --moss-rgb:143,168,120;
+}
+html[data-theme="light"] body::before{opacity:.2}
+html[data-theme="light"] body::after{background:radial-gradient(ellipse at 50% 40%,transparent 60%,rgba(64,52,28,.14))}
+/* the packet monitor draws phosphor traffic on canvas — keep its well dark in both themes */
+html[data-theme="light"] #netCanvas{background:radial-gradient(ellipse at 50% 50%,rgba(51,81,47,.3),transparent 70%) #1D1710}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -65,9 +96,9 @@ body::after{
 ::-webkit-scrollbar-corner{background:var(--bark-2)}
 ::-webkit-scrollbar-thumb{
   background:var(--moss);border:2px solid var(--bark-2);
-  background-clip:padding-box;box-shadow:inset 0 0 0 1px rgba(140,245,107,.25);
+  background-clip:padding-box;box-shadow:inset 0 0 0 1px rgba(var(--phos-rgb),.25);
 }
-::-webkit-scrollbar-thumb:hover{background:var(--phos);box-shadow:inset 0 0 0 1px rgba(140,245,107,.5)}
+::-webkit-scrollbar-thumb:hover{background:var(--phos);box-shadow:inset 0 0 0 1px rgba(var(--phos-rgb),.5)}
 a{color:inherit;text-decoration:none}
 a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--phos);outline-offset:3px}
 .mono{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
@@ -78,7 +109,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 header{
   position:fixed;top:0;left:0;right:0;z-index:100;
   border-bottom:1px solid var(--line);
-  background:rgba(33,26,16,.82);backdrop-filter:blur(10px);
+  background:rgba(var(--bark-rgb),.82);backdrop-filter:blur(10px);
 }
 .nav{display:flex;justify-content:space-between;align-items:center;height:58px;position:relative}
 .mark{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:.04em}
@@ -103,6 +134,13 @@ nav.links a:hover::before{opacity:1}
   flex-direction:column;justify-content:center;align-items:center;gap:5px;cursor:pointer;flex-shrink:0;
 }
 .nav-toggle span{width:16px;height:1.5px;background:var(--kraft);transition:transform .25s,opacity .2s}
+.nav-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.theme-toggle{
+  display:flex;align-items:center;justify-content:center;background:none;border:1px solid var(--line);
+  width:36px;height:36px;color:var(--kraft-dim);font-size:15px;line-height:1;cursor:pointer;flex-shrink:0;
+  transition:color .2s,border-color .2s;
+}
+.theme-toggle:hover{color:var(--phos);border-color:var(--phos)}
 .nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .nav-toggle.open span:nth-child(2){opacity:0}
 .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
@@ -157,7 +195,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 /* ---------- ops lab ---------- */
 .ops-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch}
 .panel{
-  border:1px solid var(--line);background:rgba(20,15,8,.7);
+  border:1px solid var(--line);background:rgba(var(--deep-rgb),.7);
   display:flex;flex-direction:column;min-width:0;
 }
 .panel .term-bar{justify-content:space-between}
@@ -168,7 +206,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .panel-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:14px}
 
 /* packet monitor */
-#netCanvas{width:100%;height:340px;display:block;background:radial-gradient(ellipse at 50% 50%,rgba(51,81,47,.18),transparent 70%)}
+#netCanvas{width:100%;height:340px;display:block;background:radial-gradient(ellipse at 50% 50%,rgba(var(--moss-rgb),.18),transparent 70%)}
 .net-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
 .net-stats div{padding:14px 16px;border-right:1px solid var(--line);min-width:0}
 .net-stats div:last-child{border-right:0}
@@ -181,12 +219,12 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .panel label{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--kraft-dim);display:block;margin-bottom:7px}
 .panel textarea{
   width:100%;resize:vertical;min-height:72px;
-  background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--kraft);
+  background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);color:var(--kraft);
   font-family:var(--mono);font-size:13.5px;line-height:1.6;padding:12px;
 }
 .panel textarea:focus{border-color:var(--phos)}
 .panel input[type=text]{
-  width:100%;background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--kraft);
+  width:100%;background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);color:var(--kraft);
   font-family:var(--mono);font-size:13.5px;line-height:1.6;padding:12px;
 }
 .panel input[type=text]:focus{border-color:var(--phos)}
@@ -203,7 +241,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
   padding:10px 0;border:1px solid var(--line);background:none;color:var(--kraft-dim);cursor:pointer;
   transition:all .2s;
 }
-.mode-btn.active{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+.mode-btn.active{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.08)}
 .alpha-map{
   font-family:var(--mono);font-size:11.5px;line-height:1.9;letter-spacing:.28em;
   color:var(--kraft-dim);border:1px dashed var(--line);padding:10px 12px;
@@ -211,7 +249,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 }
 .alpha-map .to{color:var(--phos)}
 .cipher-out{
-  background:rgba(140,245,107,.06);border:1px solid rgba(140,245,107,.3);
+  background:rgba(var(--phos-rgb),.06);border:1px solid rgba(var(--phos-rgb),.3);
   font-family:var(--mono);font-size:13.5px;line-height:1.6;color:var(--phos);
   padding:12px;min-height:72px;word-break:break-word;white-space:pre-wrap;
 }
@@ -221,13 +259,13 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 
 /* hash lab */
 .hash-out{
-  background:rgba(140,245,107,.06);border:1px solid rgba(140,245,107,.3);
+  background:rgba(var(--phos-rgb),.06);border:1px solid rgba(var(--phos-rgb),.3);
   font-family:var(--mono);font-size:12px;letter-spacing:.04em;line-height:1.6;
   color:var(--phos);padding:10px 12px;word-break:break-all;
 }
 .hash-bits{display:grid;grid-template-columns:repeat(32,1fr);gap:2px}
-.hash-bits i{display:block;aspect-ratio:1;background:rgba(211,196,162,.1);transition:background .5s}
-.hash-bits i.on{background:rgba(140,245,107,.5)}
+.hash-bits i{display:block;aspect-ratio:1;background:rgba(var(--kraft-rgb),.1);transition:background .5s}
+.hash-bits i.on{background:rgba(var(--phos-rgb),.5)}
 .hash-bits i.flip{background:var(--threat);transition:none}
 
 /* password audit */
@@ -236,8 +274,8 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
   border:1px solid var(--line);padding:4px 10px;font-family:var(--mono);font-size:10.5px;
   letter-spacing:.12em;color:var(--kraft-dim);transition:color .25s,border-color .25s,background .25s;
 }
-.pw-chips span.hit{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
-.pw-rail{height:6px;background:rgba(211,196,162,.12);overflow:hidden}
+.pw-chips span.hit{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.08)}
+.pw-rail{height:6px;background:rgba(var(--kraft-rgb),.12);overflow:hidden}
 .pw-fill{height:100%;width:0;background:var(--threat);transition:width .45s cubic-bezier(.2,.8,.2,1),background .45s}
 .pw-verdict{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--kraft-dim);margin-top:8px}
 
@@ -279,11 +317,11 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 
 /* metadata inspector (exiftool) */
 .exif-drop{
-  border:1px dashed var(--line);background:rgba(211,196,162,.04);
+  border:1px dashed var(--line);background:rgba(var(--kraft-rgb),.04);
   padding:34px 20px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;
   font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:var(--kraft-dim);
 }
-.exif-drop:hover,.exif-drop.drag{border-color:var(--phos);background:rgba(140,245,107,.06);color:var(--kraft)}
+.exif-drop:hover,.exif-drop.drag{border-color:var(--phos);background:rgba(var(--phos-rgb),.06);color:var(--kraft)}
 .exif-drop b{color:var(--phos);display:block;margin-bottom:8px;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
 .exif-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px;align-items:start}
 /* min-width:0 on the grid children: without it, the caption's nowrap
@@ -331,19 +369,19 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .exif-placeholder span{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
 .exif-preview .panel-note{margin-top:12px;line-height:1.7;word-break:break-word}
 .exif-gps{
-  border:1px solid var(--threat);background:rgba(232,96,63,.08);padding:12px 14px;margin-bottom:14px;
+  border:1px solid var(--threat);background:rgba(var(--threat-rgb),.08);padding:12px 14px;margin-bottom:14px;
 }
 .exif-gps .hd{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--threat);margin-bottom:6px}
 .exif-gps .coord{font-family:var(--mono);font-size:14px;color:var(--kraft);word-break:break-all}
 .exif-gps a{color:var(--phos);border-bottom:1px solid transparent;font-family:var(--mono);font-size:11px;letter-spacing:.1em}
 .exif-gps a:hover{border-color:var(--phos)}
-.exif-clean{border:1px solid rgba(140,245,107,.3);background:rgba(140,245,107,.06);padding:12px 14px;margin-bottom:14px;
+.exif-clean{border:1px solid rgba(var(--phos-rgb),.3);background:rgba(var(--phos-rgb),.06);padding:12px 14px;margin-bottom:14px;
   font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--phos)}
-.exif-flag{border:1px solid var(--phos);background:rgba(140,245,107,.1);padding:12px 14px;margin-bottom:14px}
+.exif-flag{border:1px solid var(--phos);background:rgba(var(--phos-rgb),.1);padding:12px 14px;margin-bottom:14px}
 .exif-flag .hd{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--phos);margin-bottom:6px}
 .exif-flag .val{font-family:var(--mono);font-size:14px;color:#D9FFCC;font-weight:600;word-break:break-all}
 .exif-flag .val+.val{margin-top:4px}
-.svc-record dd .flag{color:#D9FFCC;font-weight:600;background:rgba(140,245,107,.15);padding:0 1px}
+.svc-record dd .flag{color:#D9FFCC;font-weight:600;background:rgba(var(--phos-rgb),.15);padding:0 1px}
 .exif-tags{max-height:300px;overflow-y:auto}
 .exif-tags .svc-record div{padding:9px 0}
 .exif-tags dt{font-size:11px}
@@ -353,7 +391,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .jwt-part{margin-top:2px}
 .jwt-part .lab{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--kraft-dim);margin-bottom:6px}
 .jwt-part pre{
-  background:rgba(211,196,162,.06);border:1px solid var(--line);padding:10px 12px;
+  background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);padding:10px 12px;
   font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--kraft);
   white-space:pre-wrap;word-break:break-word;overflow-x:auto;
 }
@@ -373,7 +411,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .magic-val{font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--kraft-dim);word-break:break-all;white-space:pre-wrap;min-width:0}
 .magic-row.hit .magic-tag{color:var(--phos)}
 .magic-row.hit .magic-val{color:var(--kraft)}
-.magic-row.flag{background:rgba(140,245,107,.1)}
+.magic-row.flag{background:rgba(var(--phos-rgb),.1)}
 .magic-row.flag .magic-tag{color:var(--phos)}
 .magic-row.flag .magic-val{color:#D9FFCC;font-weight:600}
 .magic-empty{padding:16px 14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--kraft-dim)}
@@ -387,7 +425,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .xor-cand:last-child{border-bottom:0}
 .xor-key{font-family:var(--mono);font-size:11px;color:var(--phos);white-space:nowrap}
 .xor-txt{font-family:var(--mono);font-size:12px;color:var(--kraft);word-break:break-all;min-width:0}
-.xor-cand.flag{background:rgba(140,245,107,.1)}
+.xor-cand.flag{background:rgba(var(--phos-rgb),.1)}
 .xor-cand.flag .xor-txt{color:#D9FFCC;font-weight:600}
 
 /* hash identifier */
@@ -411,12 +449,12 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .dump-out .off{color:var(--kraft-dim)}
 .dump-out .asc{color:var(--phos)}
 .strings-out{white-space:pre-wrap;word-break:break-all}
-.strings-out .flag{color:#D9FFCC;font-weight:600;background:rgba(140,245,107,.12)}
+.strings-out .flag{color:#D9FFCC;font-weight:600;background:rgba(var(--phos-rgb),.12)}
 
 /* grep pattern search */
 .grep-controls{display:flex;flex-direction:column;gap:12px}
 .grep-src{
-  width:100%;background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--kraft);
+  width:100%;background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);color:var(--kraft);
   font-family:var(--mono);font-size:13px;line-height:1.6;padding:11px 34px 11px 12px;cursor:pointer;
   -webkit-appearance:none;appearance:none;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%238CF56B' stroke-width='1.5'/></svg>");
@@ -424,12 +462,12 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 }
 .grep-src:focus{border-color:var(--phos)}
 .grep-src option{background:var(--bark-2);color:var(--kraft)}
-.grep-src.piped{border-color:rgba(140,245,107,.4);color:var(--phos)}
+.grep-src.piped{border-color:rgba(var(--phos-rgb),.4);color:var(--phos)}
 .pipe-btn{
   align-self:flex-start;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:6px 12px;border:1px solid var(--line);background:none;color:var(--kraft-dim);cursor:pointer;transition:all .2s;
 }
-.pipe-btn:hover{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+.pipe-btn:hover{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.08)}
 textarea[readonly]{opacity:.9;cursor:default}
 textarea[readonly]:focus{border-color:var(--line)}
 .grep-out{
@@ -440,10 +478,10 @@ textarea[readonly]:focus{border-color:var(--line)}
 .grep-line{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;min-width:0}
 .grep-line .ln{color:var(--kraft-dim);text-align:right;user-select:none;min-width:3ch;white-space:nowrap}
 .grep-line .lt{word-break:break-word;white-space:pre-wrap;min-width:0}
-.grep-hit{background:rgba(140,245,107,.2);color:#D9FFCC;font-weight:600;padding:0 1px}
+.grep-hit{background:rgba(var(--phos-rgb),.2);color:#D9FFCC;font-weight:600;padding:0 1px}
 .grep-idle{color:var(--kraft-dim);letter-spacing:.04em}
 .grep-err{color:var(--threat)}
-.mode-btn[aria-pressed=true]{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+.mode-btn[aria-pressed=true]{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.08)}
 
 /* key-value record list — used by password audit, exif tags, rsa, timestamp */
 .svc-record{margin-top:0;border-top:1px solid var(--line)}
@@ -457,7 +495,7 @@ textarea[readonly]:focus{border-color:var(--line)}
 .svc-record .hl{color:var(--phos)}
 
 /* copy-to-clipboard buttons — same base look as pipe-btn */
-.copy-btn.copied{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.12)}
+.copy-btn.copied{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.12)}
 .copy-row{display:flex;gap:8px;flex-wrap:wrap}
 
 /* magic multi-layer chain */
@@ -467,26 +505,26 @@ textarea[readonly]:focus{border-color:var(--line)}
 .magic-chain .chain-reset{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:none;border:1px solid var(--line);color:var(--kraft-dim);padding:4px 10px;cursor:pointer;transition:all .2s}
 .magic-chain .chain-reset:hover{border-color:var(--threat);color:var(--threat)}
 .magic-row.drillable{cursor:pointer}
-.magic-row.drillable:hover{background:rgba(140,245,107,.07)}
+.magic-row.drillable:hover{background:rgba(var(--phos-rgb),.07)}
 .magic-hint{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--kraft-dim)}
 
 /* frequency analysis + substitution solver */
 .freq-bars{display:flex;flex-wrap:wrap;gap:3px;border:1px solid var(--line);padding:10px;max-height:150px;overflow-y:auto}
 .freq-bar{display:flex;flex-direction:column;align-items:center;gap:4px;width:25px}
-.freq-bar .bar-track{width:13px;height:56px;background:rgba(211,196,162,.08);display:flex;align-items:flex-end}
+.freq-bar .bar-track{width:13px;height:56px;background:rgba(var(--kraft-rgb),.08);display:flex;align-items:flex-end}
 .freq-bar .bar-fill{width:100%;background:var(--phos);opacity:.55;min-height:1px}
 .freq-bar .letter{font-family:var(--mono);font-size:9.5px;color:var(--kraft-dim)}
 .subst-grid{display:flex;flex-wrap:wrap;gap:4px;border:1px solid var(--line);padding:10px}
 .subst-cell{display:flex;flex-direction:column;align-items:center;gap:3px;width:25px}
 .subst-cell .c-letter{font-family:var(--mono);font-size:11px;color:var(--kraft-dim);letter-spacing:.04em}
-.subst-cell input{width:23px;height:23px;text-align:center;background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--phos);font-family:var(--mono);font-size:12px;text-transform:uppercase;padding:0}
+.subst-cell input{width:23px;height:23px;text-align:center;background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);color:var(--phos);font-family:var(--mono);font-size:12px;text-transform:uppercase;padding:0}
 .subst-cell input:focus{border-color:var(--phos)}
 
 /* vigenère solver */
 .vig-lens{display:flex;flex-wrap:wrap;gap:8px}
 .vig-len-btn{font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:8px 12px;border:1px solid var(--line);background:none;color:var(--kraft-dim);cursor:pointer;transition:all .2s;text-align:center}
 .vig-len-btn:hover{border-color:var(--phos);color:var(--phos)}
-.vig-len-btn.active{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+.vig-len-btn.active{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.08)}
 .vig-len-btn .ic{display:block;font-size:9px;color:var(--kraft-dim);margin-top:3px;letter-spacing:.04em}
 .vig-len-btn.active .ic{color:var(--phos)}
 
@@ -511,9 +549,9 @@ textarea[readonly]:focus{border-color:var(--line)}
 }
 .diff-line{display:grid;grid-template-columns:22px 1fr;gap:8px;padding:1px 10px;white-space:pre-wrap;word-break:break-word}
 .diff-line .mk{color:var(--kraft-dim);user-select:none}
-.diff-line.add{background:rgba(140,245,107,.1)}
+.diff-line.add{background:rgba(var(--phos-rgb),.1)}
 .diff-line.add .mk{color:var(--phos)}
-.diff-line.del{background:rgba(232,96,63,.1)}
+.diff-line.del{background:rgba(var(--threat-rgb),.1)}
 .diff-line.del .mk{color:var(--threat)}
 .diff-summary{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--kraft-dim)}
 .diff-summary .add-n{color:var(--phos)}
@@ -525,7 +563,7 @@ textarea[readonly]:focus{border-color:var(--line)}
 .stego-preview img{width:100%;display:block;image-rendering:pixelated}
 
 /* flag highlight inside single-value output panels (vigenère, freq, qr) */
-.cipher-out .flag{color:#D9FFCC;font-weight:600;background:rgba(140,245,107,.15);padding:0 1px}
+.cipher-out .flag{color:#D9FFCC;font-weight:600;background:rgba(var(--phos-rgb),.15);padding:0 1px}
 
 @media(max-width:940px){.ops-grid,.ops-grid2,.ops-grid3{grid-template-columns:1fr}}
 @media(max-width:720px){.exif-grid,.dump-grid{grid-template-columns:1fr}}
@@ -568,7 +606,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
 /* ---------- always-on terminal ---------- */
 .term{
-  border:1px solid var(--line);background:rgba(20,15,8,.85);
+  border:1px solid var(--line);background:rgba(var(--deep-rgb),.85);
   font-family:var(--mono);font-size:13.5px;line-height:1.75;
 }
 .term-bar{
@@ -595,7 +633,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 .term.docked{
   position:fixed;right:18px;bottom:18px;z-index:1000;
   width:300px;max-width:calc(100vw - 36px);
-  box-shadow:0 20px 50px rgba(0,0,0,.6),0 0 0 1px rgba(140,245,107,.08);
+  box-shadow:0 20px 50px rgba(0,0,0,.6),0 0 0 1px rgba(var(--phos-rgb),.08);
 }
 .term.docked .term-body{min-height:0;max-height:38vh}
 .term.minimized .term-body,.term.minimized #termKb{display:none}
@@ -648,9 +686,12 @@ body.term-fs-lock header{display:none}
       <a href="index.html#contact">Contact</a>
     </nav>
     <div class="status mono"><span class="dot"></span>Lab online</div>
-    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" title="Toggle light / dark theme">☀</button>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -1330,6 +1371,26 @@ DEBUG=true</textarea>
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+/* ================= theme toggle (dark default / light) ================= */
+const themeBtn = document.getElementById('themeToggle');
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+function currentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  const light = t === 'light';
+  themeBtn.textContent = light ? '☾' : '☀';
+  themeBtn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  if (themeMeta) themeMeta.setAttribute('content', light ? '#EFE8D6' : '#211A10');
+}
+function setTheme(t) {
+  applyTheme(t);
+  try { localStorage.setItem('theme', t); } catch (e) {}
+}
+applyTheme(currentTheme()); // sync the button with whatever the head script applied
+themeBtn.addEventListener('click', () => setTheme(currentTheme() === 'light' ? 'dark' : 'light'));
+
 /* ================= nav dropdown ================= */
 (function navMenu() {
   const toggle = document.getElementById('navToggle');
@@ -1493,7 +1554,7 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
             blocked++; blockedEl.textContent = blocked;
             flashes.push({ x: nodes.fw.x, y: nodes.fw.y, r: 4, life: 1 });
             statusEl.textContent = 'THREAT BLOCKED';
-            statusEl.style.color = '#E8603F';
+            statusEl.style.color = 'var(--threat)';
             setTimeout(() => { statusEl.textContent = 'MONITORING'; statusEl.style.color = ''; }, 900);
             return false;
           }
@@ -1730,7 +1791,7 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
     poolEl.textContent = pool + ' symbols';
     let color, text, pct, crack;
     if (!v) { color = 'rgba(211,196,162,.2)'; text = '// awaiting input'; pct = 0; crack = '—'; }
-    else if (common) { color = '#E8603F'; text = 'COMPROMISED — breach wordlist hit'; pct = 5; crack = 'instant'; }
+    else if (common) { color = 'var(--threat)'; text = 'COMPROMISED — breach wordlist hit'; pct = 5; crack = 'instant'; }
     else {
       crack = human(Math.pow(2, bits - 1) / RATE);
       pct = Math.min(bits / 96 * 100, 100);
@@ -1738,11 +1799,11 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
       // length + charset would suggest, say so — that's the exact case where
       // "just add more characters" fails and the user deserves to know why.
       const why = penalized ? ' — length padded by repetition/patterns' : '';
-      if (bits < 28) { color = '#E8603F'; text = 'CRITICAL — trivially crackable' + why; }
+      if (bits < 28) { color = 'var(--threat)'; text = 'CRITICAL — trivially crackable' + why; }
       else if (bits < 40) { color = '#E8823F'; text = 'WEAK — coffee-break crack' + why; }
       else if (bits < 60) { color = '#E0B33C'; text = 'FAIR — resists casual attack' + why; }
       else if (bits < 80) { color = '#B8D94A'; text = 'STRONG — serious rig required'; }
-      else { color = '#8CF56B'; text = 'HARDENED — outlives the attacker'; }
+      else { color = 'var(--phos)'; text = 'HARDENED — outlives the attacker'; }
     }
     fill.style.width = pct + '%';
     fill.style.background = color;
@@ -2045,7 +2106,7 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
         '#map=16/' + lat.toFixed(5) + '/' + lon.toFixed(5) +
         '" target="_blank" rel="noopener noreferrer">▸ pinpoint on a map</a>';
       status.textContent = 'GPS FOUND';
-      status.style.color = '#E8603F';
+      status.style.color = 'var(--threat)';
     } else if (pushed.length) {
       gpsBox.className = 'exif-clean';
       gpsBox.textContent = '✓ no GPS coordinates in this file';
@@ -2067,14 +2128,14 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
       flagBox.innerHTML = '<div class="hd">🚩 flag-shaped data found in metadata</div>' +
         flagHits.map(h => '<div class="val">' + CTF.esc(h.label) + ': ' + highlightFlag(h.value) + '</div>').join('');
       status.textContent = 'FLAG FOUND';
-      status.style.color = '#8CF56B';
+      status.style.color = 'var(--phos)';
     }
   }
 
   function handle(file) {
     if (!file) return;
     if (!/^image\//.test(file.type) && !/\.(jpe?g|png)$/i.test(file.name)) {
-      status.textContent = 'NOT AN IMAGE'; status.style.color = '#E8603F'; return;
+      status.textContent = 'NOT AN IMAGE'; status.style.color = 'var(--threat)'; return;
     }
     status.textContent = 'READING'; status.style.color = '#E8B23C';
     if (lastUrl) URL.revokeObjectURL(lastUrl);
@@ -2099,7 +2160,7 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
         result.hidden = false;
         render(meta || { _ifd0:{}, _exif:{}, _gps:{}, _text:{} }, file, kind);
       } catch (err) {
-        status.textContent = 'PARSE ERROR'; status.style.color = '#E8603F';
+        status.textContent = 'PARSE ERROR'; status.style.color = 'var(--threat)';
       }
     };
     reader.readAsArrayBuffer(file);
@@ -2794,7 +2855,7 @@ const Pipe = (function () {
       status.textContent = (file.size > 1024 ? (file.size / 1024).toFixed(1) + ' KB' : file.size + ' B');
       status.style.color = '';
     };
-    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; };
+    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = 'var(--threat)'; };
     reader.readAsArrayBuffer(file.slice(0, SCAN_CAP));
   }
 
@@ -2909,7 +2970,7 @@ const Pipe = (function () {
       re = new RegExp(rx ? raw : escRe(raw), 'g' + (ci ? 'i' : ''));
     } catch (e) {
       out.innerHTML = '<span class="grep-err">// invalid regex — ' + CTF.esc(e.message) + '</span>';
-      status.textContent = 'BAD RE'; status.style.color = '#E8603F';
+      status.textContent = 'BAD RE'; status.style.color = 'var(--threat)';
       meta.textContent = '// -E regex mode is on — fix the expression or switch it off';
       return;
     }
@@ -3393,12 +3454,12 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
       if (n <= 0n || e <= 0n || c < 0n) throw new Error('bad');
     } catch (err) {
       resultEl.appendChild(row('Error', 'n, e and c must all be positive integers'));
-      status.textContent = 'BAD INPUT'; status.style.color = '#E8603F';
+      status.textContent = 'BAD INPUT'; status.style.color = 'var(--threat)';
       return;
     }
     if (n.toString().length > 20) {
       resultEl.appendChild(row('Error', 'n is too large for client-side factoring in a toy tool (>20 digits) — that is real RSA territory'));
-      status.textContent = 'TOO LARGE'; status.style.color = '#E8603F';
+      status.textContent = 'TOO LARGE'; status.style.color = 'var(--threat)';
       return;
     }
     status.textContent = 'FACTORING…'; status.style.color = '#E8B23C';
@@ -3407,7 +3468,7 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
       try { factors = factor(n, 0); }
       catch (err) {
         resultEl.appendChild(row('Error', err.message));
-        status.textContent = 'FAILED'; status.style.color = '#E8603F';
+        status.textContent = 'FAILED'; status.style.color = 'var(--threat)';
         return;
       }
       status.style.color = '';
@@ -3548,7 +3609,7 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
     const bLines = bInput.value.split('\n');
     if (aLines.length > MAX_LINES || bLines.length > MAX_LINES) {
       out.innerHTML = '<div class="magic-empty">// too many lines (' + MAX_LINES + ' max) for an in-browser diff</div>';
-      status.textContent = 'TOO BIG'; status.style.color = '#E8603F'; summary.textContent = '';
+      status.textContent = 'TOO BIG'; status.style.color = 'var(--threat)'; summary.textContent = '';
       return;
     }
     const ops = lcsDiff(aLines, bLines);
@@ -3665,17 +3726,17 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
         ctx.drawImage(img, 0, 0);
         let data;
         try { data = ctx.getImageData(0, 0, canvas.width, canvas.height).data; }
-        catch (e) { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; return; }
+        catch (e) { status.textContent = 'READ ERROR'; status.style.color = 'var(--threat)'; return; }
         currentPixels = data;
         result.hidden = false;
         renderCurrent();
         status.textContent = img.width + '×' + img.height;
         status.style.color = '';
       };
-      img.onerror = () => { status.textContent = 'NOT AN IMAGE'; status.style.color = '#E8603F'; };
+      img.onerror = () => { status.textContent = 'NOT AN IMAGE'; status.style.color = 'var(--threat)'; };
       img.src = reader.result;
     };
-    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; };
+    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = 'var(--threat)'; };
     reader.readAsDataURL(file);
   }
   fileInput.addEventListener('change', () => handle(fileInput.files[0]));
@@ -3713,7 +3774,7 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         let data;
         try { data = ctx.getImageData(0, 0, canvas.width, canvas.height); }
-        catch (e) { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; return; }
+        catch (e) { status.textContent = 'READ ERROR'; status.style.color = 'var(--threat)'; return; }
         const code = window.jsQR ? window.jsQR(data.data, data.width, data.height) : null;
         result.hidden = false;
         previewImg.src = reader.result;
@@ -3722,13 +3783,13 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
           status.textContent = 'DECODED'; status.style.color = '';
         } else {
           outEl.textContent = 'no QR code found in this image';
-          status.textContent = 'NOT FOUND'; status.style.color = '#E8603F';
+          status.textContent = 'NOT FOUND'; status.style.color = 'var(--threat)';
         }
       };
-      img.onerror = () => { status.textContent = 'NOT AN IMAGE'; status.style.color = '#E8603F'; };
+      img.onerror = () => { status.textContent = 'NOT AN IMAGE'; status.style.color = 'var(--threat)'; };
       img.src = reader.result;
     };
-    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; };
+    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = 'var(--threat)'; };
     reader.readAsDataURL(file);
   }
   fileInput.addEventListener('change', () => handle(fileInput.files[0]));
@@ -3846,7 +3907,7 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
     const lat = parseFloat(latRaw), lon = parseFloat(lonRaw);
     if (!isFinite(lat) || !isFinite(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
       resultEl.appendChild(row('Error', 'latitude must be -90..90 and longitude -180..180'));
-      status.textContent = 'INVALID'; status.style.color = '#E8603F';
+      status.textContent = 'INVALID'; status.style.color = 'var(--threat)';
       return;
     }
     status.style.color = '';
