@@ -89,6 +89,9 @@ html[data-theme="light"] .slipspace{
   --bark:#211A10;--bark-2:#2B2316;--kraft:#D3C4A2;--kraft-dim:#A99B7D;--phos:#8CF56B;
   --kraft-rgb:211,196,162;--phos-rgb:140,245,107;--line:rgba(211,196,162,.16);
 }
+/* the mission brief is printed on kraft paper in both themes — its ink colours
+   are hardcoded for that paper, so pin the paper rather than let --kraft darken it */
+html[data-theme="light"] .mission{background:#D3C4A2}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
