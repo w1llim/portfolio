@@ -185,11 +185,34 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
   font-family:var(--mono);font-size:13.5px;line-height:1.6;padding:12px;
 }
 .panel textarea:focus{border-color:var(--phos)}
-.panel input[type=text]{
+.panel input[type=text],
+.panel input[type=datetime-local]{
   width:100%;background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--kraft);
   font-family:var(--mono);font-size:13.5px;line-height:1.6;padding:12px;
 }
-.panel input[type=text]:focus{border-color:var(--phos)}
+.panel input[type=text]:focus,
+.panel input[type=datetime-local]:focus{border-color:var(--phos)}
+/* native datetime-local: drag every part into the terminal palette so it
+   stops rendering as a light-themed browser default. color-scheme:dark
+   themes the spinner, the field text and the calendar popup; the rules
+   below phosphor-tint the picker glyph and highlight the active field. */
+.panel input[type=datetime-local]{color-scheme:dark;cursor:text;accent-color:var(--phos)}
+.panel input[type=datetime-local]::-webkit-calendar-picker-indicator{
+  filter:grayscale(1) brightness(1.3) sepia(1) hue-rotate(55deg) saturate(6);
+  opacity:.7;cursor:pointer;transition:opacity .2s;
+}
+.panel input[type=datetime-local]::-webkit-calendar-picker-indicator:hover{opacity:1}
+.panel input[type=datetime-local]::-webkit-datetime-edit{color:var(--kraft)}
+.panel input[type=datetime-local]::-webkit-datetime-edit-text{color:var(--kraft-dim);padding:0 1px}
+.panel input[type=datetime-local]::-webkit-datetime-edit-month-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-day-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-year-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-hour-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-minute-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-second-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-ampm-field:focus{
+  background:var(--phos);color:var(--bark);outline:none;border-radius:1px;
+}
 .panel-note{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--kraft-dim)}
 .shift-row{display:flex;align-items:center;gap:14px}
 .shift-row input[type=range]{flex:1;accent-color:var(--phos);cursor:pointer}
