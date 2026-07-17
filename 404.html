@@ -5,8 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>404 — Signal Lost</title>
 <meta name="robots" content="noindex">
+<script>/* honour the theme chosen on the main site; dark is the default */
+(function(){try{if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <style>
 :root{--bark:#211A10;--kraft:#D3C4A2;--kraft-dim:#A99B7D;--phos:#8CF56B;--threat:#E8603F;--moss:#33512F}
+html[data-theme="light"]{--bark:#EFE8D6;--kraft:#2B2316;--kraft-dim:#6B5D45;--phos:#1E7A10;--threat:#BC4222;--moss:#8FA878}
+html[data-theme="light"] body::after{opacity:.35}
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   min-height:100svh;display:flex;align-items:center;justify-content:center;
