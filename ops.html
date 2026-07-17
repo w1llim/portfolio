@@ -763,6 +763,28 @@ body.term-fs-lock header{display:none}
 
     </div>
 
+    <!-- cidr / subnet calculator -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>ipcalc --cidr · subnet math</span>
+          <span class="right" id="cidrStatus">—</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="cidrIn">CIDR block — an IPv4 address with a prefix, e.g. 10.13.37.0/24 or 192.168.1.1/255.255.255.0</label>
+            <input id="cidrIn" type="text" autocomplete="off" spellcheck="false" value="10.13.37.0/24">
+          </div>
+          <dl class="svc-record" id="cidrResult"></dl>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="cidrSummaryText" id="cidrCopyBtn" style="display:none">⧉ copy summary</button>
+          </div>
+          <span id="cidrSummaryText" style="display:none"></span>
+          <div class="panel-note">// network, broadcast, usable host range, wildcard mask &amp; host count — pure bitmath in your browser, no lookups</div>
+        </div>
+      </div>
+    </div>
+
     <div class="ops-stage reveal" id="stage-extract"><b>stage 02 · extract</b> <span class="note">— drop an artifact; strings, metadata, coordinates &amp; hidden payloads come out, ready to pipe downstream</span></div>
 
     <!-- hexdump + strings -->
@@ -1252,6 +1274,24 @@ body.term-fs-lock header{display:none}
 
     </div>
 
+    <!-- uuid / ulid decoder -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>uuid --inspect · decode identifiers</span>
+          <span class="right" id="uuidStatus">—</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="uuidIn">UUID or ULID — versioned UUIDs (v1/v6/v7) and ULIDs carry an embedded timestamp you can pull back out</label>
+            <input id="uuidIn" type="text" autocomplete="off" spellcheck="false" value="017F22E2-79B0-7CC3-98C4-DC0C0C07398F">
+          </div>
+          <dl class="svc-record" id="uuidResult"></dl>
+          <div class="panel-note" id="uuidMeta">// version &amp; variant read from the bitfields; v1/v6 unwind the 100-ns Gregorian clock, v7 &amp; ULID the millisecond Unix clock — all local</div>
+        </div>
+      </div>
+    </div>
+
     <div class="ops-stage reveal" id="stage-synthesize"><b>stage 05 · synthesize</b> <span class="note">— every stdout above pipes in here: hunt flags, grep the streams, diff what changed</span></div>
 
     <!-- flag format hunter -->
@@ -1376,6 +1416,38 @@ DEBUG=true</textarea>
           <div class="diff-out" id="diffOut" aria-live="polite"></div>
           <div class="diff-summary" id="diffSummary"></div>
           <div class="panel-note">// line-based diff — paste two versions of anything (a patched binary's strings, two config dumps, before/after a decode) and see exactly what moved</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- shannon entropy analyzer -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span><span id="entTitle">entropy --shannon · measure randomness</span></span>
+          <span class="right" id="entStatus">—</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="entSrc">stdin — measure your own text, or pipe in another tool's output</label>
+            <select id="entSrc" class="grep-src">
+              <option value="paste">paste · type your own text below</option>
+              <option value="strings">strings · xxd + strings file analyzer</option>
+              <option value="magic">magic --decode · every codec's output</option>
+              <option value="xor">xor --brute · candidate plaintexts</option>
+              <option value="hexdump">xxd · raw hex dump</option>
+            </select>
+          </div>
+          <div>
+            <label for="entIn" id="entInLabel">Bytes to measure — a key, a blob, a suspected ciphertext</label>
+            <textarea id="entIn" spellcheck="false">The quick brown fox jumps over the lazy dog.</textarea>
+          </div>
+          <div>
+            <div class="pw-rail"><div class="pw-fill" id="entFill"></div></div>
+            <div class="pw-verdict" id="entVerdict" aria-live="polite">// awaiting input</div>
+          </div>
+          <dl class="svc-record" id="entResult" style="margin-top:0"></dl>
+          <div class="panel-note">// Shannon entropy over UTF-8 bytes (0–8 bits/byte) — high, flat entropy is the fingerprint of encryption, compression, or a random key; English prose sits near 4</div>
         </div>
       </div>
     </div>
@@ -3656,6 +3728,241 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
 
   Pipe.bindSelect({ select: srcA, corpus: aInput, render, titleEl: null, titles: {}, labelEl: null, labels: {} });
   Pipe.bindSelect({ select: srcB, corpus: bInput, render, titleEl: null, titles: {}, labelEl: null, labels: {} });
+})();
+
+/* ================= cidr / subnet calculator ================= */
+/* Pure IPv4 bitmath: parse an address + prefix (or dotted mask), then derive
+   the network, broadcast, host range and counts by masking a 32-bit integer.
+   No lookups — the whole point is that subnetting is arithmetic, not a query. */
+(function cidrCalc() {
+  const input = document.getElementById('cidrIn');
+  const resultEl = document.getElementById('cidrResult');
+  const status = document.getElementById('cidrStatus');
+  const copyBtn = document.getElementById('cidrCopyBtn');
+  const summaryEl = document.getElementById('cidrSummaryText');
+
+  const toOctets = n => [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.');
+  function parseIp(s) {
+    const parts = s.trim().split('.');
+    if (parts.length !== 4) return null;
+    let n = 0;
+    for (const p of parts) {
+      if (!/^\d{1,3}$/.test(p)) return null;
+      const v = +p; if (v > 255) return null;
+      n = (n << 8) | v;
+    }
+    return n >>> 0;
+  }
+  // A dotted netmask must be a run of 1s then 0s; return its prefix length or null.
+  function maskToPrefix(n) {
+    const inv = (~n >>> 0);
+    if (((inv + 1) & inv) !== 0) return null;   // not contiguous
+    let len = 0, x = n >>> 0;
+    while (x & 0x80000000) { len++; x = (x << 1) >>> 0; }
+    return len;
+  }
+  function row(label, value, hl) {
+    const div = document.createElement('div');
+    div.innerHTML = '<dt>' + CTF.esc(label) + '</dt><dd' + (hl ? ' class="hl"' : '') + '>' + CTF.esc(value) + '</dd>';
+    return div;
+  }
+  function classify(ip) {
+    const a = (ip >>> 24) & 255, b = (ip >>> 16) & 255;
+    if (a === 10) return 'Private (RFC 1918)';
+    if (a === 172 && b >= 16 && b <= 31) return 'Private (RFC 1918)';
+    if (a === 192 && b === 168) return 'Private (RFC 1918)';
+    if (a === 127) return 'Loopback';
+    if (a === 169 && b === 254) return 'Link-local (APIPA)';
+    if (a >= 224 && a <= 239) return 'Multicast (class D)';
+    if (a >= 240) return 'Reserved (class E)';
+    return 'Public';
+  }
+
+  function render() {
+    resultEl.innerHTML = '';
+    const raw = input.value.trim();
+    if (!raw) { status.textContent = '—'; copyBtn.style.display = 'none'; return; }
+    const slash = raw.split('/');
+    const ip = parseIp(slash[0]);
+    if (ip === null) { resultEl.appendChild(row('Error', 'not a valid IPv4 address')); status.textContent = 'INVALID'; copyBtn.style.display = 'none'; return; }
+    let prefix;
+    if (slash.length === 1) prefix = 32;
+    else if (/^\d{1,2}$/.test(slash[1]) && +slash[1] <= 32) prefix = +slash[1];
+    else { const m = parseIp(slash[1]); prefix = m === null ? null : maskToPrefix(m); }
+    if (prefix === null || prefix === undefined) { resultEl.appendChild(row('Error', 'invalid prefix or netmask')); status.textContent = 'INVALID'; copyBtn.style.display = 'none'; return; }
+
+    const mask = prefix === 0 ? 0 : (0xFFFFFFFF << (32 - prefix)) >>> 0;
+    const network = (ip & mask) >>> 0;
+    const broadcast = (network | (~mask >>> 0)) >>> 0;
+    const total = Math.pow(2, 32 - prefix);
+    let usable, firstHost, lastHost;
+    if (prefix >= 31) { usable = prefix === 32 ? 1 : 2; firstHost = toOctets(network); lastHost = toOctets(broadcast); }
+    else { usable = total - 2; firstHost = toOctets((network + 1) >>> 0); lastHost = toOctets((broadcast - 1) >>> 0); }
+
+    resultEl.appendChild(row('CIDR', toOctets(network) + '/' + prefix, true));
+    resultEl.appendChild(row('Network', toOctets(network)));
+    resultEl.appendChild(row('Broadcast', toOctets(broadcast)));
+    resultEl.appendChild(row('Netmask', toOctets(mask)));
+    resultEl.appendChild(row('Wildcard', toOctets(~mask >>> 0)));
+    resultEl.appendChild(row('Host range', prefix >= 31 ? firstHost + ' – ' + lastHost : firstHost + ' – ' + lastHost));
+    resultEl.appendChild(row('Usable hosts', usable.toLocaleString('en-US'), true));
+    resultEl.appendChild(row('Total addresses', total.toLocaleString('en-US')));
+    resultEl.appendChild(row('Type', classify(network)));
+    status.textContent = '/' + prefix;
+
+    summaryEl.textContent = 'CIDR ' + toOctets(network) + '/' + prefix + '\nNetwork ' + toOctets(network) +
+      '\nBroadcast ' + toOctets(broadcast) + '\nNetmask ' + toOctets(mask) + '\nWildcard ' + toOctets(~mask >>> 0) +
+      '\nHost range ' + firstHost + ' - ' + lastHost + '\nUsable hosts ' + usable + '\nTotal ' + total;
+    copyBtn.style.display = '';
+  }
+  input.addEventListener('input', render);
+  render();
+})();
+
+/* ================= uuid / ulid decoder ================= */
+/* Reads the version and variant straight out of the bitfields, then unwinds
+   whatever clock the versioned formats embed — v1/v6 count 100-ns ticks from
+   the Gregorian epoch (1582-10-15), v7 and ULID count Unix milliseconds. */
+(function uuidDecode() {
+  const input = document.getElementById('uuidIn');
+  const resultEl = document.getElementById('uuidResult');
+  const status = document.getElementById('uuidStatus');
+  const GREGORIAN_OFFSET = 12219292800000n;   // ms between 1582-10-15 and 1970-01-01
+  const CROCKFORD = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+  const VARIANTS = { rfc: 'RFC 4122 / 9562', ncs: 'NCS backward-compat', microsoft: 'Microsoft (GUID)', reserved: 'reserved (future)' };
+  const VERSIONS = {
+    1: 'v1 · time + MAC node', 2: 'v2 · DCE security', 3: 'v3 · MD5 name-based',
+    4: 'v4 · random', 5: 'v5 · SHA-1 name-based', 6: 'v6 · reordered time', 7: 'v7 · Unix-time + random', 8: 'v8 · custom',
+  };
+
+  function row(label, value, hl) {
+    const div = document.createElement('div');
+    div.innerHTML = '<dt>' + CTF.esc(label) + '</dt><dd' + (hl ? ' class="hl"' : '') + '>' + CTF.esc(value) + '</dd>';
+    return div;
+  }
+  function relative(ms) {
+    const diff = Date.now() - ms, abs = Math.abs(diff);
+    const units = [['year', 31536000000], ['month', 2592000000], ['day', 86400000], ['hour', 3600000], ['minute', 60000], ['second', 1000]];
+    for (const [name, size] of units) {
+      if (abs >= size || name === 'second') { const v = Math.floor(abs / size); return v + ' ' + name + (v === 1 ? '' : 's') + (diff >= 0 ? ' ago' : ' from now'); }
+    }
+  }
+  function stamp(ms) {
+    const d = new Date(Number(ms));
+    if (isNaN(d.getTime())) return null;
+    return { utc: d.toUTCString(), rel: relative(Number(ms)) };
+  }
+
+  function decodeUuid(hex) {
+    const v = parseInt(hex[12], 16);
+    const variantNibble = parseInt(hex[16], 16);
+    let variant = 'rfc';
+    if (variantNibble < 8) variant = 'ncs';
+    else if (variantNibble < 12) variant = 'rfc';
+    else if (variantNibble < 14) variant = 'microsoft';
+    else variant = 'reserved';
+    resultEl.appendChild(row('Format', 'UUID (128-bit)', true));
+    resultEl.appendChild(row('Version', VERSIONS[v] || ('unknown (' + v + ')')));
+    resultEl.appendChild(row('Variant', VARIANTS[variant]));
+
+    if (variant === 'rfc' && (v === 1 || v === 6)) {
+      let ticksHex;
+      if (v === 1) ticksHex = hex.slice(13, 16) + hex.slice(8, 12) + hex.slice(0, 8);
+      else ticksHex = hex.slice(0, 8) + hex.slice(8, 12) + hex.slice(13, 16);   // v6 is already high→low
+      const ticks = BigInt('0x' + ticksHex);
+      const ms = ticks / 10000n - GREGORIAN_OFFSET;
+      const s = stamp(ms);
+      if (s) { resultEl.appendChild(row('Timestamp', s.utc, true)); resultEl.appendChild(row('Relative', s.rel)); }
+      resultEl.appendChild(row('Clock seq', '0x' + (parseInt(hex.slice(16, 20), 16) & 0x3fff).toString(16)));
+      resultEl.appendChild(row('Node', hex.slice(20).replace(/(..)(?=.)/g, '$1:')));
+    } else if (variant === 'rfc' && v === 7) {
+      const ms = BigInt('0x' + hex.slice(0, 12));
+      const s = stamp(ms);
+      if (s) { resultEl.appendChild(row('Timestamp', s.utc, true)); resultEl.appendChild(row('Relative', s.rel)); }
+      resultEl.appendChild(row('Random', hex.slice(13, 16) + hex.slice(17)));
+    } else {
+      resultEl.appendChild(row('Timestamp', 'none — this version carries no embedded time'));
+    }
+    status.textContent = 'v' + v;
+  }
+
+  function decodeUlid(s) {
+    const up = s.toUpperCase();
+    let ms = 0n;
+    for (let i = 0; i < 10; i++) ms = ms * 32n + BigInt(CROCKFORD.indexOf(up[i]));
+    resultEl.appendChild(row('Format', 'ULID (128-bit)', true));
+    const st = stamp(ms);
+    if (st) { resultEl.appendChild(row('Timestamp', st.utc, true)); resultEl.appendChild(row('Relative', st.rel)); }
+    resultEl.appendChild(row('Epoch (ms)', ms.toString()));
+    resultEl.appendChild(row('Randomness', up.slice(10)));
+    status.textContent = 'ULID';
+  }
+
+  function render() {
+    resultEl.innerHTML = '';
+    const raw = input.value.trim();
+    if (!raw) { status.textContent = '—'; return; }
+    const hex = raw.replace(/[\s{}-]/g, '').toLowerCase();
+    if (/^[0-9a-f]{32}$/.test(hex)) { decodeUuid(hex); return; }
+    const ulid = raw.replace(/\s/g, '');
+    if (/^[0-9A-HJKMNP-TV-Z]{26}$/i.test(ulid) && CROCKFORD.indexOf(ulid[0].toUpperCase()) <= 7) { decodeUlid(ulid); return; }
+    resultEl.appendChild(row('Error', 'not a UUID (32 hex digits) or ULID (26 Crockford base32 chars)'));
+    status.textContent = 'INVALID';
+  }
+  input.addEventListener('input', render);
+  render();
+})();
+
+/* ================= shannon entropy analyzer ================= */
+/* Counts UTF-8 byte frequencies and sums -Σ p·log2(p) for bits-per-byte in
+   [0,8]. Flat, near-maximal entropy is what encryption, compression and raw
+   keys look like; natural-language prose lands around 4. Consumes the pipe
+   bus so any upstream tool's output can be measured in place. */
+(function entropyAnalyzer() {
+  const src = document.getElementById('entSrc');
+  const corpus = document.getElementById('entIn');
+  const fill = document.getElementById('entFill');
+  const verdict = document.getElementById('entVerdict');
+  const resultEl = document.getElementById('entResult');
+  const status = document.getElementById('entStatus');
+
+  function row(label, value, hl) {
+    const div = document.createElement('div');
+    div.innerHTML = '<dt>' + CTF.esc(label) + '</dt><dd' + (hl ? ' class="hl"' : '') + '>' + CTF.esc(value) + '</dd>';
+    return div;
+  }
+  function render() {
+    resultEl.innerHTML = '';
+    const text = corpus.value;
+    if (!text) { fill.style.width = '0'; verdict.textContent = '// awaiting input'; status.textContent = '—'; return; }
+    const bytes = new TextEncoder().encode(text);
+    const freq = new Array(256).fill(0);
+    for (const b of bytes) freq[b]++;
+    let H = 0;
+    for (const c of freq) { if (c) { const p = c / bytes.length; H -= p * Math.log2(p); } }
+    const unique = freq.filter(c => c).length;
+    const ratio = Math.min(H / 8, 1);
+    fill.style.width = (ratio * 100).toFixed(1) + '%';
+    // Warm at the low end (natural text), phosphor-green as entropy climbs toward random.
+    fill.style.background = H >= 6 ? 'var(--phos)' : H >= 4 ? 'var(--kraft)' : 'var(--threat)';
+
+    let label;
+    if (H >= 7.5) label = 'HIGH — likely encrypted, compressed, or a random key';
+    else if (H >= 6) label = 'ELEVATED — encoded or packed data';
+    else if (H >= 4) label = 'MODERATE — mixed text, source code, or base64';
+    else if (H >= 2) label = 'LOW — natural-language prose';
+    else label = 'VERY LOW — repetitive or single-symbol';
+    verdict.textContent = label;
+
+    resultEl.appendChild(row('Shannon entropy', H.toFixed(3) + ' bits/byte', true));
+    resultEl.appendChild(row('Total entropy', (H * bytes.length).toFixed(0) + ' bits'));
+    resultEl.appendChild(row('Length', bytes.length.toLocaleString('en-US') + ' bytes'));
+    resultEl.appendChild(row('Unique bytes', unique + ' / 256'));
+    status.textContent = H.toFixed(2);
+  }
+  Pipe.bindSelect({
+    select: src, corpus, render, titleEl: null, titles: {}, labelEl: null, labels: {},
+  });
 })();
 
 /* ================= steganography LSB extractor ================= */
