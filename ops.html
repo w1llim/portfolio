@@ -17,6 +17,8 @@
 <meta name="twitter:title" content="Ops Lab — William Lam">
 <meta name="twitter:description" content="Twenty-one interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
 <meta name="theme-color" content="#211A10">
+<script>/* apply the saved theme before first paint to avoid a flash; dark is the default */
+(function(){try{if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,13 +32,42 @@
   --kraft:#D3C4A2;       /* kraft paper */
   --kraft-dim:#A99B7D;
   --phos:#8CF56B;        /* phosphor green accent */
-  --phos-dim:rgba(140,245,107,.35);
+  --phos-dim:rgba(var(--phos-rgb),.35);
   --threat:#E8603F;      /* hostile packets / alerts */
-  --line:rgba(211,196,162,.16);
+  --line:rgba(var(--kraft-rgb),.16);
+  /* raw channels for the translucent layers, so both themes can reuse the alphas */
+  --bark-rgb:33,26,16;
+  --deep-rgb:20,15,8;    /* recessed panel wells */
+  --kraft-rgb:211,196,162;
+  --phos-rgb:140,245,107;
+  --threat-rgb:232,96,63;
+  --moss-rgb:51,81,47;
   --mono:'JetBrains Mono',monospace;
   --body:'Archivo',sans-serif;
   --disp:'Chakra Petch',sans-serif;
 }
+/* ---------- light theme (field-manual paper) — toggled via header button ---------- */
+html[data-theme="light"]{
+  --bark:#EFE8D6;        /* kraft paper base */
+  --bark-2:#E4DAC0;      /* raised panels */
+  --moss:#8FA878;        /* sage green */
+  --olive:#7A8A5C;
+  --kraft:#2B2316;       /* espresso ink */
+  --kraft-dim:#6B5D45;
+  --phos:#1E7A10;        /* phosphor, dimmed for paper */
+  --threat:#BC4222;
+  --line:rgba(var(--kraft-rgb),.22);
+  --bark-rgb:239,232,214;
+  --deep-rgb:252,249,240;
+  --kraft-rgb:43,35,22;
+  --phos-rgb:30,122,16;
+  --threat-rgb:188,66,34;
+  --moss-rgb:143,168,120;
+}
+html[data-theme="light"] body::before{opacity:.2}
+html[data-theme="light"] body::after{background:radial-gradient(ellipse at 50% 40%,transparent 60%,rgba(64,52,28,.14))}
+/* the packet monitor draws phosphor traffic on canvas — keep its well dark in both themes */
+html[data-theme="light"] #netCanvas{background:radial-gradient(ellipse at 50% 50%,rgba(51,81,47,.3),transparent 70%) #1D1710}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -65,9 +96,9 @@ body::after{
 ::-webkit-scrollbar-corner{background:var(--bark-2)}
 ::-webkit-scrollbar-thumb{
   background:var(--moss);border:2px solid var(--bark-2);
-  background-clip:padding-box;box-shadow:inset 0 0 0 1px rgba(140,245,107,.25);
+  background-clip:padding-box;box-shadow:inset 0 0 0 1px rgba(var(--phos-rgb),.25);
 }
-::-webkit-scrollbar-thumb:hover{background:var(--phos);box-shadow:inset 0 0 0 1px rgba(140,245,107,.5)}
+::-webkit-scrollbar-thumb:hover{background:var(--phos);box-shadow:inset 0 0 0 1px rgba(var(--phos-rgb),.5)}
 a{color:inherit;text-decoration:none}
 a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--phos);outline-offset:3px}
 .mono{font-family:var(--mono);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
@@ -78,7 +109,7 @@ a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{
 header{
   position:fixed;top:0;left:0;right:0;z-index:100;
   border-bottom:1px solid var(--line);
-  background:rgba(33,26,16,.82);backdrop-filter:blur(10px);
+  background:rgba(var(--bark-rgb),.82);backdrop-filter:blur(10px);
 }
 .nav{display:flex;justify-content:space-between;align-items:center;height:58px;position:relative}
 .mark{font-family:var(--disp);font-weight:700;font-size:17px;letter-spacing:.04em}
@@ -89,6 +120,7 @@ header{
 nav.links{display:flex;gap:clamp(12px,2vw,30px)}
 nav.links a{position:relative;padding:3px 0;color:var(--kraft-dim);transition:color .2s}
 nav.links a:hover{color:var(--phos)}
+nav.links a.current{color:var(--phos)}
 nav.links a::before{content:"/";color:var(--phos);margin-right:5px;opacity:0;transition:opacity .2s}
 nav.links a:hover::before{opacity:1}
 @media(max-width:860px){.status{display:none}}
@@ -102,6 +134,13 @@ nav.links a:hover::before{opacity:1}
   flex-direction:column;justify-content:center;align-items:center;gap:5px;cursor:pointer;flex-shrink:0;
 }
 .nav-toggle span{width:16px;height:1.5px;background:var(--kraft);transition:transform .25s,opacity .2s}
+.nav-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.theme-toggle{
+  display:flex;align-items:center;justify-content:center;background:none;border:1px solid var(--line);
+  width:36px;height:36px;color:var(--kraft-dim);font-size:15px;line-height:1;cursor:pointer;flex-shrink:0;
+  transition:color .2s,border-color .2s;
+}
+.theme-toggle:hover{color:var(--phos);border-color:var(--phos)}
 .nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .nav-toggle.open span:nth-child(2){opacity:0}
 .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
@@ -156,7 +195,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 /* ---------- ops lab ---------- */
 .ops-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:20px;align-items:stretch}
 .panel{
-  border:1px solid var(--line);background:rgba(20,15,8,.7);
+  border:1px solid var(--line);background:rgba(var(--deep-rgb),.7);
   display:flex;flex-direction:column;min-width:0;
 }
 .panel .term-bar{justify-content:space-between}
@@ -167,7 +206,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .panel-body{padding:18px;flex:1;display:flex;flex-direction:column;gap:14px}
 
 /* packet monitor */
-#netCanvas{width:100%;height:340px;display:block;background:radial-gradient(ellipse at 50% 50%,rgba(51,81,47,.18),transparent 70%)}
+#netCanvas{width:100%;height:340px;display:block;background:radial-gradient(ellipse at 50% 50%,rgba(var(--moss-rgb),.18),transparent 70%)}
 .net-stats{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
 .net-stats div{padding:14px 16px;border-right:1px solid var(--line);min-width:0}
 .net-stats div:last-child{border-right:0}
@@ -180,15 +219,43 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .panel label{font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--kraft-dim);display:block;margin-bottom:7px}
 .panel textarea{
   width:100%;resize:vertical;min-height:72px;
-  background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--kraft);
+  background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);color:var(--kraft);
   font-family:var(--mono);font-size:13.5px;line-height:1.6;padding:12px;
 }
 .panel textarea:focus{border-color:var(--phos)}
-.panel input[type=text]{
-  width:100%;background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--kraft);
+.panel input[type=text],
+.panel input[type=datetime-local]{
+  width:100%;background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);color:var(--kraft);
   font-family:var(--mono);font-size:13.5px;line-height:1.6;padding:12px;
 }
-.panel input[type=text]:focus{border-color:var(--phos)}
+.panel input[type=text]:focus,
+.panel input[type=datetime-local]:focus{border-color:var(--phos)}
+/* native datetime-local: drag every part into the terminal palette so it
+   stops rendering as a light-themed browser default. color-scheme:dark
+   themes the spinner, the field text and the calendar popup; the rules
+   below phosphor-tint the picker glyph and highlight the active field. */
+.panel input[type=datetime-local]{color-scheme:dark;cursor:text;accent-color:var(--phos)}
+.panel input[type=datetime-local]::-webkit-calendar-picker-indicator{
+  filter:grayscale(1) brightness(1.3) sepia(1) hue-rotate(55deg) saturate(6);
+  opacity:.7;cursor:pointer;transition:opacity .2s;
+}
+.panel input[type=datetime-local]::-webkit-calendar-picker-indicator:hover{opacity:1}
+.panel input[type=datetime-local]::-webkit-datetime-edit{color:var(--kraft)}
+.panel input[type=datetime-local]::-webkit-datetime-edit-text{color:var(--kraft-dim);padding:0 1px}
+.panel input[type=datetime-local]::-webkit-datetime-edit-month-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-day-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-year-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-hour-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-minute-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-second-field:focus,
+.panel input[type=datetime-local]::-webkit-datetime-edit-ampm-field:focus{
+  background:var(--phos);color:var(--bark);outline:none;border-radius:1px;
+}
+/* light theme (paper): follow the light color-scheme so the field text
+   stays dark ink on the light panel, and drop the dark-tuned glyph
+   filter — the native dark glyph reads fine on paper. */
+html[data-theme="light"] .panel input[type=datetime-local]{color-scheme:light}
+html[data-theme="light"] .panel input[type=datetime-local]::-webkit-calendar-picker-indicator{filter:none;opacity:.6}
 .panel-note{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--kraft-dim)}
 .shift-row{display:flex;align-items:center;gap:14px}
 .shift-row input[type=range]{flex:1;accent-color:var(--phos);cursor:pointer}
@@ -202,7 +269,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
   padding:10px 0;border:1px solid var(--line);background:none;color:var(--kraft-dim);cursor:pointer;
   transition:all .2s;
 }
-.mode-btn.active{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+.mode-btn.active{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.08)}
 .alpha-map{
   font-family:var(--mono);font-size:11.5px;line-height:1.9;letter-spacing:.28em;
   color:var(--kraft-dim);border:1px dashed var(--line);padding:10px 12px;
@@ -210,7 +277,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 }
 .alpha-map .to{color:var(--phos)}
 .cipher-out{
-  background:rgba(140,245,107,.06);border:1px solid rgba(140,245,107,.3);
+  background:rgba(var(--phos-rgb),.06);border:1px solid rgba(var(--phos-rgb),.3);
   font-family:var(--mono);font-size:13.5px;line-height:1.6;color:var(--phos);
   padding:12px;min-height:72px;word-break:break-word;white-space:pre-wrap;
 }
@@ -220,13 +287,13 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 
 /* hash lab */
 .hash-out{
-  background:rgba(140,245,107,.06);border:1px solid rgba(140,245,107,.3);
+  background:rgba(var(--phos-rgb),.06);border:1px solid rgba(var(--phos-rgb),.3);
   font-family:var(--mono);font-size:12px;letter-spacing:.04em;line-height:1.6;
   color:var(--phos);padding:10px 12px;word-break:break-all;
 }
 .hash-bits{display:grid;grid-template-columns:repeat(32,1fr);gap:2px}
-.hash-bits i{display:block;aspect-ratio:1;background:rgba(211,196,162,.1);transition:background .5s}
-.hash-bits i.on{background:rgba(140,245,107,.5)}
+.hash-bits i{display:block;aspect-ratio:1;background:rgba(var(--kraft-rgb),.1);transition:background .5s}
+.hash-bits i.on{background:rgba(var(--phos-rgb),.5)}
 .hash-bits i.flip{background:var(--threat);transition:none}
 
 /* password audit */
@@ -235,8 +302,8 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
   border:1px solid var(--line);padding:4px 10px;font-family:var(--mono);font-size:10.5px;
   letter-spacing:.12em;color:var(--kraft-dim);transition:color .25s,border-color .25s,background .25s;
 }
-.pw-chips span.hit{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
-.pw-rail{height:6px;background:rgba(211,196,162,.12);overflow:hidden}
+.pw-chips span.hit{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.08)}
+.pw-rail{height:6px;background:rgba(var(--kraft-rgb),.12);overflow:hidden}
 .pw-fill{height:100%;width:0;background:var(--threat);transition:width .45s cubic-bezier(.2,.8,.2,1),background .45s}
 .pw-verdict{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--kraft-dim);margin-top:8px}
 
@@ -278,11 +345,11 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 
 /* metadata inspector (exiftool) */
 .exif-drop{
-  border:1px dashed var(--line);background:rgba(211,196,162,.04);
+  border:1px dashed var(--line);background:rgba(var(--kraft-rgb),.04);
   padding:34px 20px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;
   font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;color:var(--kraft-dim);
 }
-.exif-drop:hover,.exif-drop.drag{border-color:var(--phos);background:rgba(140,245,107,.06);color:var(--kraft)}
+.exif-drop:hover,.exif-drop.drag{border-color:var(--phos);background:rgba(var(--phos-rgb),.06);color:var(--kraft)}
 .exif-drop b{color:var(--phos);display:block;margin-bottom:8px;font-size:14px;letter-spacing:.14em;text-transform:uppercase}
 .exif-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:20px;align-items:start}
 /* min-width:0 on the grid children: without it, the caption's nowrap
@@ -330,19 +397,19 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .exif-placeholder span{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase}
 .exif-preview .panel-note{margin-top:12px;line-height:1.7;word-break:break-word}
 .exif-gps{
-  border:1px solid var(--threat);background:rgba(232,96,63,.08);padding:12px 14px;margin-bottom:14px;
+  border:1px solid var(--threat);background:rgba(var(--threat-rgb),.08);padding:12px 14px;margin-bottom:14px;
 }
 .exif-gps .hd{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--threat);margin-bottom:6px}
 .exif-gps .coord{font-family:var(--mono);font-size:14px;color:var(--kraft);word-break:break-all}
 .exif-gps a{color:var(--phos);border-bottom:1px solid transparent;font-family:var(--mono);font-size:11px;letter-spacing:.1em}
 .exif-gps a:hover{border-color:var(--phos)}
-.exif-clean{border:1px solid rgba(140,245,107,.3);background:rgba(140,245,107,.06);padding:12px 14px;margin-bottom:14px;
+.exif-clean{border:1px solid rgba(var(--phos-rgb),.3);background:rgba(var(--phos-rgb),.06);padding:12px 14px;margin-bottom:14px;
   font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--phos)}
-.exif-flag{border:1px solid var(--phos);background:rgba(140,245,107,.1);padding:12px 14px;margin-bottom:14px}
+.exif-flag{border:1px solid var(--phos);background:rgba(var(--phos-rgb),.1);padding:12px 14px;margin-bottom:14px}
 .exif-flag .hd{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--phos);margin-bottom:6px}
 .exif-flag .val{font-family:var(--mono);font-size:14px;color:#D9FFCC;font-weight:600;word-break:break-all}
 .exif-flag .val+.val{margin-top:4px}
-.svc-record dd .flag{color:#D9FFCC;font-weight:600;background:rgba(140,245,107,.15);padding:0 1px}
+.svc-record dd .flag{color:#D9FFCC;font-weight:600;background:rgba(var(--phos-rgb),.15);padding:0 1px}
 .exif-tags{max-height:300px;overflow-y:auto}
 .exif-tags .svc-record div{padding:9px 0}
 .exif-tags dt{font-size:11px}
@@ -352,7 +419,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .jwt-part{margin-top:2px}
 .jwt-part .lab{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--kraft-dim);margin-bottom:6px}
 .jwt-part pre{
-  background:rgba(211,196,162,.06);border:1px solid var(--line);padding:10px 12px;
+  background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);padding:10px 12px;
   font-family:var(--mono);font-size:12px;line-height:1.6;color:var(--kraft);
   white-space:pre-wrap;word-break:break-word;overflow-x:auto;
 }
@@ -372,7 +439,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .magic-val{font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--kraft-dim);word-break:break-all;white-space:pre-wrap;min-width:0}
 .magic-row.hit .magic-tag{color:var(--phos)}
 .magic-row.hit .magic-val{color:var(--kraft)}
-.magic-row.flag{background:rgba(140,245,107,.1)}
+.magic-row.flag{background:rgba(var(--phos-rgb),.1)}
 .magic-row.flag .magic-tag{color:var(--phos)}
 .magic-row.flag .magic-val{color:#D9FFCC;font-weight:600}
 .magic-empty{padding:16px 14px;font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--kraft-dim)}
@@ -386,7 +453,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .xor-cand:last-child{border-bottom:0}
 .xor-key{font-family:var(--mono);font-size:11px;color:var(--phos);white-space:nowrap}
 .xor-txt{font-family:var(--mono);font-size:12px;color:var(--kraft);word-break:break-all;min-width:0}
-.xor-cand.flag{background:rgba(140,245,107,.1)}
+.xor-cand.flag{background:rgba(var(--phos-rgb),.1)}
 .xor-cand.flag .xor-txt{color:#D9FFCC;font-weight:600}
 
 /* hash identifier */
@@ -410,12 +477,12 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .dump-out .off{color:var(--kraft-dim)}
 .dump-out .asc{color:var(--phos)}
 .strings-out{white-space:pre-wrap;word-break:break-all}
-.strings-out .flag{color:#D9FFCC;font-weight:600;background:rgba(140,245,107,.12)}
+.strings-out .flag{color:#D9FFCC;font-weight:600;background:rgba(var(--phos-rgb),.12)}
 
 /* grep pattern search */
 .grep-controls{display:flex;flex-direction:column;gap:12px}
 .grep-src{
-  width:100%;background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--kraft);
+  width:100%;background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);color:var(--kraft);
   font-family:var(--mono);font-size:13px;line-height:1.6;padding:11px 34px 11px 12px;cursor:pointer;
   -webkit-appearance:none;appearance:none;
   background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%238CF56B' stroke-width='1.5'/></svg>");
@@ -423,12 +490,12 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 }
 .grep-src:focus{border-color:var(--phos)}
 .grep-src option{background:var(--bark-2);color:var(--kraft)}
-.grep-src.piped{border-color:rgba(140,245,107,.4);color:var(--phos)}
+.grep-src.piped{border-color:rgba(var(--phos-rgb),.4);color:var(--phos)}
 .pipe-btn{
   align-self:flex-start;font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:6px 12px;border:1px solid var(--line);background:none;color:var(--kraft-dim);cursor:pointer;transition:all .2s;
 }
-.pipe-btn:hover{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+.pipe-btn:hover{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.08)}
 textarea[readonly]{opacity:.9;cursor:default}
 textarea[readonly]:focus{border-color:var(--line)}
 .grep-out{
@@ -439,10 +506,10 @@ textarea[readonly]:focus{border-color:var(--line)}
 .grep-line{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:baseline;min-width:0}
 .grep-line .ln{color:var(--kraft-dim);text-align:right;user-select:none;min-width:3ch;white-space:nowrap}
 .grep-line .lt{word-break:break-word;white-space:pre-wrap;min-width:0}
-.grep-hit{background:rgba(140,245,107,.2);color:#D9FFCC;font-weight:600;padding:0 1px}
+.grep-hit{background:rgba(var(--phos-rgb),.2);color:#D9FFCC;font-weight:600;padding:0 1px}
 .grep-idle{color:var(--kraft-dim);letter-spacing:.04em}
 .grep-err{color:var(--threat)}
-.mode-btn[aria-pressed=true]{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+.mode-btn[aria-pressed=true]{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.08)}
 
 /* key-value record list — used by password audit, exif tags, rsa, timestamp */
 .svc-record{margin-top:0;border-top:1px solid var(--line)}
@@ -456,7 +523,7 @@ textarea[readonly]:focus{border-color:var(--line)}
 .svc-record .hl{color:var(--phos)}
 
 /* copy-to-clipboard buttons — same base look as pipe-btn */
-.copy-btn.copied{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.12)}
+.copy-btn.copied{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.12)}
 .copy-row{display:flex;gap:8px;flex-wrap:wrap}
 
 /* magic multi-layer chain */
@@ -466,26 +533,26 @@ textarea[readonly]:focus{border-color:var(--line)}
 .magic-chain .chain-reset{margin-left:auto;font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;background:none;border:1px solid var(--line);color:var(--kraft-dim);padding:4px 10px;cursor:pointer;transition:all .2s}
 .magic-chain .chain-reset:hover{border-color:var(--threat);color:var(--threat)}
 .magic-row.drillable{cursor:pointer}
-.magic-row.drillable:hover{background:rgba(140,245,107,.07)}
+.magic-row.drillable:hover{background:rgba(var(--phos-rgb),.07)}
 .magic-hint{font-family:var(--mono);font-size:10px;letter-spacing:.06em;color:var(--kraft-dim)}
 
 /* frequency analysis + substitution solver */
 .freq-bars{display:flex;flex-wrap:wrap;gap:3px;border:1px solid var(--line);padding:10px;max-height:150px;overflow-y:auto}
 .freq-bar{display:flex;flex-direction:column;align-items:center;gap:4px;width:25px}
-.freq-bar .bar-track{width:13px;height:56px;background:rgba(211,196,162,.08);display:flex;align-items:flex-end}
+.freq-bar .bar-track{width:13px;height:56px;background:rgba(var(--kraft-rgb),.08);display:flex;align-items:flex-end}
 .freq-bar .bar-fill{width:100%;background:var(--phos);opacity:.55;min-height:1px}
 .freq-bar .letter{font-family:var(--mono);font-size:9.5px;color:var(--kraft-dim)}
 .subst-grid{display:flex;flex-wrap:wrap;gap:4px;border:1px solid var(--line);padding:10px}
 .subst-cell{display:flex;flex-direction:column;align-items:center;gap:3px;width:25px}
 .subst-cell .c-letter{font-family:var(--mono);font-size:11px;color:var(--kraft-dim);letter-spacing:.04em}
-.subst-cell input{width:23px;height:23px;text-align:center;background:rgba(211,196,162,.06);border:1px solid var(--line);color:var(--phos);font-family:var(--mono);font-size:12px;text-transform:uppercase;padding:0}
+.subst-cell input{width:23px;height:23px;text-align:center;background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);color:var(--phos);font-family:var(--mono);font-size:12px;text-transform:uppercase;padding:0}
 .subst-cell input:focus{border-color:var(--phos)}
 
 /* vigenère solver */
 .vig-lens{display:flex;flex-wrap:wrap;gap:8px}
 .vig-len-btn{font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:8px 12px;border:1px solid var(--line);background:none;color:var(--kraft-dim);cursor:pointer;transition:all .2s;text-align:center}
 .vig-len-btn:hover{border-color:var(--phos);color:var(--phos)}
-.vig-len-btn.active{border-color:var(--phos);color:var(--phos);background:rgba(140,245,107,.08)}
+.vig-len-btn.active{border-color:var(--phos);color:var(--phos);background:rgba(var(--phos-rgb),.08)}
 .vig-len-btn .ic{display:block;font-size:9px;color:var(--kraft-dim);margin-top:3px;letter-spacing:.04em}
 .vig-len-btn.active .ic{color:var(--phos)}
 
@@ -510,9 +577,9 @@ textarea[readonly]:focus{border-color:var(--line)}
 }
 .diff-line{display:grid;grid-template-columns:22px 1fr;gap:8px;padding:1px 10px;white-space:pre-wrap;word-break:break-word}
 .diff-line .mk{color:var(--kraft-dim);user-select:none}
-.diff-line.add{background:rgba(140,245,107,.1)}
+.diff-line.add{background:rgba(var(--phos-rgb),.1)}
 .diff-line.add .mk{color:var(--phos)}
-.diff-line.del{background:rgba(232,96,63,.1)}
+.diff-line.del{background:rgba(var(--threat-rgb),.1)}
 .diff-line.del .mk{color:var(--threat)}
 .diff-summary{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--kraft-dim)}
 .diff-summary .add-n{color:var(--phos)}
@@ -524,7 +591,7 @@ textarea[readonly]:focus{border-color:var(--line)}
 .stego-preview img{width:100%;display:block;image-rendering:pixelated}
 
 /* flag highlight inside single-value output panels (vigenère, freq, qr) */
-.cipher-out .flag{color:#D9FFCC;font-weight:600;background:rgba(140,245,107,.15);padding:0 1px}
+.cipher-out .flag{color:#D9FFCC;font-weight:600;background:rgba(var(--phos-rgb),.15);padding:0 1px}
 
 @media(max-width:940px){.ops-grid,.ops-grid2,.ops-grid3{grid-template-columns:1fr}}
 @media(max-width:720px){.exif-grid,.dump-grid{grid-template-columns:1fr}}
@@ -567,7 +634,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
 /* ---------- always-on terminal ---------- */
 .term{
-  border:1px solid var(--line);background:rgba(20,15,8,.85);
+  border:1px solid var(--line);background:rgba(var(--deep-rgb),.85);
   font-family:var(--mono);font-size:13.5px;line-height:1.75;
 }
 .term-bar{
@@ -578,8 +645,10 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 .term-bar .lights{display:flex;gap:6px;margin-right:6px}
 .term-bar .lights i{width:9px;height:9px;border-radius:50%;background:var(--line)}
 .term-bar .lights i:first-child{background:var(--phos);opacity:.7}
-.term-min{background:none;border:0;color:var(--kraft-dim);font-family:var(--mono);font-size:13px;line-height:1;cursor:pointer;padding:2px 4px}
-.term-min:hover{color:var(--phos)}
+.term-btns{display:flex;align-items:center;gap:2px}
+.term-min,.term-full{background:none;border:0;color:var(--kraft-dim);font-family:var(--mono);font-size:13px;line-height:1;cursor:pointer;padding:2px 4px}
+.term-min:hover,.term-full:hover{color:var(--phos)}
+.term-full{font-size:14px}
 .term-body{padding:18px 18px 22px;color:var(--kraft);overflow-y:auto}
 .term{cursor:text;position:relative}
 #termKb{position:absolute;width:1px;height:1px;opacity:0;border:0;padding:0}
@@ -592,11 +661,26 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 .term.docked{
   position:fixed;right:18px;bottom:18px;z-index:1000;
   width:300px;max-width:calc(100vw - 36px);
-  box-shadow:0 20px 50px rgba(0,0,0,.6),0 0 0 1px rgba(140,245,107,.08);
+  box-shadow:0 20px 50px rgba(0,0,0,.6),0 0 0 1px rgba(var(--phos-rgb),.08);
 }
 .term.docked .term-body{min-height:0;max-height:38vh}
 .term.minimized .term-body,.term.minimized #termKb{display:none}
 @media(max-width:600px){.term.docked{right:12px;bottom:12px;width:calc(100vw - 24px)}}
+
+/* fullscreen terminal — fills the viewport height, capped to the content width */
+.term.fullscreen{
+  position:fixed;top:0;left:50%;right:auto;bottom:auto;transform:translateX(-50%);
+  z-index:2000;margin:0;
+  width:calc(100vw - 40px);max-width:1240px;
+  height:100dvh;max-height:100dvh;
+  display:flex;flex-direction:column;
+  box-shadow:0 0 0 100vmax rgba(6,4,1,.74),0 20px 50px rgba(0,0,0,.6);
+}
+.term.fullscreen .term-body{flex:1 1 auto;min-height:0;max-height:none}
+.term.fullscreen .term-min{display:none}
+body.term-fs-lock{overflow:hidden}
+body.term-fs-lock header{display:none}
+@media(max-width:600px){.term.fullscreen{width:calc(100vw - 16px)}}
 </style>
 </head>
 <body>
@@ -604,7 +688,10 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 <div class="term docked minimized" id="termShell" aria-label="Interactive terminal — type help for commands, cd to navigate">
   <div class="term-bar">
     <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/ops-lab</span>
-    <button type="button" class="term-min" id="termMin" aria-label="Restore terminal">▢</button>
+    <span class="term-btns">
+      <button type="button" class="term-full" id="termFull" aria-label="Fullscreen terminal" title="Fullscreen (or type: fullscreen)">⛶</button>
+      <button type="button" class="term-min" id="termMin" aria-label="Restore terminal">▢</button>
+    </span>
   </div>
   <div class="term-body" id="terminal" aria-hidden="true"></div>
   <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
@@ -622,12 +709,17 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
       <a href="index.html#projects">Projects</a>
       <a href="index.html#timeline">Timeline</a>
       <a href="index.html#toolkit">Toolkit</a>
+      <a class="current" href="ops.html" aria-current="page">Ops Lab</a>
+      <a href="blog.html">Blog &#8599;</a>
       <a href="index.html#contact">Contact</a>
     </nav>
     <div class="status mono"><span class="dot"></span>Lab online</div>
-    <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu">
-      <span></span><span></span><span></span>
-    </button>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" title="Toggle light / dark theme">☀</button>
+      <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
 </header>
 
@@ -669,6 +761,28 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
         </div>
       </div>
 
+    </div>
+
+    <!-- cidr / subnet calculator -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>ipcalc --cidr · subnet math</span>
+          <span class="right" id="cidrStatus">—</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="cidrIn">CIDR block — an IPv4 address with a prefix, e.g. 10.13.37.0/24 or 192.168.1.1/255.255.255.0</label>
+            <input id="cidrIn" type="text" autocomplete="off" spellcheck="false" value="10.13.37.0/24">
+          </div>
+          <dl class="svc-record" id="cidrResult"></dl>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="cidrSummaryText" id="cidrCopyBtn" style="display:none">⧉ copy summary</button>
+          </div>
+          <span id="cidrSummaryText" style="display:none"></span>
+          <div class="panel-note">// network, broadcast, usable host range, wildcard mask &amp; host count — pure bitmath in your browser, no lookups</div>
+        </div>
+      </div>
     </div>
 
     <div class="ops-stage reveal" id="stage-extract"><b>stage 02 · extract</b> <span class="note">— drop an artifact; strings, metadata, coordinates &amp; hidden payloads come out, ready to pipe downstream</span></div>
@@ -873,7 +987,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
             <button type="button" class="pipe-btn" data-pipe="magic">magic ▸ grep</button>
             <button type="button" class="pipe-btn copy-btn" id="magicCopyTop">⧉ copy top result</button>
           </div>
-          <div class="panel-note">// base64 · base32 · base58 · hex · binary · decimal · url · rot13 · rot47 · atbash · morse · reverse — decodes &amp; encodes, all client-side</div>
+          <div class="panel-note">// base64 · base64url · base32 · base58 · base45 · base36 · ascii85 · hex · binary · decimal · a1z26 · bacon · nato · braille · html · unicode · quoted-printable · url · rot13/18/47 · atbash · morse · reverse — decodes &amp; encodes, all client-side</div>
         </div>
       </div>
     </div>
@@ -1160,6 +1274,24 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
     </div>
 
+    <!-- uuid / ulid decoder -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>uuid --inspect · decode identifiers</span>
+          <span class="right" id="uuidStatus">—</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="uuidIn">UUID or ULID — versioned UUIDs (v1/v6/v7) and ULIDs carry an embedded timestamp you can pull back out</label>
+            <input id="uuidIn" type="text" autocomplete="off" spellcheck="false" value="017F22E2-79B0-7CC3-98C4-DC0C0C07398F">
+          </div>
+          <dl class="svc-record" id="uuidResult"></dl>
+          <div class="panel-note" id="uuidMeta">// version &amp; variant read from the bitfields; v1/v6 unwind the 100-ns Gregorian clock, v7 &amp; ULID the millisecond Unix clock — all local</div>
+        </div>
+      </div>
+    </div>
+
     <div class="ops-stage reveal" id="stage-synthesize"><b>stage 05 · synthesize</b> <span class="note">— every stdout above pipes in here: hunt flags, grep the streams, diff what changed</span></div>
 
     <!-- flag format hunter -->
@@ -1288,6 +1420,38 @@ DEBUG=true</textarea>
       </div>
     </div>
 
+    <!-- shannon entropy analyzer -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span><span id="entTitle">entropy --shannon · measure randomness</span></span>
+          <span class="right" id="entStatus">—</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="entSrc">stdin — measure your own text, or pipe in another tool's output</label>
+            <select id="entSrc" class="grep-src">
+              <option value="paste">paste · type your own text below</option>
+              <option value="strings">strings · xxd + strings file analyzer</option>
+              <option value="magic">magic --decode · every codec's output</option>
+              <option value="xor">xor --brute · candidate plaintexts</option>
+              <option value="hexdump">xxd · raw hex dump</option>
+            </select>
+          </div>
+          <div>
+            <label for="entIn" id="entInLabel">Bytes to measure — a key, a blob, a suspected ciphertext</label>
+            <textarea id="entIn" spellcheck="false">The quick brown fox jumps over the lazy dog.</textarea>
+          </div>
+          <div>
+            <div class="pw-rail"><div class="pw-fill" id="entFill"></div></div>
+            <div class="pw-verdict" id="entVerdict" aria-live="polite">// awaiting input</div>
+          </div>
+          <dl class="svc-record" id="entResult" style="margin-top:0"></dl>
+          <div class="panel-note">// Shannon entropy over UTF-8 bytes (0–8 bits/byte) — high, flat entropy is the fingerprint of encryption, compression, or a random key; English prose sits near 4</div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </section>
 
@@ -1306,6 +1470,26 @@ DEBUG=true</textarea>
 
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ================= theme toggle (dark default / light) ================= */
+const themeBtn = document.getElementById('themeToggle');
+const themeMeta = document.querySelector('meta[name="theme-color"]');
+function currentTheme() {
+  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
+}
+function applyTheme(t) {
+  document.documentElement.setAttribute('data-theme', t);
+  const light = t === 'light';
+  themeBtn.textContent = light ? '☾' : '☀';
+  themeBtn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+  if (themeMeta) themeMeta.setAttribute('content', light ? '#EFE8D6' : '#211A10');
+}
+function setTheme(t) {
+  applyTheme(t);
+  try { localStorage.setItem('theme', t); } catch (e) {}
+}
+applyTheme(currentTheme()); // sync the button with whatever the head script applied
+themeBtn.addEventListener('click', () => setTheme(currentTheme() === 'light' ? 'dark' : 'light'));
 
 /* ================= nav dropdown ================= */
 (function navMenu() {
@@ -1470,7 +1654,7 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
             blocked++; blockedEl.textContent = blocked;
             flashes.push({ x: nodes.fw.x, y: nodes.fw.y, r: 4, life: 1 });
             statusEl.textContent = 'THREAT BLOCKED';
-            statusEl.style.color = '#E8603F';
+            statusEl.style.color = 'var(--threat)';
             setTimeout(() => { statusEl.textContent = 'MONITORING'; statusEl.style.color = ''; }, 900);
             return false;
           }
@@ -1707,7 +1891,7 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
     poolEl.textContent = pool + ' symbols';
     let color, text, pct, crack;
     if (!v) { color = 'rgba(211,196,162,.2)'; text = '// awaiting input'; pct = 0; crack = '—'; }
-    else if (common) { color = '#E8603F'; text = 'COMPROMISED — breach wordlist hit'; pct = 5; crack = 'instant'; }
+    else if (common) { color = 'var(--threat)'; text = 'COMPROMISED — breach wordlist hit'; pct = 5; crack = 'instant'; }
     else {
       crack = human(Math.pow(2, bits - 1) / RATE);
       pct = Math.min(bits / 96 * 100, 100);
@@ -1715,11 +1899,11 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
       // length + charset would suggest, say so — that's the exact case where
       // "just add more characters" fails and the user deserves to know why.
       const why = penalized ? ' — length padded by repetition/patterns' : '';
-      if (bits < 28) { color = '#E8603F'; text = 'CRITICAL — trivially crackable' + why; }
+      if (bits < 28) { color = 'var(--threat)'; text = 'CRITICAL — trivially crackable' + why; }
       else if (bits < 40) { color = '#E8823F'; text = 'WEAK — coffee-break crack' + why; }
       else if (bits < 60) { color = '#E0B33C'; text = 'FAIR — resists casual attack' + why; }
       else if (bits < 80) { color = '#B8D94A'; text = 'STRONG — serious rig required'; }
-      else { color = '#8CF56B'; text = 'HARDENED — outlives the attacker'; }
+      else { color = 'var(--phos)'; text = 'HARDENED — outlives the attacker'; }
     }
     fill.style.width = pct + '%';
     fill.style.background = color;
@@ -2022,7 +2206,7 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
         '#map=16/' + lat.toFixed(5) + '/' + lon.toFixed(5) +
         '" target="_blank" rel="noopener noreferrer">▸ pinpoint on a map</a>';
       status.textContent = 'GPS FOUND';
-      status.style.color = '#E8603F';
+      status.style.color = 'var(--threat)';
     } else if (pushed.length) {
       gpsBox.className = 'exif-clean';
       gpsBox.textContent = '✓ no GPS coordinates in this file';
@@ -2044,14 +2228,14 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
       flagBox.innerHTML = '<div class="hd">🚩 flag-shaped data found in metadata</div>' +
         flagHits.map(h => '<div class="val">' + CTF.esc(h.label) + ': ' + highlightFlag(h.value) + '</div>').join('');
       status.textContent = 'FLAG FOUND';
-      status.style.color = '#8CF56B';
+      status.style.color = 'var(--phos)';
     }
   }
 
   function handle(file) {
     if (!file) return;
     if (!/^image\//.test(file.type) && !/\.(jpe?g|png)$/i.test(file.name)) {
-      status.textContent = 'NOT AN IMAGE'; status.style.color = '#E8603F'; return;
+      status.textContent = 'NOT AN IMAGE'; status.style.color = 'var(--threat)'; return;
     }
     status.textContent = 'READING'; status.style.color = '#E8B23C';
     if (lastUrl) URL.revokeObjectURL(lastUrl);
@@ -2076,7 +2260,7 @@ document.querySelectorAll('.reveal, .mod, #stamp, #rankBadge').forEach(el => io.
         result.hidden = false;
         render(meta || { _ifd0:{}, _exif:{}, _gps:{}, _text:{} }, file, kind);
       } catch (err) {
-        status.textContent = 'PARSE ERROR'; status.style.color = '#E8603F';
+        status.textContent = 'PARSE ERROR'; status.style.color = 'var(--threat)';
       }
     };
     reader.readAsArrayBuffer(file);
@@ -2187,7 +2371,14 @@ const Pipe = (function () {
 
   const B32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
   const B58 = '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+  const B45 = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ $%*+-./:';       // RFC 9285 (EU digital certs)
+  const B36U = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const MORSE = { '.-':'A','-...':'B','-.-.':'C','-..':'D','.':'E','..-.':'F','--.':'G','....':'H','..':'I','.---':'J','-.-':'K','.-..':'L','--':'M','-.':'N','---':'O','.--.':'P','--.-':'Q','.-.':'R','...':'S','-':'T','..-':'U','...-':'V','.--':'W','-..-':'X','-.--':'Y','--..':'Z','-----':'0','.----':'1','..---':'2','...--':'3','....-':'4','.....':'5','-....':'6','--...':'7','---..':'8','----.':'9' };
+  const NATO = { alpha:'A',bravo:'B',charlie:'C',delta:'D',echo:'E',foxtrot:'F',golf:'G',hotel:'H',india:'I',juliett:'J',juliet:'J',kilo:'K',lima:'L',mike:'M',november:'N',oscar:'O',papa:'P',quebec:'Q',romeo:'R',sierra:'S',tango:'T',uniform:'U',victor:'V',whiskey:'W',xray:'X',yankee:'Y',zulu:'Z',zero:'0',one:'1',two:'2',three:'3',four:'4',five:'5',six:'6',seven:'7',eight:'8',nine:'9',niner:'9' };
+  const NATO_ENC = { A:'Alpha',B:'Bravo',C:'Charlie',D:'Delta',E:'Echo',F:'Foxtrot',G:'Golf',H:'Hotel',I:'India',J:'Juliett',K:'Kilo',L:'Lima',M:'Mike',N:'November',O:'Oscar',P:'Papa',Q:'Quebec',R:'Romeo',S:'Sierra',T:'Tango',U:'Uniform',V:'Victor',W:'Whiskey',X:'Xray',Y:'Yankee',Z:'Zulu','0':'Zero','1':'One','2':'Two','3':'Three','4':'Four','5':'Five','6':'Six','7':'Seven','8':'Eight','9':'Nine' };
+  const BRAILLE = { '⠁':'a','⠃':'b','⠉':'c','⠙':'d','⠑':'e','⠋':'f','⠛':'g','⠓':'h','⠊':'i','⠚':'j','⠅':'k','⠇':'l','⠍':'m','⠝':'n','⠕':'o','⠏':'p','⠟':'q','⠗':'r','⠎':'s','⠞':'t','⠥':'u','⠧':'v','⠺':'w','⠭':'x','⠽':'y','⠵':'z','⠀':' ' };
+  const BRAILLE_ENC = Object.fromEntries(Object.entries(BRAILLE).map(([k, v]) => [v, k]));
+  const BRAILLE_NUM = '⠼', BR_D2L = { '1':'a','2':'b','3':'c','4':'d','5':'e','6':'f','7':'g','8':'h','9':'i','0':'j' }, BR_L2D = { a:'1',b:'2',c:'3',d:'4',e:'5',f:'6',g:'7',h:'8',i:'9',j:'0' };
 
   const fromBase64 = s => {
     let t = s.replace(/\s+/g, '');
@@ -2249,14 +2440,135 @@ const Pipe = (function () {
       word.trim().split(/\s+/).map(code => MORSE[code] || '').join('')
     ).join(' ').trim() || null;
   };
+  const rot5 = s => s.replace(/[0-9]/g, d => String.fromCharCode(48 + (d.charCodeAt(0) - 48 + 5) % 10));
+  const rot18 = s => rot5(rot13(s));       // ROT13 letters + ROT5 digits, self-inverse
+
+  // base64url — only fires when a URL-safe char (- or _) is present, so it
+  // doesn't just duplicate the standard base64 decoder that always runs.
+  const fromBase64Url = s => {
+    let t = s.replace(/\s+/g, '');
+    if (!/^[A-Za-z0-9_-]+={0,2}$/.test(t) || t.length < 4 || !/[-_]/.test(t)) return null;
+    t = t.replace(/-/g, '+').replace(/_/g, '/').replace(/=+$/, '');
+    if (t.length % 4 === 1) return null;
+    while (t.length % 4) t += '=';
+    try { const bin = atob(t); const b = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) b[i] = bin.charCodeAt(i); return CTF.bytesToText(b); }
+    catch (e) { return null; }
+  };
+  // Adobe ASCII85 (<~ … ~>). Raw/undelimited input is only accepted when it
+  // carries a symbol outside the base64 alphabet, to avoid firing on plain text.
+  const fromAscii85 = s => {
+    let t = s.trim(); const wrapped = /^<~[\s\S]*~>$/.test(t);
+    if (wrapped) t = t.slice(2, -2);
+    t = t.replace(/\s+/g, ''); if (!t.length) return null;
+    if (!/^[\x21-\x75z]+$/.test(t)) return null;
+    if (!wrapped && !/[!-*,-<>-@[-`{-~]/.test(t)) return null;
+    const out = []; let i = 0;
+    while (i < t.length) {
+      if (t[i] === 'z') { out.push(0, 0, 0, 0); i++; continue; }
+      let block = t.slice(i, i + 5); const pad = 5 - block.length; block += 'u'.repeat(pad);
+      let num = 0;
+      for (const ch of block) { const v = ch.charCodeAt(0) - 33; if (v < 0 || v > 84) return null; num = num * 85 + v; }
+      if (num > 0xFFFFFFFF) return null;
+      const bytes = [Math.floor(num / 16777216) & 255, Math.floor(num / 65536) & 255, Math.floor(num / 256) & 255, num & 255];
+      for (let k = 0; k < 4 - pad; k++) out.push(bytes[k]);
+      i += 5;
+    }
+    return CTF.bytesToText(new Uint8Array(out));
+  };
+  const fromBase45 = s => {
+    if (/[a-z]/.test(s.trim())) return null;            // base45 is uppercase-only
+    const t = s.trim().toUpperCase();
+    if (!t.length || [...t].some(c => B45.indexOf(c) < 0) || t.length % 3 === 1) return null;
+    const out = [];
+    for (let i = 0; i < t.length; i += 3) {
+      if (i + 3 <= t.length) {
+        const n = B45.indexOf(t[i]) + B45.indexOf(t[i + 1]) * 45 + B45.indexOf(t[i + 2]) * 2025;
+        if (n > 0xFFFF) return null; out.push((n >> 8) & 255, n & 255);
+      } else {
+        const n = B45.indexOf(t[i]) + B45.indexOf(t[i + 1]) * 45;
+        if (n > 0xFF) return null; out.push(n & 255);
+      }
+    }
+    return CTF.bytesToText(new Uint8Array(out));
+  };
+  const fromBase36 = s => {
+    const t = s.trim().toUpperCase();
+    if (!/^[0-9A-Z]+$/.test(t) || t.length < 2 || !/[G-Z]/.test(t)) return null;  // needs G–Z to distinguish from hex/decimal
+    try {
+      let num = 0n; for (const ch of t) num = num * 36n + BigInt(parseInt(ch, 36));
+      const bytes = []; while (num > 0n) { bytes.unshift(Number(num & 255n)); num >>= 8n; }
+      return bytes.length ? CTF.bytesToText(new Uint8Array(bytes)) : null;
+    } catch (e) { return null; }
+  };
+  const fromA1Z26 = s => {
+    const parts = s.trim().split(/[^0-9]+/).filter(Boolean);
+    if (parts.length < 2 || !parts.every(p => +p >= 1 && +p <= 26)) return null;
+    return parts.map(p => String.fromCharCode(64 + +p)).join('');
+  };
+  const fromBacon = s => {                              // 26-letter Baconian, A/B groups of 5
+    const t = s.toUpperCase().replace(/[^AB]/g, '');
+    if (t.length < 5 || t.length % 5) return null;
+    let out = '';
+    for (let i = 0; i < t.length; i += 5) {
+      const n = parseInt(t.slice(i, i + 5).replace(/A/g, '0').replace(/B/g, '1'), 2);
+      if (n > 25) return null; out += String.fromCharCode(65 + n);
+    }
+    return out;
+  };
+  const fromNato = s => {
+    const w = s.toLowerCase().trim().split(/[\s,]+/).filter(Boolean);
+    if (w.length < 2) return null;
+    const m = w.map(x => NATO[x.replace(/-/g, '')]);
+    return m.some(x => x === undefined) ? null : m.join('');
+  };
+  const fromBraille = s => {
+    if (!/[⠀-⣿]/.test(s)) return null;
+    let out = '', num = false;
+    for (const ch of s) {
+      if (ch === BRAILLE_NUM) { num = true; continue; }
+      if (ch === ' ' || ch === '\n') { out += ch; num = false; continue; }
+      const l = BRAILLE[ch];
+      if (l === undefined) { out += /[⠀-⣿]/.test(ch) ? '?' : ch; continue; }
+      if (num && BR_L2D[l]) out += BR_L2D[l]; else { out += l; num = false; }
+    }
+    return out.trim() || null;
+  };
+  const fromHtmlEntities = s => {                       // &#65; &#x41; &amp; … (textarea decodes without executing)
+    if (!/&(#\d+|#x[0-9a-fA-F]+|[a-zA-Z][a-zA-Z0-9]+);/.test(s)) return null;
+    const ta = document.createElement('textarea'); ta.innerHTML = s;
+    return ta.value === s ? null : ta.value;
+  };
+  const fromUnicodeEscape = s => {                      // \uXXXX \u{XXXX} \xXX U+XXXX
+    if (!/\\u|\\x|U\+/.test(s)) return null;
+    const o = s.replace(/\\u\{([0-9a-fA-F]+)\}/g, (_, h) => String.fromCodePoint(parseInt(h, 16)))
+      .replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+      .replace(/\\x([0-9a-fA-F]{2})/g, (_, h) => String.fromCharCode(parseInt(h, 16)))
+      .replace(/U\+([0-9a-fA-F]{4,6})/g, (_, h) => String.fromCodePoint(parseInt(h, 16)));
+    return o === s ? null : o;
+  };
+  const fromQuotedPrintable = s => {
+    if (!/=[0-9A-Fa-f]{2}/.test(s)) return null;
+    const t = s.replace(/=\r?\n/g, ''); const bytes = []; let i = 0;
+    while (i < t.length) {
+      if (t[i] === '=' && /^[0-9A-Fa-f]{2}$/.test(t.substr(i + 1, 2))) { bytes.push(parseInt(t.substr(i + 1, 2), 16)); i += 3; }
+      else { bytes.push(t.charCodeAt(i) & 0xFF); i++; }
+    }
+    const out = CTF.bytesToText(new Uint8Array(bytes));
+    return out === s ? null : out;
+  };
 
   const CODECS = [
-    ['from base64', fromBase64, true], ['from base32', fromBase32, true],
-    ['from base58', fromBase58, true], ['from hex', fromHex, true],
+    ['from base64', fromBase64, true], ['from base64url', fromBase64Url, true],
+    ['from base32', fromBase32, true], ['from base58', fromBase58, true],
+    ['from base45', fromBase45, true], ['from base36', fromBase36, true],
+    ['from ascii85', fromAscii85, true], ['from hex', fromHex, true],
     ['from binary', fromBinary, true], ['from decimal', fromDecimal, true],
-    ['url decode', fromUrl, false], ['rot13', rot13, false],
-    ['rot47', rot47, false], ['atbash', atbash, false],
-    ['from morse', fromMorse, true], ['reverse', reverse, false],
+    ['a1z26', fromA1Z26, false], ['from bacon', fromBacon, false],
+    ['from nato', fromNato, false], ['from braille', fromBraille, false],
+    ['html entities', fromHtmlEntities, false], ['unicode escape', fromUnicodeEscape, false],
+    ['quoted-printable', fromQuotedPrintable, false], ['url decode', fromUrl, false],
+    ['rot13', rot13, false], ['rot47', rot47, false], ['rot18', rot18, false],
+    ['atbash', atbash, false], ['from morse', fromMorse, true], ['reverse', reverse, false],
   ];
 
   // --- encoders (the inverse direction) ---
@@ -2280,11 +2592,55 @@ const Pipe = (function () {
   const toUrl = s => encodeURIComponent(s);
   const R_MORSE = Object.fromEntries(Object.entries(MORSE).map(([k, v]) => [v, k]));
   const toMorse = s => s.toUpperCase().split('').map(c => c === ' ' ? '/' : R_MORSE[c]).filter(Boolean).join(' ');
+  const toBase64Url = s => toBase64(s).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+  const toAscii85 = s => {
+    const b = bytesOf(s); let out = '<~';
+    for (let i = 0; i < b.length; i += 4) {
+      const block = b.slice(i, i + 4); const pad = 4 - block.length;
+      let num = 0; for (let k = 0; k < 4; k++) num = num * 256 + (block[k] || 0);
+      if (num === 0 && pad === 0) { out += 'z'; continue; }
+      let chars = ''; for (let k = 0; k < 5; k++) { chars = String.fromCharCode(33 + (num % 85)) + chars; num = Math.floor(num / 85); }
+      out += chars.slice(0, 5 - pad);
+    }
+    return out + '~>';
+  };
+  const toBase45 = s => {
+    const b = bytesOf(s); let out = '';
+    for (let i = 0; i < b.length; i += 2) {
+      if (i + 2 <= b.length) { const n = b[i] * 256 + b[i + 1]; out += B45[n % 45] + B45[Math.floor(n / 45) % 45] + B45[Math.floor(n / 2025) % 45]; }
+      else { const n = b[i]; out += B45[n % 45] + B45[Math.floor(n / 45) % 45]; }
+    }
+    return out;
+  };
+  const toBase36 = s => {
+    const b = bytesOf(s); if (!b.length) return '';
+    let num = 0n; for (const x of b) num = num * 256n + BigInt(x);
+    let out = ''; while (num > 0n) { out = B36U[Number(num % 36n)] + out; num /= 36n; }
+    return out || '0';
+  };
+  const toA1Z26 = s => s.toUpperCase().split('').map(c => c >= 'A' && c <= 'Z' ? (c.charCodeAt(0) - 64) : (/\s/.test(c) ? '/' : '')).filter(x => x !== '').join(' ');
+  const toBacon = s => s.toUpperCase().replace(/[^A-Z]/g, '').split('').map(c => (c.charCodeAt(0) - 65).toString(2).padStart(5, '0').replace(/0/g, 'A').replace(/1/g, 'B')).join(' ');
+  const toNato = s => [...s.toUpperCase()].map(c => NATO_ENC[c]).filter(Boolean).join(' ');
+  const toBraille = s => {
+    let out = '', num = false;
+    for (const c of s.toLowerCase()) {
+      if (c >= '0' && c <= '9') { if (!num) { out += BRAILLE_NUM; num = true; } out += BRAILLE_ENC[BR_D2L[c]]; }
+      else { num = false; out += c === ' ' ? '⠀' : (BRAILLE_ENC[c] || ''); }
+    }
+    return out;
+  };
+  const toHtmlEntities = s => [...s].map(c => { const n = c.codePointAt(0); return (n > 126 || n < 32 || '<>&"\''.includes(c)) ? '&#' + n + ';' : c; }).join('');
+  const toUnicodeEscape = s => [...s].map(c => { const n = c.charCodeAt(0); return (n > 126 || n < 32) ? '\\u' + n.toString(16).padStart(4, '0') : c; }).join('');
+  const toQuotedPrintable = s => [...bytesOf(s)].map(b => (b === 61 || b < 32 || b > 126) && b !== 10 && b !== 13 ? '=' + b.toString(16).toUpperCase().padStart(2, '0') : String.fromCharCode(b)).join('');
 
   const ENCODERS = [
-    ['to base64', toBase64], ['to base32', toBase32], ['to base58', toBase58],
-    ['to hex', toHex], ['to binary', toBinary], ['to decimal', toDecimal],
-    ['url encode', toUrl], ['rot13', rot13], ['rot47', rot47],
+    ['to base64', toBase64], ['to base64url', toBase64Url], ['to base32', toBase32],
+    ['to base58', toBase58], ['to base45', toBase45], ['to base36', toBase36],
+    ['to ascii85', toAscii85], ['to hex', toHex], ['to binary', toBinary],
+    ['to decimal', toDecimal], ['a1z26', toA1Z26], ['to bacon', toBacon],
+    ['to nato', toNato], ['to braille', toBraille], ['html entities', toHtmlEntities],
+    ['unicode escape', toUnicodeEscape], ['quoted-printable', toQuotedPrintable],
+    ['url encode', toUrl], ['rot13', rot13], ['rot47', rot47], ['rot18', rot18],
     ['atbash', atbash], ['to morse', toMorse], ['reverse', reverse],
   ];
 
@@ -2599,7 +2955,7 @@ const Pipe = (function () {
       status.textContent = (file.size > 1024 ? (file.size / 1024).toFixed(1) + ' KB' : file.size + ' B');
       status.style.color = '';
     };
-    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; };
+    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = 'var(--threat)'; };
     reader.readAsArrayBuffer(file.slice(0, SCAN_CAP));
   }
 
@@ -2714,7 +3070,7 @@ const Pipe = (function () {
       re = new RegExp(rx ? raw : escRe(raw), 'g' + (ci ? 'i' : ''));
     } catch (e) {
       out.innerHTML = '<span class="grep-err">// invalid regex — ' + CTF.esc(e.message) + '</span>';
-      status.textContent = 'BAD RE'; status.style.color = '#E8603F';
+      status.textContent = 'BAD RE'; status.style.color = 'var(--threat)';
       meta.textContent = '// -E regex mode is on — fix the expression or switch it off';
       return;
     }
@@ -3198,12 +3554,12 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
       if (n <= 0n || e <= 0n || c < 0n) throw new Error('bad');
     } catch (err) {
       resultEl.appendChild(row('Error', 'n, e and c must all be positive integers'));
-      status.textContent = 'BAD INPUT'; status.style.color = '#E8603F';
+      status.textContent = 'BAD INPUT'; status.style.color = 'var(--threat)';
       return;
     }
     if (n.toString().length > 20) {
       resultEl.appendChild(row('Error', 'n is too large for client-side factoring in a toy tool (>20 digits) — that is real RSA territory'));
-      status.textContent = 'TOO LARGE'; status.style.color = '#E8603F';
+      status.textContent = 'TOO LARGE'; status.style.color = 'var(--threat)';
       return;
     }
     status.textContent = 'FACTORING…'; status.style.color = '#E8B23C';
@@ -3212,7 +3568,7 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
       try { factors = factor(n, 0); }
       catch (err) {
         resultEl.appendChild(row('Error', err.message));
-        status.textContent = 'FAILED'; status.style.color = '#E8603F';
+        status.textContent = 'FAILED'; status.style.color = 'var(--threat)';
         return;
       }
       status.style.color = '';
@@ -3353,7 +3709,7 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
     const bLines = bInput.value.split('\n');
     if (aLines.length > MAX_LINES || bLines.length > MAX_LINES) {
       out.innerHTML = '<div class="magic-empty">// too many lines (' + MAX_LINES + ' max) for an in-browser diff</div>';
-      status.textContent = 'TOO BIG'; status.style.color = '#E8603F'; summary.textContent = '';
+      status.textContent = 'TOO BIG'; status.style.color = 'var(--threat)'; summary.textContent = '';
       return;
     }
     const ops = lcsDiff(aLines, bLines);
@@ -3372,6 +3728,241 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
 
   Pipe.bindSelect({ select: srcA, corpus: aInput, render, titleEl: null, titles: {}, labelEl: null, labels: {} });
   Pipe.bindSelect({ select: srcB, corpus: bInput, render, titleEl: null, titles: {}, labelEl: null, labels: {} });
+})();
+
+/* ================= cidr / subnet calculator ================= */
+/* Pure IPv4 bitmath: parse an address + prefix (or dotted mask), then derive
+   the network, broadcast, host range and counts by masking a 32-bit integer.
+   No lookups — the whole point is that subnetting is arithmetic, not a query. */
+(function cidrCalc() {
+  const input = document.getElementById('cidrIn');
+  const resultEl = document.getElementById('cidrResult');
+  const status = document.getElementById('cidrStatus');
+  const copyBtn = document.getElementById('cidrCopyBtn');
+  const summaryEl = document.getElementById('cidrSummaryText');
+
+  const toOctets = n => [(n >>> 24) & 255, (n >>> 16) & 255, (n >>> 8) & 255, n & 255].join('.');
+  function parseIp(s) {
+    const parts = s.trim().split('.');
+    if (parts.length !== 4) return null;
+    let n = 0;
+    for (const p of parts) {
+      if (!/^\d{1,3}$/.test(p)) return null;
+      const v = +p; if (v > 255) return null;
+      n = (n << 8) | v;
+    }
+    return n >>> 0;
+  }
+  // A dotted netmask must be a run of 1s then 0s; return its prefix length or null.
+  function maskToPrefix(n) {
+    const inv = (~n >>> 0);
+    if (((inv + 1) & inv) !== 0) return null;   // not contiguous
+    let len = 0, x = n >>> 0;
+    while (x & 0x80000000) { len++; x = (x << 1) >>> 0; }
+    return len;
+  }
+  function row(label, value, hl) {
+    const div = document.createElement('div');
+    div.innerHTML = '<dt>' + CTF.esc(label) + '</dt><dd' + (hl ? ' class="hl"' : '') + '>' + CTF.esc(value) + '</dd>';
+    return div;
+  }
+  function classify(ip) {
+    const a = (ip >>> 24) & 255, b = (ip >>> 16) & 255;
+    if (a === 10) return 'Private (RFC 1918)';
+    if (a === 172 && b >= 16 && b <= 31) return 'Private (RFC 1918)';
+    if (a === 192 && b === 168) return 'Private (RFC 1918)';
+    if (a === 127) return 'Loopback';
+    if (a === 169 && b === 254) return 'Link-local (APIPA)';
+    if (a >= 224 && a <= 239) return 'Multicast (class D)';
+    if (a >= 240) return 'Reserved (class E)';
+    return 'Public';
+  }
+
+  function render() {
+    resultEl.innerHTML = '';
+    const raw = input.value.trim();
+    if (!raw) { status.textContent = '—'; copyBtn.style.display = 'none'; return; }
+    const slash = raw.split('/');
+    const ip = parseIp(slash[0]);
+    if (ip === null) { resultEl.appendChild(row('Error', 'not a valid IPv4 address')); status.textContent = 'INVALID'; copyBtn.style.display = 'none'; return; }
+    let prefix;
+    if (slash.length === 1) prefix = 32;
+    else if (/^\d{1,2}$/.test(slash[1]) && +slash[1] <= 32) prefix = +slash[1];
+    else { const m = parseIp(slash[1]); prefix = m === null ? null : maskToPrefix(m); }
+    if (prefix === null || prefix === undefined) { resultEl.appendChild(row('Error', 'invalid prefix or netmask')); status.textContent = 'INVALID'; copyBtn.style.display = 'none'; return; }
+
+    const mask = prefix === 0 ? 0 : (0xFFFFFFFF << (32 - prefix)) >>> 0;
+    const network = (ip & mask) >>> 0;
+    const broadcast = (network | (~mask >>> 0)) >>> 0;
+    const total = Math.pow(2, 32 - prefix);
+    let usable, firstHost, lastHost;
+    if (prefix >= 31) { usable = prefix === 32 ? 1 : 2; firstHost = toOctets(network); lastHost = toOctets(broadcast); }
+    else { usable = total - 2; firstHost = toOctets((network + 1) >>> 0); lastHost = toOctets((broadcast - 1) >>> 0); }
+
+    resultEl.appendChild(row('CIDR', toOctets(network) + '/' + prefix, true));
+    resultEl.appendChild(row('Network', toOctets(network)));
+    resultEl.appendChild(row('Broadcast', toOctets(broadcast)));
+    resultEl.appendChild(row('Netmask', toOctets(mask)));
+    resultEl.appendChild(row('Wildcard', toOctets(~mask >>> 0)));
+    resultEl.appendChild(row('Host range', prefix >= 31 ? firstHost + ' – ' + lastHost : firstHost + ' – ' + lastHost));
+    resultEl.appendChild(row('Usable hosts', usable.toLocaleString('en-US'), true));
+    resultEl.appendChild(row('Total addresses', total.toLocaleString('en-US')));
+    resultEl.appendChild(row('Type', classify(network)));
+    status.textContent = '/' + prefix;
+
+    summaryEl.textContent = 'CIDR ' + toOctets(network) + '/' + prefix + '\nNetwork ' + toOctets(network) +
+      '\nBroadcast ' + toOctets(broadcast) + '\nNetmask ' + toOctets(mask) + '\nWildcard ' + toOctets(~mask >>> 0) +
+      '\nHost range ' + firstHost + ' - ' + lastHost + '\nUsable hosts ' + usable + '\nTotal ' + total;
+    copyBtn.style.display = '';
+  }
+  input.addEventListener('input', render);
+  render();
+})();
+
+/* ================= uuid / ulid decoder ================= */
+/* Reads the version and variant straight out of the bitfields, then unwinds
+   whatever clock the versioned formats embed — v1/v6 count 100-ns ticks from
+   the Gregorian epoch (1582-10-15), v7 and ULID count Unix milliseconds. */
+(function uuidDecode() {
+  const input = document.getElementById('uuidIn');
+  const resultEl = document.getElementById('uuidResult');
+  const status = document.getElementById('uuidStatus');
+  const GREGORIAN_OFFSET = 12219292800000n;   // ms between 1582-10-15 and 1970-01-01
+  const CROCKFORD = '0123456789ABCDEFGHJKMNPQRSTVWXYZ';
+  const VARIANTS = { rfc: 'RFC 4122 / 9562', ncs: 'NCS backward-compat', microsoft: 'Microsoft (GUID)', reserved: 'reserved (future)' };
+  const VERSIONS = {
+    1: 'v1 · time + MAC node', 2: 'v2 · DCE security', 3: 'v3 · MD5 name-based',
+    4: 'v4 · random', 5: 'v5 · SHA-1 name-based', 6: 'v6 · reordered time', 7: 'v7 · Unix-time + random', 8: 'v8 · custom',
+  };
+
+  function row(label, value, hl) {
+    const div = document.createElement('div');
+    div.innerHTML = '<dt>' + CTF.esc(label) + '</dt><dd' + (hl ? ' class="hl"' : '') + '>' + CTF.esc(value) + '</dd>';
+    return div;
+  }
+  function relative(ms) {
+    const diff = Date.now() - ms, abs = Math.abs(diff);
+    const units = [['year', 31536000000], ['month', 2592000000], ['day', 86400000], ['hour', 3600000], ['minute', 60000], ['second', 1000]];
+    for (const [name, size] of units) {
+      if (abs >= size || name === 'second') { const v = Math.floor(abs / size); return v + ' ' + name + (v === 1 ? '' : 's') + (diff >= 0 ? ' ago' : ' from now'); }
+    }
+  }
+  function stamp(ms) {
+    const d = new Date(Number(ms));
+    if (isNaN(d.getTime())) return null;
+    return { utc: d.toUTCString(), rel: relative(Number(ms)) };
+  }
+
+  function decodeUuid(hex) {
+    const v = parseInt(hex[12], 16);
+    const variantNibble = parseInt(hex[16], 16);
+    let variant = 'rfc';
+    if (variantNibble < 8) variant = 'ncs';
+    else if (variantNibble < 12) variant = 'rfc';
+    else if (variantNibble < 14) variant = 'microsoft';
+    else variant = 'reserved';
+    resultEl.appendChild(row('Format', 'UUID (128-bit)', true));
+    resultEl.appendChild(row('Version', VERSIONS[v] || ('unknown (' + v + ')')));
+    resultEl.appendChild(row('Variant', VARIANTS[variant]));
+
+    if (variant === 'rfc' && (v === 1 || v === 6)) {
+      let ticksHex;
+      if (v === 1) ticksHex = hex.slice(13, 16) + hex.slice(8, 12) + hex.slice(0, 8);
+      else ticksHex = hex.slice(0, 8) + hex.slice(8, 12) + hex.slice(13, 16);   // v6 is already high→low
+      const ticks = BigInt('0x' + ticksHex);
+      const ms = ticks / 10000n - GREGORIAN_OFFSET;
+      const s = stamp(ms);
+      if (s) { resultEl.appendChild(row('Timestamp', s.utc, true)); resultEl.appendChild(row('Relative', s.rel)); }
+      resultEl.appendChild(row('Clock seq', '0x' + (parseInt(hex.slice(16, 20), 16) & 0x3fff).toString(16)));
+      resultEl.appendChild(row('Node', hex.slice(20).replace(/(..)(?=.)/g, '$1:')));
+    } else if (variant === 'rfc' && v === 7) {
+      const ms = BigInt('0x' + hex.slice(0, 12));
+      const s = stamp(ms);
+      if (s) { resultEl.appendChild(row('Timestamp', s.utc, true)); resultEl.appendChild(row('Relative', s.rel)); }
+      resultEl.appendChild(row('Random', hex.slice(13, 16) + hex.slice(17)));
+    } else {
+      resultEl.appendChild(row('Timestamp', 'none — this version carries no embedded time'));
+    }
+    status.textContent = 'v' + v;
+  }
+
+  function decodeUlid(s) {
+    const up = s.toUpperCase();
+    let ms = 0n;
+    for (let i = 0; i < 10; i++) ms = ms * 32n + BigInt(CROCKFORD.indexOf(up[i]));
+    resultEl.appendChild(row('Format', 'ULID (128-bit)', true));
+    const st = stamp(ms);
+    if (st) { resultEl.appendChild(row('Timestamp', st.utc, true)); resultEl.appendChild(row('Relative', st.rel)); }
+    resultEl.appendChild(row('Epoch (ms)', ms.toString()));
+    resultEl.appendChild(row('Randomness', up.slice(10)));
+    status.textContent = 'ULID';
+  }
+
+  function render() {
+    resultEl.innerHTML = '';
+    const raw = input.value.trim();
+    if (!raw) { status.textContent = '—'; return; }
+    const hex = raw.replace(/[\s{}-]/g, '').toLowerCase();
+    if (/^[0-9a-f]{32}$/.test(hex)) { decodeUuid(hex); return; }
+    const ulid = raw.replace(/\s/g, '');
+    if (/^[0-9A-HJKMNP-TV-Z]{26}$/i.test(ulid) && CROCKFORD.indexOf(ulid[0].toUpperCase()) <= 7) { decodeUlid(ulid); return; }
+    resultEl.appendChild(row('Error', 'not a UUID (32 hex digits) or ULID (26 Crockford base32 chars)'));
+    status.textContent = 'INVALID';
+  }
+  input.addEventListener('input', render);
+  render();
+})();
+
+/* ================= shannon entropy analyzer ================= */
+/* Counts UTF-8 byte frequencies and sums -Σ p·log2(p) for bits-per-byte in
+   [0,8]. Flat, near-maximal entropy is what encryption, compression and raw
+   keys look like; natural-language prose lands around 4. Consumes the pipe
+   bus so any upstream tool's output can be measured in place. */
+(function entropyAnalyzer() {
+  const src = document.getElementById('entSrc');
+  const corpus = document.getElementById('entIn');
+  const fill = document.getElementById('entFill');
+  const verdict = document.getElementById('entVerdict');
+  const resultEl = document.getElementById('entResult');
+  const status = document.getElementById('entStatus');
+
+  function row(label, value, hl) {
+    const div = document.createElement('div');
+    div.innerHTML = '<dt>' + CTF.esc(label) + '</dt><dd' + (hl ? ' class="hl"' : '') + '>' + CTF.esc(value) + '</dd>';
+    return div;
+  }
+  function render() {
+    resultEl.innerHTML = '';
+    const text = corpus.value;
+    if (!text) { fill.style.width = '0'; verdict.textContent = '// awaiting input'; status.textContent = '—'; return; }
+    const bytes = new TextEncoder().encode(text);
+    const freq = new Array(256).fill(0);
+    for (const b of bytes) freq[b]++;
+    let H = 0;
+    for (const c of freq) { if (c) { const p = c / bytes.length; H -= p * Math.log2(p); } }
+    const unique = freq.filter(c => c).length;
+    const ratio = Math.min(H / 8, 1);
+    fill.style.width = (ratio * 100).toFixed(1) + '%';
+    // Warm at the low end (natural text), phosphor-green as entropy climbs toward random.
+    fill.style.background = H >= 6 ? 'var(--phos)' : H >= 4 ? 'var(--kraft)' : 'var(--threat)';
+
+    let label;
+    if (H >= 7.5) label = 'HIGH — likely encrypted, compressed, or a random key';
+    else if (H >= 6) label = 'ELEVATED — encoded or packed data';
+    else if (H >= 4) label = 'MODERATE — mixed text, source code, or base64';
+    else if (H >= 2) label = 'LOW — natural-language prose';
+    else label = 'VERY LOW — repetitive or single-symbol';
+    verdict.textContent = label;
+
+    resultEl.appendChild(row('Shannon entropy', H.toFixed(3) + ' bits/byte', true));
+    resultEl.appendChild(row('Total entropy', (H * bytes.length).toFixed(0) + ' bits'));
+    resultEl.appendChild(row('Length', bytes.length.toLocaleString('en-US') + ' bytes'));
+    resultEl.appendChild(row('Unique bytes', unique + ' / 256'));
+    status.textContent = H.toFixed(2);
+  }
+  Pipe.bindSelect({
+    select: src, corpus, render, titleEl: null, titles: {}, labelEl: null, labels: {},
+  });
 })();
 
 /* ================= steganography LSB extractor ================= */
@@ -3470,17 +4061,17 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
         ctx.drawImage(img, 0, 0);
         let data;
         try { data = ctx.getImageData(0, 0, canvas.width, canvas.height).data; }
-        catch (e) { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; return; }
+        catch (e) { status.textContent = 'READ ERROR'; status.style.color = 'var(--threat)'; return; }
         currentPixels = data;
         result.hidden = false;
         renderCurrent();
         status.textContent = img.width + '×' + img.height;
         status.style.color = '';
       };
-      img.onerror = () => { status.textContent = 'NOT AN IMAGE'; status.style.color = '#E8603F'; };
+      img.onerror = () => { status.textContent = 'NOT AN IMAGE'; status.style.color = 'var(--threat)'; };
       img.src = reader.result;
     };
-    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; };
+    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = 'var(--threat)'; };
     reader.readAsDataURL(file);
   }
   fileInput.addEventListener('change', () => handle(fileInput.files[0]));
@@ -3518,7 +4109,7 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         let data;
         try { data = ctx.getImageData(0, 0, canvas.width, canvas.height); }
-        catch (e) { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; return; }
+        catch (e) { status.textContent = 'READ ERROR'; status.style.color = 'var(--threat)'; return; }
         const code = window.jsQR ? window.jsQR(data.data, data.width, data.height) : null;
         result.hidden = false;
         previewImg.src = reader.result;
@@ -3527,13 +4118,13 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
           status.textContent = 'DECODED'; status.style.color = '';
         } else {
           outEl.textContent = 'no QR code found in this image';
-          status.textContent = 'NOT FOUND'; status.style.color = '#E8603F';
+          status.textContent = 'NOT FOUND'; status.style.color = 'var(--threat)';
         }
       };
-      img.onerror = () => { status.textContent = 'NOT AN IMAGE'; status.style.color = '#E8603F'; };
+      img.onerror = () => { status.textContent = 'NOT AN IMAGE'; status.style.color = 'var(--threat)'; };
       img.src = reader.result;
     };
-    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = '#E8603F'; };
+    reader.onerror = () => { status.textContent = 'READ ERROR'; status.style.color = 'var(--threat)'; };
     reader.readAsDataURL(file);
   }
   fileInput.addEventListener('change', () => handle(fileInput.files[0]));
@@ -3651,7 +4242,7 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
     const lat = parseFloat(latRaw), lon = parseFloat(lonRaw);
     if (!isFinite(lat) || !isFinite(lon) || lat < -90 || lat > 90 || lon < -180 || lon > 180) {
       resultEl.appendChild(row('Error', 'latitude must be -90..90 and longitude -180..180'));
-      status.textContent = 'INVALID'; status.style.color = '#E8603F';
+      status.textContent = 'INVALID'; status.style.color = 'var(--threat)';
       return;
     }
     status.style.color = '';
@@ -3708,7 +4299,8 @@ const SHELL = {
   help: [
     'available commands:',
     '  whoami   mission     cadets   kungfu   fastfetch',
-    '  contact  ls          clear',
+    '  projects majorworks  contact  ls       clear',
+    '  fullscreen / windowed — resize the terminal (or use the ⛶ button; esc exits)',
     "  cd <dir> — jump to a section, e.g. cd kungfu. ls to list.",
     "  cd ops-lab/<stage> — jump to a lab stage. ls ops-lab to list.",
   ],
@@ -3718,7 +4310,7 @@ const SHELL = {
     'MAJORS: cybersecurity mgmt + security engineering',
     'ETA: 2027',
   ],
-  cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100', 'service record: CDTREC 2021 -> CUO 2026'],
+  cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100+', 'service record: CDTREC 2021 -> CUO 2026'],
   kungfu: ['白鶴派 pak hok pai — white crane, since 2020', 'armament: dao (single sabre) // aux: lion dance'],
   contact: [
     'williamlam986@gmail.com',
@@ -3726,7 +4318,7 @@ const SHELL = {
     'status: inbox monitored — open a channel anytime',
   ],
   ls: [
-    'ops-lab/  mission  coursework  command  kungfu  majorworks  projects  timeline  toolkit  contact',
+    'ops-lab/  mission  coursework  command  kungfu  majorworks  projects  timeline  toolkit  blog  contact',
     "ls ops-lab to list the lab's stages",
   ],
   'ls ops-lab': ['observe  extract  decode  crypto  synthesize', "cd ops-lab/<stage> to jump to one, e.g. cd ops-lab/decode"],
@@ -3761,6 +4353,19 @@ const FASTFETCH = [
   ['', ''],
   ['███████████████████', 'ok'],
 ];
+const PROJECTS = [
+  { title: 'Math Quest', tag: 'CLI arithmetic quiz (Python)', desc: 'Command-line arithmetic quiz game — a lives/streak system, a boss fight with harder expressions, a one-time calculator power-up earned by a 5-streak, and scores persisted to a stats file between runs.' },
+  { title: 'Enterprise Network & Threat Model', tag: 'Packet Tracer', desc: 'A four-department LAN built and secured in Cisco Packet Tracer — WPA2, port security, MAC locking — paired with a full threat analysis, 5x5 risk matrix and mitigation plan.' },
+  { title: 'Guru Driving School', tag: 'UX prototype, Adobe XD', desc: 'High-fidelity website prototype built in Adobe XD for a fictional driving school — wireframed and click-tested end to end, with an accessibility/privacy analysis and a full testing & evaluation pass.' },
+  { title: 'Smart Garage', tag: 'micro:bit + radio + sensors', desc: 'Two micro:bits over radio: a remote sends enter/leave commands, the garage unit drives a servo door and neopixel lights, and an ultrasonic sensor beeps the car to a stop.' },
+  { title: 'Case Study: 2022 Optus Data Breach', tag: 'cybersecurity case study', desc: 'Written analysis of the Optus breach — an unauthenticated public API and an IDOR vulnerability that exposed 9.8M customer records. Breaks down which CIA-triad principles failed and mitigations.' },
+  { title: 'E-Commerce Data Dashboard', tag: 'MS Access + Excel', desc: 'A ~500,000-row e-commerce dataset normalised to 3NF across a five-table Access schema, live-linked into an Excel dashboard — revenue targets, regional comparisons, top/bottom products.' },
+  { title: 'LearnerHours', tag: 'offline PWA', desc: 'An installable, offline-capable PWA for logging L-plate driving hours — full session CRUD, SHA-256 hashed local login, DOMPurify XSS sanitisation, and a service worker caching the app shell.' },
+];
+const MAJORWORKS = [
+  { title: 'WAILA', tag: '"What Am I Looking At?" — Figma prototype, ENT-CMP Y12 T3', status: 'SUBMITTED', desc: 'AI part-ID app for mechanics — point a camera at a vehicle part, get instant identification with audio feedback, and request stock without leaving the job. Built end to end: real client interview, iterated on feedback, high-fidelity Figma prototype, 5-entity relational schema, Cisco Packet Tracer network. Submitted 30 Jun 2026.' },
+  { title: 'Software Engineering Major Work', tag: 'SFT-ENG Y12 T3', status: 'IN PROGRESS', desc: '[ awaiting declassification ] — due 24 Jul 2026.' },
+];
 // re-align cross-page #stage-* anchors once layout settles (reveal animations shift positions)
 if (/^#stage-/.test(location.hash)) {
   window.addEventListener('load', () => {
@@ -3793,8 +4398,46 @@ function runCommand(raw) {
   if (cmd === '') {}
   else if (cmd === 'clear') { termEl.innerHTML = ''; }
   else if (cmd.startsWith('sudo')) { shellPrint('permission denied: nice try.', 'dim'); }
+  else if (cmd === 'projects') {
+    PROJECTS.forEach((p, i) => shellPrint('PRJ-' + String(i + 1).padStart(2, '0') + '  ' + p.title + ' — ' + p.tag, 'dim'));
+    shellPrint("type 'projects <n>' for details, e.g. projects 1", 'dim');
+  }
+  else if (cmd.startsWith('projects ')) {
+    const n = parseInt(cmd.split(' ')[1], 10);
+    const p = PROJECTS[n - 1];
+    if (!p) { shellPrint('no project PRJ-' + cmd.split(' ')[1], 'dim'); }
+    else {
+      shellPrint('PRJ-' + String(n).padStart(2, '0') + '  ' + p.title, 'dim');
+      shellPrint(p.desc, 'dim');
+      shellPrint('opening projects on the home page...', 'dim');
+      setTimeout(() => { window.location.href = 'index.html#projects'; }, reduceMotion ? 0 : 500);
+    }
+  }
+  else if (cmd === 'majorworks') {
+    MAJORWORKS.forEach((m, i) => shellPrint('MW-' + String(i + 1).padStart(2, '0') + '  ' + m.title + ' — ' + m.tag + ' [' + m.status + ']', 'dim'));
+    shellPrint("type 'majorworks <n>' for details, e.g. majorworks 1", 'dim');
+  }
+  else if (cmd.startsWith('majorworks ')) {
+    const n = parseInt(cmd.split(' ')[1], 10);
+    const m = MAJORWORKS[n - 1];
+    if (!m) { shellPrint('no major work MW-' + cmd.split(' ')[1], 'dim'); }
+    else {
+      shellPrint('MW-' + String(n).padStart(2, '0') + '  ' + m.title + ' [' + m.status + ']', 'dim');
+      shellPrint(m.desc, 'dim');
+      shellPrint('opening major works on the home page...', 'dim');
+      setTimeout(() => { window.location.href = 'index.html#majorworks'; }, reduceMotion ? 0 : 500);
+    }
+  }
   else if (cmd === 'fastfetch' || cmd === 'neofetch') {
     FASTFETCH.forEach(([text, cls]) => shellPrint(text, cls));
+  }
+  else if (cmd === 'fullscreen' || cmd === 'maximize' || cmd === 'fs') {
+    if (termShellEl.classList.contains('fullscreen')) { shellPrint('already fullscreen — type `windowed` or press esc to exit', 'dim'); }
+    else { setFullscreen(true); shellPrint('terminal -> fullscreen // press esc or type `windowed` to exit', 'ok'); }
+  }
+  else if (cmd === 'windowed' || cmd === 'exitfullscreen' || cmd === 'restore' || cmd === 'unmaximize') {
+    if (termShellEl.classList.contains('fullscreen')) { setFullscreen(false); shellPrint('terminal -> windowed', 'dim'); }
+    else { shellPrint('already windowed — type `fullscreen` to expand', 'dim'); }
   }
   else if (cmd === 'cd' || cmd.startsWith('cd ')) {
     const target = cmd.slice(2).trim().replace(/^~?\/+/, '').replace(/\/+$/, '');
@@ -3806,6 +4449,9 @@ function runCommand(raw) {
     } else if (STAGES[target]) {
       document.getElementById(STAGES[target]).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       shellPrint('~/ops-lab/' + target, 'dim');
+    } else if (target === 'blog') {
+      shellPrint('redirecting to blog...', 'dim');
+      setTimeout(() => { window.location.href = 'blog.html'; }, reduceMotion ? 0 : 450);
     } else if (!dest) {
       shellPrint('cd: no such directory: ' + target, 'dim');
       shellPrint("type 'ls' to see available directories", 'dim');
@@ -3839,6 +4485,25 @@ termMinBtn.addEventListener('click', e => {
   const min = !termShellEl.classList.contains('minimized');
   setMinimized(min);
   if (!min) kb.focus({ preventScroll: true });
+});
+
+/* ================= fullscreen toggle ================= */
+const termFullBtn = document.getElementById('termFull');
+function setFullscreen(full) {
+  if (full) setMinimized(false); // can't be minimized + fullscreen at once
+  termShellEl.classList.toggle('fullscreen', full);
+  document.body.classList.toggle('term-fs-lock', full);
+  termFullBtn.textContent = full ? '✕' : '⛶';
+  termFullBtn.setAttribute('aria-label', full ? 'Exit fullscreen terminal' : 'Fullscreen terminal');
+  termFullBtn.setAttribute('title', full ? 'Exit fullscreen (esc, or type: windowed)' : 'Fullscreen (or type: fullscreen)');
+  if (full) { kb.focus({ preventScroll: true }); termEl.scrollTop = termEl.scrollHeight; }
+}
+termFullBtn.addEventListener('click', e => {
+  e.stopPropagation();
+  setFullscreen(!termShellEl.classList.contains('fullscreen'));
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && termShellEl.classList.contains('fullscreen')) setFullscreen(false);
 });
 </script>
 
