@@ -1,0 +1,510 @@
+/* Ubuntu font */
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100..900;1,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
+
+
+/* define variables */
+:root {
+    /* colours */
+    --colour-primary: #1b264f;
+    --colour-primary-light: #274690;
+    --colour-border: rgba(255,255,255,.2);
+    --colour-shadow: rgba(0,0,0,.2);
+    --colour-shadow-button: rgba(0, 0, 0, .1);
+    --colour-inputBox: rgba(255, 255, 255, 0.5);
+    --font-colour-default: white;
+    --colour-rightmost-primary: #357bd6;
+    --colour-rightmost-hover: #488fec;
+
+    /* fonts */
+    --font-primary:'Ubuntu';
+    --font-secondary: 'sans-serif';
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-primary), var(--font-secondary);
+    color: var(--font-colour-default);
+}
+
+/* body */
+body {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding-top: 70px;
+    background-color: var(--colour-primary);
+}
+
+.bg {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    background: url(../images/loginIMG.jpg) no-repeat;
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+}
+
+/* navbar styling */
+ul {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  list-style-type: none;
+  margin: 0;
+  padding: 0.5rem 0.5rem;
+  background-color: var(--colour-primary);
+  display: flex;
+  align-items: center;
+  z-index: 1000;
+}
+
+ul li {
+    border-radius: 10px;
+}
+
+ul li a {
+  display: block;
+  color: var(--font-colour-default);
+  padding: 12px 12px;
+  text-decoration: none;
+  border-radius: 10px;  
+  font-size: 18px; 
+}
+
+ul li a:hover {
+  background-color: var(--colour-primary-light);
+}
+
+ul li.right {
+    margin-left: auto;
+}
+
+ul li.rightmost {
+    background-color: var(--colour-rightmost-primary);
+}
+
+ul li.rightmost a:hover {
+    background-color: var(--colour-rightmost-hover);
+}
+
+h1.title {
+    text-align: right;
+    font-size: clamp(3rem, 10vw, 200px);
+    margin-top: 30px;
+    margin-bottom: 5vh;
+}
+h2.title {
+    text-align: right;
+    font-size: clamp(1.5rem, 5vw, 50px);
+    margin-top: 15px;
+    margin-bottom: 5vh;
+}
+
+#logo {
+    max-height: 1.2rem;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+#homeNav {
+    display: inline-flex;
+    align-items: center;
+}
+
+#navText {
+    display: inline-block;
+    opacity: 0;
+    margin-left: 10px;
+    vertical-align: middle;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#navText.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+
+
+#app {
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+}
+
+form {
+    text-align: center;
+    max-width: 500px;
+    margin: auto;
+}
+
+#userSearchForm {
+    max-width: 100%;
+}
+
+#profileForm {
+    max-width: 90%;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 30px;
+    margin: 0 auto 45px auto;
+}
+
+#profileForm .btn {
+    grid-column: 1 / -1;
+    justify-self: center; 
+    max-width: 200px;
+}
+
+.profileInput {
+    width: 100%;
+    max-width: 100%;
+}
+
+label {
+    display: block;
+    width: 100%;
+    text-align: left;
+    margin-top: 32px;
+    margin-bottom: 10px;
+}
+
+.buttonDiv {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.transparent {
+    background: #333399;
+    width: 200px;
+    text-align: center;
+    height: 60px;
+    border-radius: 10px;
+    font-size: 25px;
+    margin-top: 1vh;
+    margin-bottom: 5vh;
+    border: none;
+    outline: none;
+}
+
+.transparent:hover {
+    background: linear-gradient(120deg, #ff00cc, #333399); 
+}
+
+.wrapper {
+    width: 420px;
+    background-color: transparent;
+    border: 2px solid var(--colour-border);
+    backdrop-filter: blur(20px);
+    box-shadow: 0 0 10px var(--colour-shadow);
+    color: var(--font-colour-default);
+    border-radius: 10px;
+    padding: 30px 40px;
+    margin: 5px auto 0 auto;
+}
+
+.index {
+    width: 70vw;
+}
+
+.wrapper h1 {
+    font-size: 40px;
+    text-align: center;
+    color: var(--font-colour-default);
+}
+
+.wrapper .inputBox {
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin: 25px 0;
+}
+
+.inputBox input {
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    border: 2px solid var(--colour-inputBox);
+    border-radius: 40px;
+    font-size: 16px;
+    color: var(--font-colour-default);
+    padding: 20px 45px 20px 20px;
+}
+
+.index p {
+    margin-top: 20px;
+    text-align: center;
+}
+
+#profileForm input:required {
+    border-color: red;
+}
+
+.inputBox input::placeholder {
+    color: var(--font-colour-default);
+}
+
+.wrapper .rememberForget {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14.5px;
+    margin: -15px 0 15px;
+}
+
+.rememberForget label input {
+    accent-color: white;
+    margin-right: 3px;
+}
+
+.rememberForget a {
+    color: var(--font-colour-default);
+    text-decoration: none;
+}
+
+.rememberForget a:hover {
+    text-decoration: underline;
+}
+
+.wrapper .btn {
+    width: 100%;
+    height: 45px;
+    background: white;
+    border: none;
+    outline: none;
+    border-radius: 40px;
+    box-shadow: 0 0 10px var(--colour-shadow-button);
+    cursor: pointer;
+    font-size: 16px;
+    color: #333;
+    font-weight: 600;
+}
+
+#updateProfileSubmit {
+    margin-top: 50px;
+    max-width: 40%;
+}
+
+.btn:hover {
+    background: linear-gradient(120deg, #ff00cc, #333399);
+    color: white;
+}
+
+.wrapper .registerLink {
+    font-size: 14.5px;
+    text-align: center;
+    margin: 20px 0 15px;
+}
+
+.registerLink p a {
+    color: var(--font-colour-default);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.registerLink p a:hover {
+    text-decoration: underline;
+}
+
+.toast {
+    position: fixed;
+    bottom: 1.25em;
+    right: 1.25em;
+    background-color: var(--colour-primary);
+    color: var(--font-colour-default);
+    padding: 0.625em;
+    border-radius: 0.3125em;
+    z-index: 1000;
+}
+
+.hidden {
+    display: none;
+}
+
+.searchResults {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    align-items: center;
+}
+
+.searchResult {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    width: min(100%, 32rem);
+    margin: 0 auto;
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--colour-inputBox);
+    border-radius: 16px;
+    background: rgba(0, 0, 0, 0.18);
+    cursor: pointer;
+    text-align: left;
+    font-size: 1rem;
+}
+
+.searchResult:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.searchResult span {
+    opacity: 0.85;
+}
+
+.searchHint {
+    opacity: 0.85;
+    font-size: 0.95rem;
+}
+
+#publicProfileBody p {
+    margin-top: 0.9rem;
+    line-height: 1.5;
+    word-break: break-word;
+}
+
+.profileChips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1rem;
+}
+
+.profileChip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.75rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--colour-inputBox);
+    background: rgba(0, 0, 0, 0.18);
+    width: 100%;
+}
+
+a.profileChip {
+    color: inherit;
+    text-decoration: none;
+}
+
+a.profileChip:hover {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.profileChipLabel {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.profileChipIcon {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    object-fit: cover;
+}
+
+.profileChipValue {
+    opacity: 0.95;
+    word-break: break-word;
+}
+
+/* css for other screen sizes */
+
+@media screen and (max-width: 768px) {
+    body {
+        justify-content: flex-start;
+        align-items: center;
+        font-size: 1.5rem;
+        padding-top: 70px;
+    }
+
+    #profileForm {
+        gap: 10px;               
+    }
+
+    #profileForm .inputBox {
+        margin: 4px 0;         
+    }
+
+    #profileForm label {
+        margin-top: 12px;        
+    }
+
+    ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0.75rem 0.75rem;
+    }
+
+    ul li {
+        margin: 0.25rem;
+    }
+
+    ul li.right {
+        margin-left: 0;
+    }
+
+    ul li a {
+        padding: 10px 12px;
+        font-size: 0.95rem;
+    }
+
+    #app {
+        width: 100%;
+    }
+
+    h1 {
+        margin-top: 20px;
+        font-size: 4rem;
+    }
+
+    form {
+        max-width: 100%;
+        padding: 0 1rem;
+    }
+
+    .wrapper {
+        width: 100%;
+        margin: 10px auto 0 auto;
+        border-width: 1px;
+    }
+
+    .wrapper .inputBox {
+        height: auto;
+        margin: 18px 0;
+    }
+
+    .inputBox input {
+        padding: 16px 18px;
+        font-size: 15px;
+        height: auto;
+    }
+
+    .wrapper .rememberForget {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+        margin: 0 0 15px;
+    }
+
+    .wrapper .btn {
+        height: 44px;
+        font-size: 15px;
+    }
+
+    #profileForm {
+        grid-template-columns: repeat(1, 100%);
+    }
+}

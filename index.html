@@ -949,15 +949,36 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       </div>
     </div>
 
-    <div class="mw-card mw-pending reveal d1" data-mw="2">
+    <div class="mw-card reveal d1" data-mw="2">
       <span class="corner tl"></span><span class="corner tr"></span>
       <span class="corner bl"></span><span class="corner br"></span>
       <div class="mw-badge mono">CAPSTONE · SFT-ENG · YEAR 12 · TASK 3</div>
-      <h3 class="mw-title">Software Engineering Major Work<span class="mw-sub">In progress · Due 24 Jul 2026</span></h3>
-      <div class="redact w70"></div>
-      <div class="redact w95"></div>
-      <div class="redact w55"></div>
-      <p class="proj-foot mono" style="margin-top:14px">[ awaiting declassification ]</p>
+      <h3 class="mw-title">Digital U<span class="mw-sub">A digital business card — deployed and live on the open web</span></h3>
+      <p class="mw-tagline">Register, fill in only the contact details you choose to share, and get a public page anyone can reach by tapping an NFC card against their phone. A vanilla-JS single page application talking straight to a Supabase backend — no framework, no build step, no server-side code of my own.</p>
+
+      <div class="mw-body">
+        <div class="mw-col">
+          <h4>The brief</h4>
+          <p>Paper business cards are wasteful, expensive to print in bulk, and hard-limited in what they can say by the size of the card — but the networking moment they exist for hasn't gone anywhere. Digital U keeps the tap-and-exchange and moves the card online: one NFC card stays with its owner permanently and hands over a URL instead of a hundred printed cards, with a QR fallback for phones without NFC.</p>
+          <h4>Security, done properly</h4>
+          <p>The whole point of the site is showing one user's typed text to another, which makes stored XSS the headline threat — every value written into the page as HTML is escaped first, and the profile title is set as text rather than markup, so it cannot execute at all. No hand-written SQL exists; queries go through Supabase's parameterised builder. Passwords never touch my code, and the row owner is always read from the authenticated session, never from the form, so a save can't be aimed at someone else's profile.</p>
+          <h4>Evaluation, stated plainly</h4>
+          <p>Email verification and MFA are both off — Supabase's free tier caps built-in email at two per hour, which blocked sign-up testing outright. The API key sits in client code, safe only because Row Level Security is what actually enforces access. The build wasn't a straight line either: a week went into trialling Next.js before reverting to Flask, and Flask itself was later dropped entirely for a client-side SPA once Frozen-Flask proved to need a rebuild on every change.</p>
+        </div>
+        <div class="mw-col mw-meta">
+          <dl class="svc-record">
+            <div><dt>System</dt><dd class="hl">Deployed SPA</dd></div>
+            <div><dt>Stack</dt><dd>Vanilla JS · Supabase</dd></div>
+            <div><dt>Schema</dt><dd>2 tables · RLS enforced</dd></div>
+            <div><dt>Journal</dt><dd>13 weekly entries</dd></div>
+            <div><dt>Submitted</dt><dd class="hl">24 Jul 2026</dd></div>
+          </dl>
+          <div class="mw-links">
+            <a class="btn" href="https://at3-eportfolio-8e30f9.gitlab.io" target="_blank" rel="noopener">Launch site ↗</a>
+            <a class="btn ghost" href="https://github.com/w1llim/portfolio/tree/main/projects/software-engineering/year-12/task-3" target="_blank" rel="noopener">View source ↗</a>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -1052,6 +1073,17 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         <div class="proj-links">
           <a class="mono proj-link" href="https://w1llim.github.io/portfolio/projects/software-engineering/year-12/task-2/pwa/" target="_blank" rel="noopener">Launch app ↗</a>
           <a class="mono proj-link" href="https://github.com/w1llim/portfolio/tree/main/projects/software-engineering/year-12/task-2" target="_blank" rel="noopener">View source ↗</a>
+        </div>
+      </div>
+      <div class="proj-card live reveal d1" data-proj="8">
+        <div class="proj-head"><span>PRJ-08</span><span class="proj-status live">DEPLOYED</span></div>
+        <h3 class="proj-title">Digital U</h3>
+        <div class="proj-meta mono">SFT-ENG · Year 12 · 24 Jul 2026</div>
+        <p class="proj-desc">A digital business card, live on the open web — a vanilla-JS single page app on a Supabase backend. Public profile pages reachable by NFC tap, live username search, escaped output against stored XSS, and row-level security enforcing who can write what.</p>
+        <div class="proj-tags mono"><span>Vanilla JS</span><span>SPA</span><span>Supabase</span><span>PostgreSQL</span><span>Security</span></div>
+        <div class="proj-links">
+          <a class="mono proj-link" href="https://at3-eportfolio-8e30f9.gitlab.io" target="_blank" rel="noopener">Launch site ↗</a>
+          <a class="mono proj-link" href="https://github.com/w1llim/portfolio/tree/main/projects/software-engineering/year-12/task-3" target="_blank" rel="noopener">View source ↗</a>
         </div>
       </div>
     </div>
@@ -1180,11 +1212,11 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
           <p>Enterprise Computing major work: an AI vehicle-part-ID app concept built from a real client interview.</p>
         </div>
       </li>
-      <li class="tl-item pending reveal">
+      <li class="tl-item reveal">
         <span class="tl-year mono compact">24 Jul 26</span>
         <div class="tl-body">
-          <h3 class="mono" style="letter-spacing:.1em">Software Engineering Major Work<span class="tl-tag">SFT-ENG · Y12 T3 · CAPSTONE</span></h3>
-          <p>Due — in progress.</p>
+          <h3><a href="https://at3-eportfolio-8e30f9.gitlab.io" target="_blank" rel="noopener">Digital U</a><span class="tl-tag">SFT-ENG · Y12 T3 · CAPSTONE</span></h3>
+          <p>Software Engineering major work: a digital business card on a Supabase backend — deployed live, not just documented.</p>
         </div>
       </li>
       <li class="tl-item target reveal d4">
@@ -1209,7 +1241,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <div class="tool-row reveal">
         <span class="n">0x01</span>
         <h3>Programming</h3>
-        <p>Python CLI games through to an installable PWA with SHA-256 hashed auth, XSS sanitisation and offline service-worker caching — plus embedded work driving servos and sensors on paired micro:bits.</p>
+        <p>Python CLI games through to an installable PWA with SHA-256 hashed auth, XSS sanitisation and offline service-worker caching, and a live single page app on a hosted Postgres backend with row-level security — plus embedded work driving servos and sensors on paired micro:bits.</p>
       </div>
       <div class="tool-row reveal">
         <span class="n">0x02</span>
@@ -1413,7 +1445,7 @@ const FASTFETCH = [
   ['Host: HAHSACU — Australian Army Cadets', ''],
   ['Kernel: CUO 6.2026 (Company Commander)', ''],
   ['Uptime: 6 yrs (2021 → present)', ''],
-  ['Packages: 6 (HSC modules), 7 (projects), 2 (majorworks)', ''],
+  ['Packages: 6 (HSC modules), 8 (projects), 2 (majorworks)', ''],
   ['Shell: pak-hok-pai — white crane (2020~)', ''],
   ['CPU: Cybersecurity Mgmt + Security Eng (dual major)', ''],
   ['Target: UNSW BIS/BCompSc — ETA 2027', ''],
@@ -1441,10 +1473,11 @@ const PROJECTS = [
   { title: 'Case Study: 2022 Optus Data Breach', tag: 'cybersecurity case study', desc: 'Written analysis of the Optus breach — an unauthenticated public API and an IDOR vulnerability that exposed 9.8M customer records. Breaks down which CIA-triad principles failed and mitigations.' },
   { title: 'E-Commerce Data Dashboard', tag: 'MS Access + Excel', desc: 'A ~500,000-row e-commerce dataset normalised to 3NF across a five-table Access schema, live-linked into an Excel dashboard — revenue targets, regional comparisons, top/bottom products.' },
   { title: 'LearnerHours', tag: 'offline PWA', desc: 'An installable, offline-capable PWA for logging L-plate driving hours — full session CRUD, SHA-256 hashed local login, DOMPurify XSS sanitisation, and a service worker caching the app shell.' },
+  { title: 'Digital U', tag: 'SPA + Supabase, live', desc: 'A digital business card deployed live on the open web — a vanilla-JS single page app on a Supabase backend. Public profile pages reachable by NFC tap, live username search, escaped output against stored XSS, and row-level security enforcing writes.' },
 ];
 const MAJORWORKS = [
   { title: 'WAILA', tag: '"What Am I Looking At?" — Figma prototype, ENT-CMP Y12 T3', status: 'SUBMITTED', desc: 'AI part-ID app for mechanics — point a camera at a vehicle part, get instant identification with audio feedback, and request stock without leaving the job. Built end to end: real client interview, iterated on feedback, high-fidelity Figma prototype, 5-entity relational schema, Cisco Packet Tracer network. Submitted 30 Jun 2026.' },
-  { title: 'Software Engineering Major Work', tag: 'SFT-ENG Y12 T3', status: 'IN PROGRESS', desc: '[ awaiting declassification ] — due 24 Jul 2026.' },
+  { title: 'Digital U', tag: 'digital business card — SPA + Supabase, SFT-ENG Y12 T3', status: 'DEPLOYED', desc: 'A digital business card, live on the open web. Register, share only the contact details you choose, and get a public page anyone can reach by tapping an NFC card. Vanilla-JS single page app on a Supabase backend — no framework, no build step, no server-side code. Escaped output against stored XSS, parameterised queries, session-derived row ownership, RLS-enforced access. Submitted 24 Jul 2026.' },
 ];
 function jumpTo(selector) {
   const card = document.querySelector(selector);
