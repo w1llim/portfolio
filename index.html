@@ -704,8 +704,8 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <a href="#projects">Projects</a>
       <a href="#timeline">Timeline</a>
       <a href="#toolkit">Toolkit</a>
-      <a href="ops.html">Ops Lab &#8599;</a>
-      <a href="blog.html">Blog &#8599;</a>
+      <a href="ops/">Ops Lab &#8599;</a>
+      <a href="blog/">Blog &#8599;</a>
       <a href="#contact">Contact</a>
     </nav>
     <div class="status mono"><span class="dot"></span>System online</div>
@@ -729,7 +729,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       </h1>
       <p class="hero-sub">Year 12 student, <b>Cadet Under Officer</b>, and future security engineer. Running a heavy STEM course load and commanding a company of 100+ cadets — headed for <b>UNSW cyber security</b>.</p>
       <div class="hero-cta">
-        <a class="btn" href="ops.html">Enter the ops lab</a>
+        <a class="btn" href="ops/">Enter the ops lab</a>
         <a class="btn ghost" href="#contact">Get in touch</a>
       </div>
     </div>
@@ -1674,17 +1674,17 @@ function runCommand(raw) {
     const stageMatch = target.match(/^(?:ops-lab|ops)\/(.+)$/);
     if (stageMatch && STAGES[stageMatch[1]]) {
       shellPrint('redirecting to ops-lab/' + stageMatch[1] + '...', 'dim');
-      setTimeout(() => { window.location.href = 'ops.html#' + STAGES[stageMatch[1]]; }, reduceMotion ? 0 : 450);
+      setTimeout(() => { window.location.href = 'ops/#' + STAGES[stageMatch[1]]; }, reduceMotion ? 0 : 450);
     }
     else if (!target || SECTIONS[target] === 'top') {
       document.getElementById('top').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       shellPrint('~', 'dim');
     } else if (target === 'ops-lab' || target === 'ops') {
       shellPrint('redirecting to ops-lab...', 'dim');
-      setTimeout(() => { window.location.href = 'ops.html'; }, reduceMotion ? 0 : 450);
+      setTimeout(() => { window.location.href = 'ops/'; }, reduceMotion ? 0 : 450);
     } else if (target === 'blog') {
       shellPrint('redirecting to blog...', 'dim');
-      setTimeout(() => { window.location.href = 'blog.html'; }, reduceMotion ? 0 : 450);
+      setTimeout(() => { window.location.href = 'blog/'; }, reduceMotion ? 0 : 450);
     } else if (SECTIONS[target]) {
       document.getElementById(SECTIONS[target]).scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       shellPrint('~/' + target, 'dim');

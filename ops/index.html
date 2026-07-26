@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ops Lab — William Lam</title>
 <meta name="description" content="Interactive security &amp; CTF lab, ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool. All client-side; nothing is uploaded.">
-<link rel="canonical" href="https://w1llim.github.io/portfolio/ops.html">
+<link rel="canonical" href="https://w1llim.github.io/portfolio/ops/">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Ops Lab — William Lam">
 <meta property="og:description" content="Twenty-one interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://w1llim.github.io/portfolio/ops.html">
+<meta property="og:url" content="https://w1llim.github.io/portfolio/ops/">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
@@ -699,19 +699,19 @@ body.term-fs-lock header{display:none}
 
 <header>
   <div class="wrap nav">
-    <a class="mark" href="index.html"><span class="bracket">[</span>W.LAM<span class="bracket">]</span></a>
+    <a class="mark" href="../"><span class="bracket">[</span>W.LAM<span class="bracket">]</span></a>
     <nav class="links mono" id="navLinks">
-      <a href="index.html#mission">Mission</a>
-      <a href="index.html#coursework">Coursework</a>
-      <a href="index.html#command">Command</a>
-      <a href="index.html#kungfu">Kung Fu</a>
-      <a href="index.html#majorworks">Major Works</a>
-      <a href="index.html#projects">Projects</a>
-      <a href="index.html#timeline">Timeline</a>
-      <a href="index.html#toolkit">Toolkit</a>
-      <a class="current" href="ops.html" aria-current="page">Ops Lab</a>
-      <a href="blog.html">Blog &#8599;</a>
-      <a href="index.html#contact">Contact</a>
+      <a href="../#mission">Mission</a>
+      <a href="../#coursework">Coursework</a>
+      <a href="../#command">Command</a>
+      <a href="../#kungfu">Kung Fu</a>
+      <a href="../#majorworks">Major Works</a>
+      <a href="../#projects">Projects</a>
+      <a href="../#timeline">Timeline</a>
+      <a href="../#toolkit">Toolkit</a>
+      <a class="current" href="./" aria-current="page">Ops Lab</a>
+      <a href="../blog/">Blog &#8599;</a>
+      <a href="../#contact">Contact</a>
     </nav>
     <div class="status mono"><span class="dot"></span>Lab online</div>
     <div class="nav-actions">
@@ -1457,7 +1457,7 @@ DEBUG=true</textarea>
 
 <footer>
   <div class="wrap foot-meta mono">
-    <a href="index.html">&#9666; Return to base</a>
+    <a href="../">&#9666; Return to base</a>
     <span>williamlam986@gmail.com</span>
     <span>&copy; 2026 William Lam &middot; Sydney AU</span>
   </div>
@@ -4410,7 +4410,7 @@ function runCommand(raw) {
       shellPrint('PRJ-' + String(n).padStart(2, '0') + '  ' + p.title, 'dim');
       shellPrint(p.desc, 'dim');
       shellPrint('opening projects on the home page...', 'dim');
-      setTimeout(() => { window.location.href = 'index.html#projects'; }, reduceMotion ? 0 : 500);
+      setTimeout(() => { window.location.href = '../#projects'; }, reduceMotion ? 0 : 500);
     }
   }
   else if (cmd === 'majorworks') {
@@ -4425,7 +4425,7 @@ function runCommand(raw) {
       shellPrint('MW-' + String(n).padStart(2, '0') + '  ' + m.title + ' [' + m.status + ']', 'dim');
       shellPrint(m.desc, 'dim');
       shellPrint('opening major works on the home page...', 'dim');
-      setTimeout(() => { window.location.href = 'index.html#majorworks'; }, reduceMotion ? 0 : 500);
+      setTimeout(() => { window.location.href = '../#majorworks'; }, reduceMotion ? 0 : 500);
     }
   }
   else if (cmd === 'fastfetch' || cmd === 'neofetch') {
@@ -4451,7 +4451,10 @@ function runCommand(raw) {
       shellPrint('~/ops-lab/' + target, 'dim');
     } else if (target === 'blog') {
       shellPrint('redirecting to blog...', 'dim');
-      setTimeout(() => { window.location.href = 'blog.html'; }, reduceMotion ? 0 : 450);
+      setTimeout(() => { window.location.href = '../blog/'; }, reduceMotion ? 0 : 450);
+    } else if (target === '..') {
+      shellPrint('redirecting home...', 'dim');
+      setTimeout(() => { window.location.href = '../'; }, reduceMotion ? 0 : 450);
     } else if (!dest) {
       shellPrint('cd: no such directory: ' + target, 'dim');
       shellPrint("type 'ls' to see available directories", 'dim');
@@ -4459,8 +4462,8 @@ function runCommand(raw) {
       document.getElementById('ops').scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
       shellPrint('~/ops-lab', 'dim');
     } else {
-      const href = 'index.html' + (dest === 'top' ? '' : '#' + dest);
-      shellPrint('redirecting to ' + href + '...', 'dim');
+      const href = '../' + (dest === 'top' ? '' : '#' + dest);
+      shellPrint('redirecting home' + (dest === 'top' ? '' : '#' + dest) + '...', 'dim');
       setTimeout(() => { window.location.href = href; }, reduceMotion ? 0 : 450);
     }
   }

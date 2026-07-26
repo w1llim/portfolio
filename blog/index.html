@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Blog — William Lam</title>
 <meta name="description" content="William Lam's blog — notes on cyber security, software engineering, cadet leadership and the road to HSC 2026. Coming soon.">
-<link rel="canonical" href="https://w1llim.github.io/portfolio/blog.html">
+<link rel="canonical" href="https://w1llim.github.io/portfolio/blog/">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Blog — William Lam">
 <meta property="og:description" content="Notes on cyber security, software engineering, cadet leadership and the road to HSC 2026. Coming soon.">
 <meta property="og:type" content="website">
-<meta property="og:url" content="https://w1llim.github.io/portfolio/blog.html">
+<meta property="og:url" content="https://w1llim.github.io/portfolio/blog/">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -268,19 +268,19 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
 <header>
   <div class="wrap nav">
-    <a class="mark" href="index.html"><span class="bracket">[</span>W.LAM<span class="bracket">]</span></a>
+    <a class="mark" href="../"><span class="bracket">[</span>W.LAM<span class="bracket">]</span></a>
     <nav class="links mono" id="navLinks">
-      <a href="index.html#mission">Mission</a>
-      <a href="index.html#coursework">Coursework</a>
-      <a href="index.html#command">Command</a>
-      <a href="index.html#kungfu">Kung Fu</a>
-      <a href="index.html#majorworks">Major Works</a>
-      <a href="index.html#projects">Projects</a>
-      <a href="index.html#timeline">Timeline</a>
-      <a href="index.html#toolkit">Toolkit</a>
-      <a href="ops.html">Ops Lab &#8599;</a>
-      <a class="current" href="blog.html" aria-current="page">Blog</a>
-      <a href="index.html#contact">Contact</a>
+      <a href="../#mission">Mission</a>
+      <a href="../#coursework">Coursework</a>
+      <a href="../#command">Command</a>
+      <a href="../#kungfu">Kung Fu</a>
+      <a href="../#majorworks">Major Works</a>
+      <a href="../#projects">Projects</a>
+      <a href="../#timeline">Timeline</a>
+      <a href="../#toolkit">Toolkit</a>
+      <a href="../ops/">Ops Lab &#8599;</a>
+      <a class="current" href="./" aria-current="page">Blog</a>
+      <a href="../#contact">Contact</a>
     </nav>
     <div class="status mono"><span class="dot"></span>Log idle</div>
     <div class="nav-actions">
@@ -355,7 +355,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 <!-- ================= FOOTER ================= -->
 <footer>
   <div class="wrap foot-meta mono">
-    <a href="index.html">&#9666; Return to base</a>
+    <a href="../">&#9666; Return to base</a>
     <span>williamlam986@gmail.com</span>
     <span>&copy; 2026 William Lam &middot; Sydney AU</span>
   </div>
@@ -410,7 +410,7 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 /* ================= terminal boot ================= */
 /* The same interactive shell as the home page, adapted for the blog:
-   section jumps redirect back to index.html; cd .. / ~ returns home. */
+   section jumps redirect back to the home page; cd .. / ~ returns home. */
 const LINES = [
   { t: '> whoami', cls: 'prompt' },
   { t: 'william.lam', cls: '' },
@@ -472,11 +472,11 @@ const SHELL = {
 SHELL['ls ops-lab/'] = SHELL['ls ops-lab'];
 const STAGES = { observe: 'stage-observe', extract: 'stage-extract', decode: 'stage-decode', crypto: 'stage-crypto', synthesize: 'stage-synthesize' };
 const SECTION_PAGES = {
-  mission: 'index.html#mission', coursework: 'index.html#coursework',
-  command: 'index.html#command', cadets: 'index.html#command', kungfu: 'index.html#kungfu',
-  majorworks: 'index.html#majorworks', 'major-works': 'index.html#majorworks',
-  projects: 'index.html#projects', timeline: 'index.html#timeline',
-  toolkit: 'index.html#toolkit', contact: 'index.html#contact',
+  mission: '../#mission', coursework: '../#coursework',
+  command: '../#command', cadets: '../#command', kungfu: '../#kungfu',
+  majorworks: '../#majorworks', 'major-works': '../#majorworks',
+  projects: '../#projects', timeline: '../#timeline',
+  toolkit: '../#toolkit', contact: '../#contact',
 };
 const FASTFETCH = [
   ['\\_\\  /_/', 'ok'],
@@ -550,7 +550,7 @@ function runCommand(raw) {
       shellPrint('PRJ-' + String(n).padStart(2, '0') + '  ' + p.title, 'dim');
       shellPrint(p.desc, 'dim');
       shellPrint('opening projects on the home page...', 'dim');
-      setTimeout(() => { window.location.href = 'index.html#projects'; }, reduceMotion ? 0 : 500);
+      setTimeout(() => { window.location.href = '../#projects'; }, reduceMotion ? 0 : 500);
     }
   }
   else if (cmd === 'majorworks') {
@@ -565,7 +565,7 @@ function runCommand(raw) {
       shellPrint('MW-' + String(n).padStart(2, '0') + '  ' + m.title + ' [' + m.status + ']', 'dim');
       shellPrint(m.desc, 'dim');
       shellPrint('opening major works on the home page...', 'dim');
-      setTimeout(() => { window.location.href = 'index.html#majorworks'; }, reduceMotion ? 0 : 500);
+      setTimeout(() => { window.location.href = '../#majorworks'; }, reduceMotion ? 0 : 500);
     }
   }
   else if (cmd === 'fastfetch' || cmd === 'neofetch') {
@@ -584,7 +584,7 @@ function runCommand(raw) {
     const stageMatch = target.match(/^(?:ops-lab|ops)\/(.+)$/);
     if (stageMatch && STAGES[stageMatch[1]]) {
       shellPrint('redirecting to ops-lab/' + stageMatch[1] + '...', 'dim');
-      setTimeout(() => { window.location.href = 'ops.html#' + STAGES[stageMatch[1]]; }, reduceMotion ? 0 : 450);
+      setTimeout(() => { window.location.href = '../ops/#' + STAGES[stageMatch[1]]; }, reduceMotion ? 0 : 450);
     }
     else if (target === 'blog' || target === '.') {
       window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
@@ -592,11 +592,11 @@ function runCommand(raw) {
     }
     else if (!target || target === '~' || target === '..' || target === 'home' || target === 'index') {
       shellPrint('redirecting home...', 'dim');
-      setTimeout(() => { window.location.href = 'index.html'; }, reduceMotion ? 0 : 450);
+      setTimeout(() => { window.location.href = '../'; }, reduceMotion ? 0 : 450);
     }
     else if (target === 'ops-lab' || target === 'ops') {
       shellPrint('redirecting to ops-lab...', 'dim');
-      setTimeout(() => { window.location.href = 'ops.html'; }, reduceMotion ? 0 : 450);
+      setTimeout(() => { window.location.href = '../ops/'; }, reduceMotion ? 0 : 450);
     }
     else if (SECTION_PAGES[target]) {
       shellPrint('redirecting to ' + target + '...', 'dim');
