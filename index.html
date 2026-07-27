@@ -511,7 +511,8 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .redact.w75{width:75%}.redact.w80{width:80%}.redact.w85{width:85%}.redact.w90{width:90%}.redact.w95{width:95%}
 
 /* ---------- timeline ---------- */
-.tl{list-style:none;border-left:1px solid var(--moss);margin-left:8px}
+/* .tl-list, not .tl — a bare .tl collides with the `corner tl` bracket spans */
+.tl-list{list-style:none;border-left:1px solid var(--moss);margin-left:8px}
 .tl-item{
   position:relative;display:flex;gap:clamp(18px,4vw,44px);align-items:baseline;
   padding:22px 0 22px clamp(20px,3vw,36px);
@@ -1170,7 +1171,7 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
       <span class="count">Service record · 2020 →</span>
     </div>
 
-    <ol class="tl">
+    <ol class="tl-list">
       <li class="tl-item reveal">
         <span class="tl-year mono">2020</span>
         <div class="tl-body">
