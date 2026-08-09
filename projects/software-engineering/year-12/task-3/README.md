@@ -3,7 +3,8 @@
 **Software Engineering — Year 12 HSC, Assessment Task 3 (2026)**
 *Major Work — Software Engineering Project*
 
-**[Launch the live site ↗](https://at3-eportfolio-8e30f9.gitlab.io)**
+**[Launch the live site ↗](https://at3-eportfolio-8e30f9.gitlab.io)** ·
+**[Watch the demo](https://youtu.be/j5KyQxNFioY)**
 
 A digital business card. Register an account, fill in a profile with only
 the contact details you choose to share, and get a public page at
