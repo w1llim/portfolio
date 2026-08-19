@@ -74,12 +74,18 @@ stagger classes) faded in by an IntersectionObserver. Headings use
 `#stage-observe`, `#stage-extract`, `#stage-decode`, `#stage-crypto`,
 `#stage-synthesize` — each holding `.panel` cards titled in their `.term-bar`
 (`xxd + strings`, `exiftool --scan`, `stego --lsb`, `qr --decode`,
-`xor --brute`, `caesar`, `vigenere --crack`, `sha256 --avalanche`,
+`xor --brute`, `caesar`, `subst --keyed`, `vigenere --crack`, `sha256 --avalanche`,
 `hashid`, `passwd --audit`, `rsa --toy`, `jwt --decode`, `date --epoch`,
 `uuid --inspect`, `diff --compare`, the Magic Decoder, grep, and more).
 Tools pipe their stdout into the stage-05 synthesize tools via the `Pipe`
 module. Everything runs **client-side only** — no network calls, no uploads;
 dropped files never leave the browser. Keep it that way.
+
+The `freq --analyze` panel's auto-solver carries a compiled English model: the
+676-character `BIGRAM` table (26×26 letter-pair scores, `charCode − 33`, built
+offline from word-frequency data) and the `COMMON` word list. Both are
+generated constants — retune the solver, not the numbers, and keep the table
+free of `'` and `\` so it stays a plain single-quoted literal.
 
 **Style.** Compact hand-written HTML/CSS/JS: 2-space indent, single quotes in
 JS, `const`/`let`, IIFE modules (`const Pipe = (function(){…})()`) for anything

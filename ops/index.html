@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ops Lab — William Lam</title>
-<meta name="description" content="Interactive security &amp; CTF lab, ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool. All client-side; nothing is uploaded.">
+<meta name="description" content="Interactive security &amp; CTF lab, ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, a keyed substitution cipher, Vigenère cracker, frequency analysis with an auto-solving substitution cracker, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool. All client-side; nothing is uploaded.">
 <link rel="canonical" href="https://w1llim.github.io/portfolio/ops/">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Ops Lab — William Lam">
-<meta property="og:description" content="Twenty-one interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
+<meta property="og:description" content="Twenty-two interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, a keyed substitution cipher, Vigenère cracker, frequency analysis with an auto-solving substitution cracker, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://w1llim.github.io/portfolio/ops/">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://w1llim.github.io/portfolio/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ops Lab — William Lam">
-<meta name="twitter:description" content="Twenty-one interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, Vigenère cracker, frequency &amp; substitution solver, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
+<meta name="twitter:description" content="Twenty-two interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, a keyed substitution cipher, Vigenère cracker, frequency analysis with an auto-solving substitution cracker, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
 <meta name="theme-color" content="#211A10">
 <script>/* apply the saved theme before first paint to avoid a flash; dark is the default */
 (function(){try{if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
@@ -548,6 +548,12 @@ textarea[readonly]:focus{border-color:var(--line)}
 .subst-cell input{width:23px;height:23px;text-align:center;background:rgba(var(--kraft-rgb),.06);border:1px solid var(--line);color:var(--phos);font-family:var(--mono);font-size:12px;text-transform:uppercase;padding:0}
 .subst-cell input:focus{border-color:var(--phos)}
 
+/* keyed substitution cipher */
+.subst-fields{grid-template-columns:1fr 1fr;gap:12px;align-items:end}
+@media(max-width:520px){.subst-fields{grid-template-columns:1fr}}
+.panel input[type=text].subst-alpha{letter-spacing:.22em;text-transform:uppercase}
+.panel input[type=text].bad-key{border-color:var(--threat);color:var(--threat)}
+
 /* vigenère solver */
 .vig-lens{display:flex;flex-wrap:wrap;gap:8px}
 .vig-len-btn{font-family:var(--mono);font-size:11px;letter-spacing:.06em;padding:8px 12px;border:1px solid var(--line);background:none;color:var(--kraft-dim);cursor:pointer;transition:all .2s;text-align:center}
@@ -728,7 +734,7 @@ body.term-fs-lock header{display:none}
   <div class="wrap">
     <div class="sec-head reveal">
       <h2 data-scramble-scroll><span class="hash">#</span>Ops Lab</h2>
-      <span class="count">21 live modules · Interactive</span>
+      <span class="count">22 live modules · Interactive</span>
     </div>
 
     <div class="ops-stage reveal" id="stage-observe"><b>stage 01 · observe</b> <span class="note">— watch the perimeter, map the range</span></div>
@@ -962,7 +968,7 @@ body.term-fs-lock header{display:none}
       </div>
     </div>
 
-    <div class="ops-stage reveal" id="stage-decode"><b>stage 03 · decode</b> <span class="note">— feed extracted blobs through every codec, then escalate: single shift → single byte → repeating key → full substitution</span></div>
+    <div class="ops-stage reveal" id="stage-decode"><b>stage 03 · decode</b> <span class="note">— feed extracted blobs through every codec, then escalate: single shift → single byte → keyed alphabet → repeating key → a full substitution key, hill-climbed</span></div>
 
     <!-- cipher multitool / magic decoder -->
     <div class="ops-solo">
@@ -1047,6 +1053,67 @@ body.term-fs-lock header{display:none}
 
     </div>
 
+    <!-- keyed substitution cipher -->
+    <div class="ops-solo">
+      <div class="panel reveal">
+        <div class="term-bar">
+          <span style="display:flex;align-items:center;gap:8px"><span class="lights"><i></i><i></i><i></i></span>subst --keyed · monoalphabetic</span>
+          <span class="right" id="substStatus">KEYWORD</span>
+        </div>
+        <div class="panel-body">
+          <div>
+            <label for="substIn">Plaintext / ciphertext — every letter maps through one fixed alphabet</label>
+            <textarea id="substIn" spellcheck="false">Rendezvous at the flagpole at 0900 for the field exercise. Bring the sabre, the mess card and a full water bottle, because the company will be on the range until the light goes, and nobody is coming back to the lines for whatever you forget to pack tonight.</textarea>
+          </div>
+          <div class="mode-row" role="group" aria-label="Key construction">
+            <button class="mode-btn active" type="button" data-keymode="keyword">Keyword</button>
+            <button class="mode-btn" type="button" data-keymode="affine">Affine</button>
+            <button class="mode-btn" type="button" data-keymode="manual">Manual</button>
+          </div>
+          <div id="substKeywordRow">
+            <label for="substKeyword">Keyword — its letters lead the cipher alphabet, the unused ones follow in order</label>
+            <input id="substKeyword" type="text" autocomplete="off" spellcheck="false" value="WHITECRANE">
+          </div>
+          <div id="substAffineRow" class="subst-fields" style="display:none">
+            <div>
+              <label for="substA">Multiplier a — only values coprime with 26 are invertible</label>
+              <select id="substA" class="grep-src">
+                <option>1</option><option>3</option><option value="5" selected>5</option><option>7</option><option>9</option><option>11</option>
+                <option>15</option><option>17</option><option>19</option><option>21</option><option>23</option><option>25</option>
+              </select>
+            </div>
+            <div>
+              <label for="substB">Shift b</label>
+              <div class="shift-row">
+                <input type="range" id="substB" min="0" max="25" value="8">
+                <div class="shift-val" id="substBVal">+8</div>
+              </div>
+            </div>
+          </div>
+          <div id="substManualRow" style="display:none">
+            <label for="substManual">Cipher alphabet — 26 distinct letters: A maps to the first, B to the second, …</label>
+            <input id="substManual" class="subst-alpha" type="text" autocomplete="off" spellcheck="false" maxlength="26" value="QWERTYUIOPASDFGHJKLZXCVBNM">
+            <button type="button" class="pipe-btn" id="substShuffle" style="margin-top:10px">⚄ shuffle a random key</button>
+          </div>
+          <div class="alpha-map" id="substMap" aria-hidden="true"></div>
+          <div class="mode-row" role="group" aria-label="Substitution mode">
+            <button class="mode-btn active" id="substEnc" type="button">Encrypt ▸</button>
+            <button class="mode-btn" id="substDec" type="button">◂ Decrypt</button>
+          </div>
+          <div>
+            <label for="substOut">Output</label>
+            <div class="cipher-out" id="substOut" aria-live="polite"></div>
+          </div>
+          <div class="copy-row">
+            <button type="button" class="pipe-btn" data-pipe="subst">subst ▸ grep</button>
+            <button type="button" class="pipe-btn" id="substToFreq">subst ▸ freq --solve</button>
+            <button type="button" class="pipe-btn copy-btn" data-copy-target="substOut">⧉ copy</button>
+          </div>
+          <div class="panel-note" id="substMeta">// 26! ≈ 4×10²⁶ keys, and every one of them still leaks letter frequencies — caesar is the affine case a=1, atbash is a=25 b=25</div>
+        </div>
+      </div>
+    </div>
+
     <!-- vigenère cracker -->
     <div class="ops-solo">
       <div class="panel reveal">
@@ -1095,6 +1162,7 @@ body.term-fs-lock header{display:none}
               <option value="strings">strings · xxd + strings file analyzer</option>
               <option value="magic">magic --decode · every codec's output</option>
               <option value="xor">xor --brute · candidate plaintexts</option>
+              <option value="subst">subst --keyed · that module's output</option>
               <option value="hexdump">xxd · raw hex dump</option>
             </select>
           </div>
@@ -1103,6 +1171,7 @@ body.term-fs-lock header{display:none}
             <textarea id="freqIn" spellcheck="false">ZIOL OL Q ESQLLOE LXWLZOZXZOGF EOHITK VITKT TCTKN STZZTK DQHL ZG Q ROYYTKTFZ STZZTK EGFLOLZTFZSN ZIKGXUIGXZ ZIT VIGST DTLLQUT LG ZIQZ YKTJXTFEN QFQSNLOL EQF EKQEA OZ ZIT DGLZ EGDDGF STZZTK OF TFUSOLI OL T YGSSGVTR WN Z Q G QFR O YSQU OL YSQU{YK3JX3FEN_C1LX4S1M3R}</textarea>
           </div>
           <div class="freq-bars" id="freqBars" aria-hidden="true"></div>
+          <button type="button" class="btn" id="freqSolve">Auto-solve — hill-climb the key ▸</button>
           <div class="mode-row" style="gap:8px">
             <button type="button" class="btn ghost" id="freqGuess" style="flex:1">Quick-guess by frequency ▸</button>
             <button type="button" class="btn ghost" id="freqClear" style="flex:1">Clear mapping</button>
@@ -1118,7 +1187,7 @@ body.term-fs-lock header{display:none}
           <div class="copy-row">
             <button type="button" class="pipe-btn copy-btn" data-copy-target="freqOut">⧉ copy preview</button>
           </div>
-          <div class="panel-note">// quick-guess maps observed letters onto English frequency order (ETAOIN…) as a starting point — refine it by hand</div>
+          <div class="panel-note" id="freqMeta">// auto-solve hill-climbs the whole 26-letter key against English bigram statistics; quick-guess just maps observed letters onto ETAOIN… — either way, refine it by hand</div>
         </div>
       </div>
     </div>
@@ -1309,6 +1378,7 @@ body.term-fs-lock header{display:none}
               <option value="strings">strings · xxd + strings file analyzer</option>
               <option value="magic">magic --decode · every codec's output</option>
               <option value="xor">xor --brute · candidate plaintexts</option>
+              <option value="subst">subst --keyed · that module's output</option>
               <option value="hexdump">xxd · raw hex dump</option>
             </select>
           </div>
@@ -1337,6 +1407,7 @@ body.term-fs-lock header{display:none}
               <option value="strings">strings · xxd + strings file analyzer</option>
               <option value="magic">magic --decode · every codec's output</option>
               <option value="xor">xor --brute · candidate plaintexts</option>
+              <option value="subst">subst --keyed · that module's output</option>
               <option value="hexdump">xxd · raw hex dump</option>
             </select>
           </div>
@@ -1385,6 +1456,7 @@ body.term-fs-lock header{display:none}
                   <option value="strings">strings</option>
                   <option value="magic">magic</option>
                   <option value="xor">xor</option>
+                  <option value="subst">subst</option>
                   <option value="hexdump">xxd</option>
                 </select>
               </div>
@@ -1402,6 +1474,7 @@ DEBUG=false</textarea>
                   <option value="strings">strings</option>
                   <option value="magic">magic</option>
                   <option value="xor">xor</option>
+                  <option value="subst">subst</option>
                   <option value="hexdump">xxd</option>
                 </select>
               </div>
@@ -1435,6 +1508,7 @@ DEBUG=true</textarea>
               <option value="strings">strings · xxd + strings file analyzer</option>
               <option value="magic">magic --decode · every codec's output</option>
               <option value="xor">xor --brute · candidate plaintexts</option>
+              <option value="subst">subst --keyed · that module's output</option>
               <option value="hexdump">xxd · raw hex dump</option>
             </select>
           </div>
@@ -2991,13 +3065,14 @@ const Pipe = (function () {
   const TITLES = {
     paste: 'grep --pattern · search any text',
     strings: 'strings | grep', magic: 'magic --decode | grep',
-    xor: 'xor --brute | grep', hexdump: 'xxd | grep',
+    xor: 'xor --brute | grep', subst: 'subst --keyed | grep', hexdump: 'xxd | grep',
   };
   const LABELS = {
     paste: 'Text to search — paste a log, a dump, a wordlist, anything',
     strings: 'Piped from strings · read-only — drop a file in the xxd + strings module to fill this',
     magic: 'Piped from magic --decode · read-only — decode a blob in that module to fill this',
     xor: 'Piped from xor --brute · read-only — paste hex ciphertext in that module to fill this',
+    subst: 'Piped from subst --keyed · read-only — encrypt or decrypt something in that module to fill this',
     hexdump: 'Piped from the xxd hex dump · read-only — drop a file in the xxd + strings module to fill this',
   };
 
@@ -3202,13 +3277,14 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
   const TITLES = {
     paste: 'flaghunter --scan · find any flag',
     strings: 'strings | flaghunter', magic: 'magic --decode | flaghunter',
-    xor: 'xor --brute | flaghunter', hexdump: 'xxd | flaghunter',
+    xor: 'xor --brute | flaghunter', subst: 'subst --keyed | flaghunter', hexdump: 'xxd | flaghunter',
   };
   const LABELS = {
     paste: "Text to scan — every word{...} pattern is pulled out automatically",
     strings: 'Piped from strings · read-only — drop a file in the xxd + strings module to fill this',
     magic: 'Piped from magic --decode · read-only — decode a blob in that module to fill this',
     xor: 'Piped from xor --brute · read-only — paste hex ciphertext in that module to fill this',
+    subst: 'Piped from subst --keyed · read-only — encrypt or decrypt something in that module to fill this',
     hexdump: 'Piped from the xxd hex dump · read-only — drop a file in the xxd + strings module to fill this',
   };
   const KNOWN = new Set(['flag','FLAG','Flag','ctf','CTF','Ctf','picoCTF','PICOCTF','HTB','htb','THM','thm','DUCTF','ductf','corctf','corCTF','ractf','RACTF','dice','justCTF','wctf','WCTF','utflag','SEETF','seetf','ISITDTU']);
@@ -3250,6 +3326,135 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
   Pipe.bindSelect({ select: src, corpus, render, titleEl: title, titles: TITLES, labelEl: label, labels: LABELS });
 })();
 
+/* ================= keyed substitution cipher ================= */
+/* Caesar is only the 26-key corner of a much larger family: any
+   permutation of the alphabet is a valid monoalphabetic key. Three ways
+   to build one here — a keyword-led alphabet, an affine a·x+b map, or a
+   hand-typed permutation — because that's how they show up in classical
+   crypto and in CTFs. The output rides the pipe bus, so a message
+   encrypted here can be handed straight to freq --analyze and broken
+   without ever passing the key across. */
+(function substKeyed() {
+  const AZ = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  const input = document.getElementById('substIn');
+  const keywordRow = document.getElementById('substKeywordRow');
+  const keywordIn = document.getElementById('substKeyword');
+  const affineRow = document.getElementById('substAffineRow');
+  const aSel = document.getElementById('substA');
+  const bRange = document.getElementById('substB');
+  const bVal = document.getElementById('substBVal');
+  const manualRow = document.getElementById('substManualRow');
+  const manualIn = document.getElementById('substManual');
+  const shuffleBtn = document.getElementById('substShuffle');
+  const mapEl = document.getElementById('substMap');
+  const outEl = document.getElementById('substOut');
+  const status = document.getElementById('substStatus');
+  const meta = document.getElementById('substMeta');
+  const encBtn = document.getElementById('substEnc');
+  const decBtn = document.getElementById('substDec');
+  const NOTE = meta.textContent;
+  let keyMode = 'keyword', decrypting = false;
+
+  // keyword alphabet: the keyword's letters (deduped) lead, the letters it
+  // never used follow in ordinary order — the classic keyed alphabet
+  function keywordAlphabet(word) {
+    let out = '';
+    for (const ch of word.toUpperCase()) if (AZ.includes(ch) && !out.includes(ch)) out += ch;
+    for (const ch of AZ) if (!out.includes(ch)) out += ch;
+    return out;
+  }
+  // affine: plain letter i -> (a·i + b) mod 26. Only an a coprime with 26
+  // is invertible, which is why the selector offers just those twelve.
+  const affineAlphabet = (a, b) => [...AZ].map((_, i) => AZ[(a * i + b) % 26]).join('');
+
+  function cipherAlphabet() {
+    if (keyMode === 'affine') return affineAlphabet(+aSel.value, +bRange.value);
+    if (keyMode === 'manual') return manualIn.value.toUpperCase();
+    return keywordAlphabet(keywordIn.value);
+  }
+  const isKey = s => s.length === 26 && new Set(s).size === 26 && [...s].every(c => AZ.includes(c));
+
+  function convert(text, alpha) {
+    return [...text].map(ch => {
+      const up = ch.toUpperCase();
+      const i = decrypting ? alpha.indexOf(up) : AZ.indexOf(up);
+      if (i < 0) return ch;
+      const to = decrypting ? AZ[i] : alpha[i];
+      return ch === up ? to : to.toLowerCase();
+    }).join('');
+  }
+
+  function render() {
+    const alpha = cipherAlphabet();
+    if (!isKey(alpha)) {
+      const letters = [...new Set(alpha.replace(/[^A-Z]/g, ''))].length;
+      manualIn.classList.add('bad-key');
+      status.textContent = 'KEY INVALID';
+      status.style.color = 'var(--threat)';
+      mapEl.innerHTML = AZ + '<br><span class="to">' + '?'.repeat(26) + '</span>';
+      outEl.textContent = '—';
+      meta.textContent = '// a substitution key is a permutation: 26 distinct letters, each used exactly once — ' + letters + ' distinct so far';
+      Pipe.publish('subst', '');
+      return;
+    }
+    manualIn.classList.remove('bad-key');
+    status.style.color = '';
+    status.textContent = keyMode === 'affine' ? 'AFFINE ' + aSel.value + 'x+' + bRange.value : keyMode.toUpperCase();
+    meta.textContent = NOTE;
+    mapEl.innerHTML = 'A→<span class="to">' + alpha[0] + '</span>&ensp;B→<span class="to">' + alpha[1] +
+                      '</span>&ensp;C→<span class="to">' + alpha[2] + '</span>&ensp;…&ensp;' +
+                      AZ + '<br><span class="to">' + alpha + '</span>';
+    const out = convert(input.value, alpha);
+    outEl.innerHTML = out.trim() ? highlightFlag(out) : '—';
+    Pipe.publish('subst', out);
+  }
+
+  function setKeyMode(m) {
+    // carry the alphabet across when the user drops into manual, so a
+    // keyword or affine key can be hand-tweaked rather than retyped
+    if (m === 'manual' && keyMode !== 'manual') {
+      const alpha = cipherAlphabet();
+      if (isKey(alpha)) manualIn.value = alpha;
+    }
+    keyMode = m;
+    document.querySelectorAll('[data-keymode]').forEach(b => b.classList.toggle('active', b.dataset.keymode === m));
+    keywordRow.style.display = m === 'keyword' ? '' : 'none';
+    affineRow.style.display = m === 'affine' ? 'grid' : 'none';
+    manualRow.style.display = m === 'manual' ? '' : 'none';
+    render();
+  }
+  function setDirection(dec) {
+    decrypting = dec;
+    encBtn.classList.toggle('active', !dec);
+    decBtn.classList.toggle('active', dec);
+    render();
+  }
+
+  document.querySelectorAll('[data-keymode]').forEach(b => b.addEventListener('click', () => setKeyMode(b.dataset.keymode)));
+  encBtn.addEventListener('click', () => setDirection(false));
+  decBtn.addEventListener('click', () => setDirection(true));
+  shuffleBtn.addEventListener('click', () => {
+    const k = [...AZ];
+    for (let i = 25; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [k[i], k[j]] = [k[j], k[i]]; }
+    manualIn.value = k.join('');
+    render();
+  });
+  bRange.addEventListener('input', () => { bVal.textContent = '+' + bRange.value; render(); });
+  [input, keywordIn, manualIn].forEach(el => el.addEventListener('input', render));
+  aSel.addEventListener('change', render);
+
+  // hand the current output to the solver downstream, live
+  document.getElementById('substToFreq').addEventListener('click', () => {
+    const sel = document.getElementById('freqSrc');
+    sel.value = 'subst';
+    sel.dispatchEvent(new Event('change'));
+    const panel = sel.closest('.panel');
+    if (panel) panel.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'center' });
+  });
+
+  render();
+})();
+
 /* ================= frequency analysis + substitution solver ================= */
 (function freqSolver() {
   const src = document.getElementById('freqSrc');
@@ -3262,21 +3467,80 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
   const label = document.getElementById('freqInLabel');
   const guessBtn = document.getElementById('freqGuess');
   const clearBtn = document.getElementById('freqClear');
+  const solveBtn = document.getElementById('freqSolve');
+  const meta = document.getElementById('freqMeta');
 
   const TITLES = {
     paste: 'freq --analyze · substitution solver',
     strings: 'strings | freq', magic: 'magic --decode | freq',
-    xor: 'xor --brute | freq', hexdump: 'xxd | freq',
+    xor: 'xor --brute | freq', subst: 'subst --keyed | freq', hexdump: 'xxd | freq',
   };
   const LABELS = {
     paste: 'Ciphertext — classic monoalphabetic substitution',
     strings: 'Piped from strings · read-only — drop a file in the xxd + strings module to fill this',
     magic: 'Piped from magic --decode · read-only — decode a blob in that module to fill this',
     xor: 'Piped from xor --brute · read-only — paste hex ciphertext in that module to fill this',
+    subst: 'Piped from subst --keyed · read-only — encrypt something in that module, then break it here without the key',
     hexdump: 'Piped from the xxd hex dump · read-only — drop a file in the xxd + strings module to fill this',
   };
   const ENGLISH_ORDER = 'ETAOINSHRDLCUMWFGYPBVKJXQZ';
+  const AZ = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   let keyMap = {};
+
+  /* --- the English model the auto-solver climbs against ----------------
+     Two compiled statistics stand in for a corpus. BIGRAM is a 26×26
+     table of letter-pair log-probabilities, row = first letter, one
+     printable character per pair, score = charCode − 33 (higher = more
+     English); it was built offline from word-frequency data, counting
+     pairs inside words and across word boundaries. COMMON is the ~500
+     commonest English words (plus a handful this lab keeps running
+     into): any decoded token that lands in the list earns a bonus, which
+     is what drags a nearly-right key over the line while the ciphertext
+     still has its word breaks. Both are tiny and stay in the page. */
+  const BIGRAM =
+    'gmpo_hldo[jvozckRvuximhZo[kZTPrNJPgVCkSMlN>h`ZlPP4i8rVdTqTQqlIliURsTPi_ohIV9_Dqhhhsgegr][fhdof' +
+    'Simoi_iGgJxnswrokmracsrxpo`zxwenpjmVmaa^lj[`oUTe`[r_KldlhTbC]Cmba_pabnlUUeaem`LkhjgTcA`Dv`_]}^' +
+    'Z_uSR^``r^LfcmdRa?cDmernnlm[`Sgqn|rfVnvwZl][Va`AB@`A<AT?=>A>dE0IFGh:B(<&d[[Xo[W[kOP][e_ZEYfcWN' +
+    ']:[=rbbmte]`sU`tc]qcK`klg_dApFrg^Yu[W[nPOZg[okG^fdgP^?i@rgpxtiwgq_hhhisfUdrwfciNjRlikldugek[go' +
+    'syonOwoswkqZdRnYZXpXUeiMNm[UniCodgfLZ;[=HB?:9<7<G0/?<8?<4;ADg5>&6!tgjlyfhetYhhkjtfQiqridgHmJrj' +
+    'mguidqs]dikfsmYfrym]lIgKtijevhc~w[[jiexgSpqrl]lIlRhejfh^hZgOXnho]jGrqqQR[O^OfGIJuGDGl;<IGDcI2J' +
+    'QOL@H1S.qZZYoZUpqNQ[YfmXD`cbQM[9V<]O[KZOHS^B@LMIRb>JPaSEOHP1kffbjd`djYXcfbreOblm[XgE^L[FDB`DBI' +
+    '[8=KEAVC3CGLL=F-SR';
+  const BG = new Uint8Array(676);
+  for (let i = 0; i < 676; i++) BG[i] = BIGRAM.charCodeAt(i) - 33;
+  const COMMON = new Set((
+    'the of and to in is you that it he was for on are as with his they be at ' +
+    'one have this from or had by but some what there we can out other were all your when up ' +
+    'use word how said an each she which do their time if will way about many then them would write like ' +
+    'so these her long make thing see him two has look more day could go come did number sound no most ' +
+    'people my over know water than call first who may down side been now find any new work part take get ' +
+    'place made live where after back little only round man year came show every good me give our under name very ' +
+    'through just form much great think say help low line before turn cause same mean differ move right boy old too ' +
+    'does tell sentence set three want air well also play small end put home read hand large spell add even land ' +
+    'here must big high such follow act why ask men change went light kind off need house picture try us again ' +
+    'animal point mother world near build self earth father head stand own page should country found answer school grow study still ' +
+    'learn plant cover food sun four thought let keep eye never last door between city tree cross since hard start ' +
+    'might story saw far sea draw left late run while press close night real life few north open seem together ' +
+    'next white children begin got walk example paper often always music those both mark book letter until mile river car ' +
+    'feet care second group carry took rain eat room friend began idea fish mountain stop once base hear horse cut ' +
+    'sure watch color face wood main enough plain girl usual young ready above ever red list though feel talk bird ' +
+    'soon body dog family direct song measure state product black short class wind question happen complete ship area half rock ' +
+    'order fire south problem piece told knew pass farm top whole king size heard best hour better true during hundred ' +
+    'five remember step early hold west ground interest reach fast verb sing listen six table travel less morning ten simple ' +
+    'several vowel toward war lay against pattern slow center love person money serve appear road map science rule govern pull ' +
+    'cold notice voice fall power town fine certain fly unit lead cry dark machine note wait plan figure star box ' +
+    'noun field rest correct able pound done beauty drive stood contain front teach week final gave green quick develop sleep ' +
+    'warm free minute strong special mind behind clear tail produce fact street inch lot nothing course stay wheel full force ' +
+    'blue object decide surface deep moon island foot yet busy test record boat common gold possible plane age dry wonder ' +
+    'laugh thousand ago ran check game shape yes hot miss brought heat snow bed bring sit perhaps fill east weight ' +
+    'language among data system network file user access server security control report project value level result process ' +
+    'message secret key code cipher flag'
+  ).toUpperCase().split(' '));
+  const WORD_BONUS = 8;      // per letter of a decoded token that is a real word
+  const RESTARTS = 60;       // random starting keys per solve — a few ms each
+  const SCORE_CAP = 3000;    // only score this many letters, so a huge pipe stays snappy
+  const SOLVE_LABEL = solveBtn.textContent;
+  let solving = false;
 
   function letterCounts(text) {
     const counts = {}; let total = 0;
@@ -3332,6 +3596,7 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
   }
   function render() {
     const text = corpus.value;
+    solving = false;                          // the text moved under any running solve
     if (!text.trim()) {
       barsEl.innerHTML = '<div class="magic-empty">// nothing to analyse yet</div>';
       substGrid.innerHTML = ''; outEl.textContent = '—'; status.textContent = 'EMPTY';
@@ -3357,6 +3622,116 @@ document.getElementById('xorToMagic').addEventListener('click', function () {
     renderSubstGrid(counts);
     renderPreview();
   });
+
+  /* --- auto-solve: hill-climb the whole key ---------------------------
+     A key here is an array of 26 plaintext letters indexed by cipher
+     letter. Start from a random one, then repeatedly swap the pair of
+     letters that improves the score most until nothing helps — a local
+     maximum. Any single climb can get stuck in a wrong-but-plausible
+     key, so it runs many climbs from different random starts and keeps
+     the best, sliced across timeouts so the page never freezes. */
+  function solverInput(text) {
+    const nums = [], toks = [];
+    let cur = null;
+    for (const ch of text.toUpperCase()) {
+      if (nums.length >= SCORE_CAP) break;
+      const n = ch.charCodeAt(0) - 65;
+      if (n >= 0 && n < 26) {
+        nums.push(n);
+        if (!cur) { cur = []; toks.push(cur); }
+        cur.push(n);
+      } else cur = null;
+    }
+    return { nums, toks: toks.filter(t => t.length > 1 && t.length < 16) };
+  }
+  function scoreKey(nums, toks, key) {
+    let s = 0, prev = -1;
+    for (let i = 0; i < nums.length; i++) {
+      const c = key[nums[i]];
+      if (prev >= 0) s += BG[prev * 26 + c];
+      prev = c;
+    }
+    for (let t = 0; t < toks.length; t++) {
+      const tok = toks[t];
+      let word = '';
+      for (let i = 0; i < tok.length; i++) word += AZ[key[tok[i]]];
+      if (COMMON.has(word)) s += WORD_BONUS * word.length;
+    }
+    return s;
+  }
+  function climb(nums, toks, key) {
+    let best = scoreKey(nums, toks, key), improved = true;
+    while (improved) {
+      improved = false;
+      for (let i = 0; i < 25; i++) {
+        for (let j = i + 1; j < 26; j++) {
+          let t = key[i]; key[i] = key[j]; key[j] = t;
+          const s = scoreKey(nums, toks, key);
+          if (s > best) { best = s; improved = true; }
+          else { t = key[i]; key[i] = key[j]; key[j] = t; }
+        }
+      }
+    }
+    return best;
+  }
+  function randomKey() {
+    const key = [...Array(26).keys()];
+    for (let i = 25; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [key[i], key[j]] = [key[j], key[i]]; }
+    return key;
+  }
+  // first climb starts from the ETAOIN… frequency guess rather than noise
+  function seedKey() {
+    const { counts } = letterCounts(corpus.value);
+    const present = [...AZ].filter(L => counts[L]).sort((a, b) => counts[b] - counts[a]);
+    const key = new Array(26).fill(-1), used = new Set();
+    present.forEach((L, i) => {
+      const p = ENGLISH_ORDER[i];
+      if (p) { key[AZ.indexOf(L)] = AZ.indexOf(p); used.add(p); }
+    });
+    const spare = [...AZ].filter(p => !used.has(p));
+    for (let i = 0; i < 26; i++) if (key[i] < 0) key[i] = AZ.indexOf(spare.shift());
+    return key;
+  }
+  function applyKey(key) {
+    const { counts } = letterCounts(corpus.value);
+    keyMap = {};
+    for (let i = 0; i < 26; i++) if (counts[AZ[i]]) keyMap[AZ[i]] = AZ[key[i]];
+    renderSubstGrid(counts);
+    renderPreview();
+  }
+  function autoSolve() {
+    if (solving) { solving = false; return; }        // second click stops it
+    const { nums, toks } = solverInput(corpus.value);
+    if (nums.length < 40) {
+      status.textContent = 'TOO SHORT';
+      meta.textContent = '// hill-climbing needs a few sentences of ciphertext — this is ' + nums.length + ' letters; ~150 solves reliably';
+      return;
+    }
+    solving = true;
+    solveBtn.textContent = 'Stop ■';
+    let round = 0, best = null, bestScore = -Infinity;
+    function step() {
+      const t0 = performance.now();
+      while (solving && round < RESTARTS && performance.now() - t0 < 45) {
+        const key = round === 0 ? seedKey() : randomKey();
+        const s = climb(nums, toks, key);
+        if (s > bestScore) { bestScore = s; best = key.slice(); applyKey(best); }
+        round++;
+      }
+      if (solving && round < RESTARTS) {
+        status.textContent = 'SOLVING ' + Math.round(round / RESTARTS * 100) + '%';
+        setTimeout(step, 0);
+        return;
+      }
+      solving = false;
+      solveBtn.textContent = SOLVE_LABEL;
+      if (best) applyKey(best);
+      status.textContent = letterCounts(corpus.value).total + ' LETTERS';
+      meta.textContent = '// best of ' + round + ' hill climbs scored against English bigrams + common words — swap any letter below to fix what it missed';
+    }
+    step();
+  }
+  solveBtn.addEventListener('click', autoSolve);
 
   Pipe.bindSelect({ select: src, corpus, render, titleEl: title, titles: TITLES, labelEl: label, labels: LABELS });
 })();
