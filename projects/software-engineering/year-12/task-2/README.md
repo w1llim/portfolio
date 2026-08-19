@@ -8,7 +8,7 @@ driving hours — built out from a given base PWA into a fully-featured,
 secured client-only app: no backend, no server, everything lives in the
 browser.
 
-**[Launch the app ↗](https://w1llim.github.io/portfolio/projects/software-engineering/year-12/task-2/pwa/)**
+**[Launch the app ↗](https://willim.tech/projects/software-engineering/year-12/task-2/pwa/)**
 
 ## What it does
 

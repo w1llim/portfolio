@@ -5,10 +5,12 @@ code in this repository.
 
 ## What this is
 
-William Lam's personal portfolio site — a hand-written static site published
-as a **GitHub Pages project site** at `https://w1llim.github.io/portfolio/`.
-It is a Year 12 / HSC 2026 portfolio: cadets, white crane kung fu, coursework,
-and a cybersecurity-themed interactive "Ops Lab".
+William Lam's personal portfolio site — a hand-written static site on GitHub
+Pages, live at **`https://willim.tech/`** (custom apex domain, set by the
+`CNAME` file) and simultaneously at the project-site URL
+`https://w1llim.github.io/portfolio/`. Both hosts serve, but `willim.tech` is
+the canonical one. It is a Year 12 / HSC 2026 portfolio: cadets, white crane
+kung fu, coursework, and a cybersecurity-themed interactive "Ops Lab".
 
 There is **no build step, no bundler, no package manager, and no dependencies.**
 Every page is a single self-contained `.html` file with its CSS in a `<style>`
@@ -39,11 +41,14 @@ submitted schoolwork. Leave them alone unless the task is about them.
 ## Conventions that matter
 
 **Clean URLs.** Extensionless paths come from directory `index.html` files.
-Internal page-to-page links are always relative (`ops/`, `../`, `../blog/`)
-so the site works both under the `/portfolio/` subpath and at a domain root.
-The absolute `https://w1llim.github.io/portfolio/` prefix appears **only** in
-canonical/OG/JSON-LD/sitemap/robots URLs and in `404.html`'s uplink — never in
-a link between pages. Adding a page means adding a directory with an
+Internal links — page to page, and into `projects/` — are always relative
+(`ops/`, `../`, `../blog/`, `projects/…`), which is what lets the same files
+serve correctly at the `willim.tech` root *and* under the `/portfolio/`
+subpath on `w1llim.github.io`. An absolute `https://willim.tech/` URL appears
+**only** in canonical/OG/JSON-LD/sitemap/robots tags and in `404.html`'s
+uplink (that one has to be absolute — a 404 can be served from either host at
+an unknown depth). Never hard-code a host, or the `/portfolio/` prefix, in a
+link between pages. Adding a page means adding a directory with an
 `index.html`, plus a `sitemap.xml` entry.
 
 **Theme.** Dark is the default; light mode is opt-in. Colours come from CSS

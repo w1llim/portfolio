@@ -16,9 +16,10 @@ Static site, no build step. Clean (extensionless) URLs come from directory
 | —        | `404.html`         | GitHub Pages 404 handler     |
 
 Internal links are relative (`ops/`, `../`, `../blog/`) so the site works both
-under a subpath and at a domain root. It is published as a GitHub Pages
-project site, so the live base is `https://w1llim.github.io/portfolio/` — that
-prefix appears only in the absolute canonical/OG/sitemap/robots URLs and in
+at a domain root and under a subpath. It is live at `https://willim.tech/`
+(custom domain) and at the GitHub Pages project-site URL
+`https://w1llim.github.io/portfolio/`; `willim.tech` is canonical, and that
+absolute prefix appears only in the canonical/OG/sitemap/robots URLs and in
 `404.html`'s uplink, never in a page-to-page link.
 
 ## Launch
