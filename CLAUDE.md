@@ -1,6 +1,7 @@
 # CLAUDE.md
 
-Guidance for Claude Code when working in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with
+code in this repository.
 
 ## What this is
 
@@ -13,6 +14,11 @@ There is **no build step, no bundler, no package manager, and no dependencies.**
 Every page is a single self-contained `.html` file with its CSS in a `<style>`
 block and its JS in a `<script>` block at the bottom. Do not introduce a build
 pipeline, a framework, or an `npm` install unless explicitly asked.
+
+The one third-party library in the site is a minified copy of **jsQR**, pasted
+inline in `ops/index.html` for the QR decoder. Vendoring like that — a single
+self-contained blob, no package manager — is the only accepted shape for a
+dependency here.
 
 ## Layout
 
@@ -77,9 +83,32 @@ stagger classes) faded in by an IntersectionObserver. Headings use
 `xor --brute`, `caesar`, `subst --keyed`, `vigenere --crack`, `sha256 --avalanche`,
 `hashid`, `passwd --audit`, `rsa --toy`, `jwt --decode`, `date --epoch`,
 `uuid --inspect`, `diff --compare`, the Magic Decoder, grep, and more).
-Tools pipe their stdout into the stage-05 synthesize tools via the `Pipe`
-module. Everything runs **client-side only** — no network calls, no uploads;
-dropped files never leave the browser. Keep it that way.
+Everything runs **client-side only** — no network calls, no uploads; dropped
+files never leave the browser. Keep it that way.
+
+**Pipe bus.** Tool stdout moves between panels through `Pipe.publish(id, text)`
+/ `Pipe.get(id)` / `Pipe.onUpdate(fn)`, with
+`Pipe.bindSelect({select, corpus, render, titleEl, titles, labelEl, labels})`
+doing the standard stdin wiring: `paste` is an editable buffer, any other
+stream is a read-only mirror that re-renders whenever its producer republishes.
+Adding a stream id means adding an `<option>` to **every** consumer — freq,
+flaghunter, grep, diff A *and* B, entropy — plus an entry in each of their
+`TITLES` and `LABELS` maps. A module that publishes during init must be defined
+*after* the `Pipe` IIFE in the script block, or it throws on load.
+`.pipe-btn[data-pipe="x"]` means specifically "point grep's stdin at stream x";
+a bare `.pipe-btn` is only the shared button style (`xor ▸ magic`), and
+`[data-copy-target]` buttons are wired generically near the bottom of the file.
+
+**Adding a panel.** Wrap it in `.ops-solo` (full width) or one of the grids —
+`.ops-grid2` is *three* columns and `.ops-grid3` is *two*, so the names don't
+track the counts. Then bump `<span class="count">N live modules</span>` and the
+three `<head>` descriptions (`description`, `og:description`,
+`twitter:description`) that enumerate the tools. Panel form controls are styled
+only for `textarea`, `input[type=text]`, `input[type=datetime-local]`,
+`input[type=range]` (inside `.shift-row`) and `select.grep-src` — anything
+else, `input[type=number]` especially, renders as a raw browser default. Rows
+that show and hide do it with an inline `style="display:none"` toggled in JS,
+not `[hidden]`.
 
 The `freq --analyze` panel's auto-solver carries a compiled English model: the
 676-character `BIGRAM` table (26×26 letter-pair scores, `charCode − 33`, built
@@ -107,7 +136,10 @@ python3 -m http.server 8901
 `.claude/launch.json` defines the same thing on port 8137.
 
 For browser-driven verification, see the **`verify` skill**
-(`.claude/skills/verify/SKILL.md`) — it documents the Playwright recipe and the
+(`.claude/skills/verify/SKILL.md`). Playwright itself is not vendored, so
+`npm install playwright` into a scratch directory first — the browser binary is
+already on the machine at `/opt/pw-browsers/chromium`. The skill documents the
+Playwright recipe and the
 gotchas (the floating hero terminal needs `{ force: true }` clicks, wait for
 `.reveal` elements before screenshotting, disable smooth scrolling before
 programmatic scrolls, and Google Fonts failing behind the sandbox proxy is
