@@ -3,21 +3,21 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Blog — William Lam</title>
-<meta name="description" content="William Lam's blog — notes on cyber security, software engineering, cadet leadership and the road to HSC 2026. First entry: into UNSW Gateway for BIS / BCompSc.">
-<link rel="canonical" href="https://willim.tech/blog/">
+<title>Into UNSW Gateway — William Lam</title>
+<meta name="description" content="Accepted into the UNSW Gateway Program for the Bachelor of Information Systems / Bachelor of Computer Science double degree — what it is, and what changes for HSC 2026.">
+<link rel="canonical" href="https://willim.tech/blog/unsw-gateway/">
 <meta name="robots" content="index, follow">
-<meta property="og:title" content="Blog — William Lam">
-<meta property="og:description" content="Notes on cyber security, software engineering, cadet leadership and the road to HSC 2026. First entry: into UNSW Gateway for BIS / BCompSc.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://willim.tech/blog/">
+<meta property="og:title" content="Into UNSW Gateway — William Lam">
+<meta property="og:description" content="Accepted into the UNSW Gateway Program for the Bachelor of Information Systems / Bachelor of Computer Science double degree — what it is, and what changes for HSC 2026.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://willim.tech/blog/unsw-gateway/">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://willim.tech/assets/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Blog — William Lam">
-<meta name="twitter:description" content="Notes on cyber security, software engineering, cadet leadership and the road to HSC 2026. First entry: into UNSW Gateway for BIS / BCompSc.">
+<meta name="twitter:title" content="Into UNSW Gateway — William Lam">
+<meta name="twitter:description" content="Accepted into the UNSW Gateway Program for the Bachelor of Information Systems / Bachelor of Computer Science double degree — what it is, and what changes for HSC 2026.">
 <meta name="twitter:image" content="https://willim.tech/assets/og-image.png">
 <meta name="theme-color" content="#211A10">
 <script>/* apply the saved theme before first paint to avoid a flash; dark is the default */
@@ -181,14 +181,32 @@ section{padding-bottom:clamp(80px,10vw,150px);position:relative}
 }
 .redact.w95{width:95%}.redact.w85{width:85%}.redact.w80{width:80%}.redact.w70{width:70%}.redact.w60{width:60%}.redact.w50{width:50%}
 .post-foot{margin-top:16px;font-size:10.5px;color:var(--kraft-dim);letter-spacing:.12em}
-.post-card.published{border-style:solid;border-color:rgba(var(--phos-rgb),.4);background:rgba(var(--deep-rgb),.7);display:block;transition:border-color .2s,transform .2s}
-.post-card.published:hover{border-color:var(--phos);transform:translateY(-2px)}
-.post-card.published .corner{border-color:var(--phos)}
-.post-card.published .post-badge{color:var(--phos)}
-.post-card.published .post-title{color:var(--kraft)}
-.post-card.published p.post-excerpt{color:var(--kraft-dim);font-size:14.5px;line-height:1.65;margin:0}
-.post-card.published .post-foot{color:var(--phos)}
 .blog-note{margin-top:clamp(30px,4vw,48px);font-size:11.5px;color:var(--kraft-dim);letter-spacing:.1em}
+
+/* ---------- single post (article) ---------- */
+.post-head{margin-bottom:clamp(30px,4vw,46px)}
+.post-crumb{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;color:var(--kraft-dim);text-transform:uppercase;margin-bottom:18px;display:block}
+.post-crumb a{color:var(--kraft-dim);transition:color .2s}
+.post-crumb a:hover{color:var(--phos)}
+.post-meta{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--phos);text-transform:uppercase;margin-bottom:16px}
+.post-meta .sep{color:var(--kraft-dim)}
+h1.post-h1{font-family:var(--disp);font-weight:700;font-size:clamp(30px,4.4vw,54px);line-height:1.05;max-width:20ch}
+.post-lede{max-width:70ch;margin-top:20px;color:var(--kraft-dim);font-size:17px}
+.post-body{max-width:70ch}
+.post-body h2{font-family:var(--disp);font-weight:600;font-size:clamp(20px,2.4vw,26px);margin:clamp(34px,4vw,48px) 0 14px}
+.post-body h2 .hash{color:var(--phos);margin-right:6px}
+.post-body p{color:var(--kraft-dim);font-size:16px;margin-bottom:16px}
+.post-body b{color:var(--kraft);font-weight:600}
+.post-body ul{list-style:none;margin:0 0 16px}
+.post-body li{position:relative;padding-left:22px;color:var(--kraft-dim);font-size:16px;margin-bottom:9px}
+.post-body li::before{content:'>';position:absolute;left:0;color:var(--phos);font-family:var(--mono);font-size:13px}
+.post-quote{
+  border-left:2px solid var(--phos);background:rgba(var(--deep-rgb),.5);
+  padding:16px 20px;margin:0 0 20px;font-family:var(--mono);font-size:13.5px;color:var(--kraft-dim);
+}
+.post-end{margin-top:clamp(36px,5vw,56px);padding-top:22px;border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;letter-spacing:.1em;color:var(--kraft-dim)}
+.post-end a{color:var(--phos)}
 
 /* ---------- always-on (docked) terminal ---------- */
 .term{
@@ -263,7 +281,7 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
 <div class="term docked minimized" id="termShell" aria-label="Interactive terminal — type help for commands, cd to navigate">
   <div class="term-bar">
-    <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/blog</span>
+    <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/blog/unsw-gateway</span>
     <span class="term-btns">
       <button type="button" class="term-full" id="termFull" aria-label="Fullscreen terminal" title="Fullscreen (or type: fullscreen)">⛶</button>
       <button type="button" class="term-min" id="termMin" aria-label="Restore terminal">▢</button>
@@ -275,19 +293,19 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
 <header>
   <div class="wrap nav">
-    <a class="mark" href="../"><span class="bracket">[</span>W.LAM<span class="bracket">]</span></a>
+    <a class="mark" href="../../"><span class="bracket">[</span>W.LAM<span class="bracket">]</span></a>
     <nav class="links mono" id="navLinks">
-      <a href="../#mission">Mission</a>
-      <a href="../#coursework">Coursework</a>
-      <a href="../#command">Command</a>
-      <a href="../#kungfu">Kung Fu</a>
-      <a href="../#majorworks">Major Works</a>
-      <a href="../#projects">Projects</a>
-      <a href="../#timeline">Timeline</a>
-      <a href="../#toolkit">Toolkit</a>
-      <a href="../ops/">Ops Lab &#8599;</a>
-      <a class="current" href="./" aria-current="page">Blog</a>
-      <a href="../#contact">Contact</a>
+      <a href="../../#mission">Mission</a>
+      <a href="../../#coursework">Coursework</a>
+      <a href="../../#command">Command</a>
+      <a href="../../#kungfu">Kung Fu</a>
+      <a href="../../#majorworks">Major Works</a>
+      <a href="../../#projects">Projects</a>
+      <a href="../../#timeline">Timeline</a>
+      <a href="../../#toolkit">Toolkit</a>
+      <a href="../../ops/">Ops Lab &#8599;</a>
+      <a class="current" href="../">Blog</a>
+      <a href="../../#contact">Contact</a>
     </nav>
     <div class="status mono"><span class="dot"></span>Log idle</div>
     <div class="nav-actions">
@@ -299,79 +317,59 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
   </div>
 </header>
 
-<!-- ================= BLOG ================= -->
-<section id="blog" class="page-top">
+<!-- ================= POST ================= -->
+<section id="post" class="page-top">
   <div class="wrap">
-    <div class="sec-head reveal">
-      <h2><span class="hash">#</span>Blog</h2>
-      <span class="count">1 post published · more drafting</span>
+    <div class="post-head reveal">
+      <span class="post-crumb mono"><a href="../">&#9666; ~/blog</a> / unsw-gateway</span>
+      <div class="post-meta"><span>03 Sep 2026</span><span class="sep">//</span><span>HSC 2026</span><span class="sep">//</span><span>4 min read</span></div>
+      <h1 class="post-h1">Offer received: UNSW Gateway, BIS / BCompSc</h1>
+      <p class="post-lede">I got into the <b>UNSW Gateway Program</b> for the <b>Bachelor of Information Systems / Bachelor of Computer Science</b> double degree. The target that has been sitting in my terminal's <span class="mono">mission</span> output for two years now has a path attached to it.</p>
     </div>
 
-    <p class="blog-intro reveal d1">Field notes from the build: <b>cyber security</b> write-ups, <b>software engineering</b> devlogs, <b>cadet command</b> lessons and the road through <b>HSC 2026</b>. First entry is up; the rest are still being drafted.</p>
-
-    <div class="blog-grid">
-      <a class="post-card published reveal" href="unsw-gateway/">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="post-badge"><span>Published &middot; HSC 2026</span><span>03 Sep 2026</span></div>
-        <h3 class="post-title">Offer received: UNSW Gateway, BIS / BCompSc</h3>
-        <p class="post-excerpt">Accepted into the UNSW Gateway Program for the Bachelor of Information Systems / Bachelor of Computer Science double degree — what the pathway actually is, why that combination, and what it changes with the HSC still to run.</p>
-        <p class="post-foot mono">read the entry &#8599;</p>
-      </a>
-
-      <div class="post-card reveal">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="post-badge"><span>Draft · Security</span><span>TBD</span></div>
-        <h3 class="post-title">[ Post title pending ]</h3>
-        <div class="redact w95"></div>
-        <div class="redact w85"></div>
-        <div class="redact w60"></div>
-        <p class="post-foot mono">[ awaiting declassification ]</p>
+    <div class="post-body reveal d1">
+      <div class="post-quote">
+        &gt; cat ~/offers/unsw-gateway.txt<br>
+        STATUS: ACCEPTED<br>
+        PROGRAM: Gateway — UNSW Sydney<br>
+        DEGREE: BIS / BCompSc (double)<br>
+        ETA: 2027
       </div>
 
-      <div class="post-card reveal d1">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="post-badge"><span>Draft · Software Eng.</span><span>TBD</span></div>
-        <h3 class="post-title">[ Post title pending ]</h3>
-        <div class="redact w90"></div>
-        <div class="redact w80"></div>
-        <div class="redact w50"></div>
-        <p class="post-foot mono">[ awaiting declassification ]</p>
-      </div>
+      <h2><span class="hash">#</span>What Gateway actually is</h2>
+      <p>UNSW Gateway is an admissions pathway for students at participating schools. The short version: it recognises that an ATAR is one number measured under one set of conditions, and it gives students from those schools an adjusted entry pathway plus support in the run-up to university — academic workshops, campus days, and a clearer line of sight into the degree itself.</p>
+      <p>Being accepted doesn't mean the HSC stops mattering. It means the pathway into <b>BIS / BCompSc</b> is defined now, in Term 3 of Year 12, instead of being decided in a single week of December offers.</p>
 
-      <div class="post-card reveal d2">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="post-badge"><span>Draft · Cadets</span><span>TBD</span></div>
-        <h3 class="post-title">[ Post title pending ]</h3>
-        <div class="redact w95"></div>
-        <div class="redact w70"></div>
-        <div class="redact w55"></div>
-        <p class="post-foot mono">[ awaiting declassification ]</p>
-      </div>
+      <h2><span class="hash">#</span>Why this degree</h2>
+      <p>The double degree is the reason I picked UNSW in the first place. Information Systems is the half that asks what a system is <b>for</b> — the data model, the process, the people using it. Computer Science is the half that asks how it actually gets <b>built</b>, and how it breaks.</p>
+      <p>Every project on this site has been sitting on one side of that split or the other:</p>
+      <ul>
+        <li>Normalising 500,000 rows of e-commerce data to 3NF and wiring it into a live dashboard — that is Information Systems.</li>
+        <li>Building an offline PWA with hashed local auth, sanitised input and a service-worker cache — that is Computer Science.</li>
+        <li>Pulling apart the 2022 Optus breach — an unauthenticated public API and an IDOR flaw that leaked 9.8M records — is the answer to both at once, which is where I want to end up: <b>cybersecurity management and security engineering</b>.</li>
+      </ul>
 
-      <div class="post-card reveal d3">
-        <span class="corner tl"></span><span class="corner tr"></span>
-        <span class="corner bl"></span><span class="corner br"></span>
-        <div class="post-badge"><span>Draft · HSC 2026</span><span>TBD</span></div>
-        <h3 class="post-title">[ Post title pending ]</h3>
-        <div class="redact w85"></div>
-        <div class="redact w95"></div>
-        <div class="redact w60"></div>
-        <p class="post-foot mono">[ awaiting declassification ]</p>
+      <h2><span class="hash">#</span>What changes now</h2>
+      <p>Not much, honestly, and that is the point. Trials are done, the HSC is close, and the Software Engineering major work still has to be finished properly. Gateway removes a variable; it doesn't remove the work.</p>
+      <p>What it does change is the horizon. Everything on this portfolio — the Ops Lab, the Packet Tracer network, the threat model, six years of cadets ending in a company command — was built pointed at a destination that was, until now, a hopeful line in a fastfetch block. It reads a little differently today.</p>
+
+      <h2><span class="hash">#</span>Thanks</h2>
+      <p>To my teachers, to the cadet staff who handed a 15-year-old a section and let him work it out, and to my family. None of this is a solo run.</p>
+
+      <p class="mono" style="color:var(--phos);font-size:13px;letter-spacing:.08em">// TARGET: UNSW BIS / BCompSc — ETA 2027 &nbsp;[ LOCKED ]</p>
+
+      <div class="post-end">
+        <a href="../">&#9666; back to field notes</a>
+        <span>WLAM &middot; SYDNEY AU</span>
       </div>
     </div>
-
-    <p class="blog-note mono reveal d4">// more entries deploy here as they are drafted — check back after the HSC</p>
   </div>
 </section>
 
 <!-- ================= FOOTER ================= -->
 <footer>
   <div class="wrap foot-meta mono">
-    <a href="../">&#9666; Return to base</a>
+    <a href="../../">&#9666; Return to base</a>
     <span>williamlam986@gmail.com</span>
     <span>&copy; 2026 William Lam &middot; Sydney AU</span>
   </div>
@@ -430,10 +428,10 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 const LINES = [
   { t: '> whoami', cls: 'prompt' },
   { t: 'william.lam', cls: '' },
-  { t: '> cat blog/status.txt', cls: 'prompt' },
-  { t: 'FIELD NOTES // 1 PUBLISHED // DRAFTS IN PROGRESS', cls: 'dim' },
-  { t: '> ls ~/topics', cls: 'prompt' },
-  { t: 'security  software-eng  cadets  hsc-2026', cls: 'dim' },
+  { t: '> cat blog/unsw-gateway.md', cls: 'prompt' },
+  { t: 'POST 001 // UNSW GATEWAY — BIS / BCompSc // 03 SEP 2026', cls: 'dim' },
+  { t: '> cat ~/offers/unsw-gateway.txt', cls: 'prompt' },
+  { t: 'STATUS: ACCEPTED — ETA 2027', cls: 'ok' },
   { t: '> run navigate.sh', cls: 'prompt' },
   { t: "[ OK ] type 'help' to navigate — cd .. for home", cls: 'ok' },
 ];
@@ -488,11 +486,11 @@ const SHELL = {
 SHELL['ls ops-lab/'] = SHELL['ls ops-lab'];
 const STAGES = { observe: 'stage-observe', extract: 'stage-extract', decode: 'stage-decode', crypto: 'stage-crypto', synthesize: 'stage-synthesize' };
 const SECTION_PAGES = {
-  mission: '../#mission', coursework: '../#coursework',
-  command: '../#command', cadets: '../#command', kungfu: '../#kungfu',
-  majorworks: '../#majorworks', 'major-works': '../#majorworks',
-  projects: '../#projects', timeline: '../#timeline',
-  toolkit: '../#toolkit', contact: '../#contact',
+  mission: '../../#mission', coursework: '../../#coursework',
+  command: '../../#command', cadets: '../../#command', kungfu: '../../#kungfu',
+  majorworks: '../../#majorworks', 'major-works': '../../#majorworks',
+  projects: '../../#projects', timeline: '../../#timeline',
+  toolkit: '../../#toolkit', contact: '../../#contact',
 };
 const FASTFETCH = [
   ['\\_\\  /_/', 'ok'],
@@ -566,7 +564,7 @@ function runCommand(raw) {
       shellPrint('PRJ-' + String(n).padStart(2, '0') + '  ' + p.title, 'dim');
       shellPrint(p.desc, 'dim');
       shellPrint('opening projects on the home page...', 'dim');
-      setTimeout(() => { window.location.href = '../#projects'; }, reduceMotion ? 0 : 500);
+      setTimeout(() => { window.location.href = '../../#projects'; }, reduceMotion ? 0 : 500);
     }
   }
   else if (cmd === 'majorworks') {
@@ -581,7 +579,7 @@ function runCommand(raw) {
       shellPrint('MW-' + String(n).padStart(2, '0') + '  ' + m.title + ' [' + m.status + ']', 'dim');
       shellPrint(m.desc, 'dim');
       shellPrint('opening major works on the home page...', 'dim');
-      setTimeout(() => { window.location.href = '../#majorworks'; }, reduceMotion ? 0 : 500);
+      setTimeout(() => { window.location.href = '../../#majorworks'; }, reduceMotion ? 0 : 500);
     }
   }
   else if (cmd === 'fastfetch' || cmd === 'neofetch') {
@@ -600,19 +598,23 @@ function runCommand(raw) {
     const stageMatch = target.match(/^(?:ops-lab|ops)\/(.+)$/);
     if (stageMatch && STAGES[stageMatch[1]]) {
       shellPrint('redirecting to ops-lab/' + stageMatch[1] + '...', 'dim');
-      setTimeout(() => { window.location.href = '../ops/#' + STAGES[stageMatch[1]]; }, reduceMotion ? 0 : 450);
+      setTimeout(() => { window.location.href = '../../ops/#' + STAGES[stageMatch[1]]; }, reduceMotion ? 0 : 450);
     }
-    else if (target === 'blog' || target === '.') {
+    else if (target === 'blog') {
+      shellPrint('redirecting to blog...', 'dim');
+      setTimeout(() => { window.location.href = '../'; }, reduceMotion ? 0 : 450);
+    }
+    else if (target === '.') {
       window.scrollTo({ top: 0, behavior: reduceMotion ? 'auto' : 'smooth' });
-      shellPrint('~/blog', 'dim');
+      shellPrint('~/blog/unsw-gateway', 'dim');
     }
     else if (!target || target === '~' || target === '..' || target === 'home' || target === 'index') {
       shellPrint('redirecting home...', 'dim');
-      setTimeout(() => { window.location.href = '../'; }, reduceMotion ? 0 : 450);
+      setTimeout(() => { window.location.href = '../../'; }, reduceMotion ? 0 : 450);
     }
     else if (target === 'ops-lab' || target === 'ops') {
       shellPrint('redirecting to ops-lab...', 'dim');
-      setTimeout(() => { window.location.href = '../ops/'; }, reduceMotion ? 0 : 450);
+      setTimeout(() => { window.location.href = '../../ops/'; }, reduceMotion ? 0 : 450);
     }
     else if (SECTION_PAGES[target]) {
       shellPrint('redirecting to ' + target + '...', 'dim');
