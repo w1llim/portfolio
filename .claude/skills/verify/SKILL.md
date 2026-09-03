@@ -13,14 +13,15 @@ Static site, no build step. Clean (extensionless) URLs come from directory
 | `/`      | `index.html`       | hero + interactive terminal  |
 | `/ops/`  | `ops/index.html`   | interactive lab modules      |
 | `/blog/` | `blog/index.html`  | field notes                  |
-| —        | `404.html`         | GitHub Pages 404 handler     |
+| —        | `404.html`         | 404 handler (Vercel static routing) |
 
 Internal links are relative (`ops/`, `../`, `../blog/`) so the site works both
-at a domain root and under a subpath. It is live at `https://willim.tech/`
-(custom domain) and at the GitHub Pages project-site URL
-`https://w1llim.github.io/portfolio/`; `willim.tech` is canonical, and that
-absolute prefix appears only in the canonical/OG/sitemap/robots URLs and in
-`404.html`'s uplink, never in a page-to-page link.
+at a domain root and under a subpath. It is live at
+`https://portfolio.willim.tech/` (Vercel, custom subdomain) and possibly
+still at the legacy GitHub Pages project-site URL
+`https://w1llim.github.io/portfolio/`; `portfolio.willim.tech` is canonical,
+and that absolute prefix appears only in the canonical/OG/sitemap/robots URLs
+and in `404.html`'s uplink, never in a page-to-page link.
 
 ## Launch
 

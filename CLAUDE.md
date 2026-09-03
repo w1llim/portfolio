@@ -5,12 +5,15 @@ code in this repository.
 
 ## What this is
 
-William Lam's personal portfolio site — a hand-written static site on GitHub
-Pages, live at **`https://willim.tech/`** (custom apex domain, set by the
-`CNAME` file) and simultaneously at the project-site URL
-`https://w1llim.github.io/portfolio/`. Both hosts serve, but `willim.tech` is
-the canonical one. It is a Year 12 / HSC 2026 portfolio: cadets, white crane
-kung fu, coursework, and a cybersecurity-themed interactive "Ops Lab".
+William Lam's personal portfolio site — a hand-written static site hosted on
+**Vercel**, live at **`https://portfolio.willim.tech/`** (custom subdomain,
+configured in the Vercel project's domain settings — there is no `CNAME`
+file; that was a GitHub Pages mechanism this repo no longer uses). It may
+still also resolve at the legacy project-site URL
+`https://w1llim.github.io/portfolio/` if GitHub Pages remains enabled on the
+repo, but `portfolio.willim.tech` is the canonical host. It is a Year 12 /
+HSC 2026 portfolio: cadets, white crane kung fu, coursework, and a
+cybersecurity-themed interactive "Ops Lab".
 
 There is **no build step, no bundler, no package manager, and no dependencies.**
 Every page is a single self-contained `.html` file with its CSS in a `<style>`
@@ -29,7 +32,7 @@ dependency here.
 | `/`       | `index.html`       | hero, mission, coursework, command, kung fu, major works, projects, timeline, toolkit, contact + docked terminal |
 | `/ops/`   | `ops/index.html`   | Ops Lab — 5 stages of interactive security tools |
 | `/blog/`  | `blog/index.html`  | field notes (currently placeholder post cards)  |
-| —         | `404.html`         | GitHub Pages 404 handler, standalone styles     |
+| —         | `404.html`         | 404 handler (served by Vercel's static routing), standalone styles |
 
 Supporting files: `robots.txt`, `sitemap.xml`, `assets/og-image.png`,
 `projects/` (coursework artifacts — PDFs, `.pkt`, `.accdb`, `.xlsx`, plus
@@ -43,11 +46,12 @@ submitted schoolwork. Leave them alone unless the task is about them.
 **Clean URLs.** Extensionless paths come from directory `index.html` files.
 Internal links — page to page, and into `projects/` — are always relative
 (`ops/`, `../`, `../blog/`, `projects/…`), which is what lets the same files
-serve correctly at the `willim.tech` root *and* under the `/portfolio/`
-subpath on `w1llim.github.io`. An absolute `https://willim.tech/` URL appears
-**only** in canonical/OG/JSON-LD/sitemap/robots tags and in `404.html`'s
-uplink (that one has to be absolute — a 404 can be served from either host at
-an unknown depth). Never hard-code a host, or the `/portfolio/` prefix, in a
+serve correctly at the `portfolio.willim.tech` root *and* under the
+`/portfolio/` subpath on `w1llim.github.io`, if that legacy host is still
+live. An absolute `https://portfolio.willim.tech/` URL appears **only** in
+canonical/OG/JSON-LD/sitemap/robots tags and in `404.html`'s uplink (that one
+has to be absolute — a 404 can be served from either host at an unknown
+depth). Never hard-code a host, or the `/portfolio/` prefix, in a
 link between pages. Adding a page means adding a directory with an
 `index.html`, plus a `sitemap.xml` entry.
 
