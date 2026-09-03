@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://willim.tech/sitemap.xml
+Sitemap: https://portfolio.willim.tech/sitemap.xml
