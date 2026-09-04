@@ -8,6 +8,10 @@
     const fallback = '/?p=' + encodeURIComponent(window.location.pathname + window.location.search + window.location.hash);
     window.location.replace(fallback);
   </script>
+<script>
+  window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+</script>
+<script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
   <p>Redirecting to the app...</p>
