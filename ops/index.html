@@ -1617,7 +1617,9 @@ window.addEventListener('load', () => {
 });
 document.querySelectorAll('[data-scramble-hover]').forEach(el => {
   let busy = false;
-  el.closest('a').addEventListener('mouseenter', () => {
+  /* the hover target is the enclosing link, or the element itself when the
+     label is not wrapped in one (the footer heading sits above a form) */
+  (el.closest('a') || el).addEventListener('mouseenter', () => {
     if (busy) return; busy = true;
     scramble(el, 700);
     setTimeout(() => busy = false, 750);
