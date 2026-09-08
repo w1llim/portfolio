@@ -621,6 +621,38 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 .foot-meta a{border-bottom:1px solid transparent;transition:color .2s,border-color .2s}
 .foot-meta a:hover{color:var(--phos);border-color:var(--phos)}
 
+/* ---------- contact form ---------- */
+.contact-form{margin-top:clamp(28px,4vw,44px);max-width:620px;display:grid;gap:14px}
+.contact-form .cf-row{display:grid;gap:14px;grid-template-columns:1fr 1fr}
+@media(max-width:640px){.contact-form .cf-row{grid-template-columns:1fr}}
+.contact-form label{
+  font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--kraft-dim);display:block;margin-bottom:6px;
+}
+.contact-form input,.contact-form textarea{
+  width:100%;padding:12px 14px;background:rgba(var(--deep-rgb),.55);
+  border:1px solid var(--line);border-radius:2px;color:var(--kraft);
+  font-family:var(--mono);font-size:14px;transition:border-color .2s,background .2s;
+}
+.contact-form textarea{min-height:132px;resize:vertical;line-height:1.5}
+.contact-form input:focus,.contact-form textarea:focus{
+  border-color:var(--phos);background:rgba(var(--deep-rgb),.75);
+}
+.contact-form input::placeholder,.contact-form textarea::placeholder{color:rgba(var(--kraft-rgb),.35)}
+/* honeypot — offscreen rather than display:none, which some bots skip */
+.contact-form .cf-trap{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cf-send{
+  justify-self:start;padding:12px 30px;background:transparent;border:1px solid var(--phos);
+  border-radius:2px;color:var(--phos);font-family:var(--mono);font-size:13px;
+  letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
+  transition:background .2s,color .2s,box-shadow .2s;
+}
+.cf-send:hover:not(:disabled){background:var(--phos);color:var(--bark);box-shadow:0 0 24px var(--phos-dim)}
+.cf-send:disabled{opacity:.5;cursor:not-allowed}
+.cf-status{font-family:var(--mono);font-size:13px;min-height:1.2em;color:var(--kraft-dim)}
+.cf-status[data-state="ok"]{color:var(--phos)}
+.cf-status[data-state="err"]{color:var(--threat)}
+
 /* ---------- slipspace jump ---------- */
 .slipspace{height:310vh;position:relative;background:var(--bark);padding:0}
 .slip-sticky{
@@ -1346,12 +1378,36 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 <!-- ================= FOOTER ================= -->
 <footer id="contact">
   <div class="wrap">
-    <a class="big-link" href="mailto:hello@willim.tech">
+    <span class="big-link">
       <span class="huge" data-scramble-hover>OPEN A CHANNEL</span>
-    </a>
-    <p class="sub">Questions, opportunities, or just want to talk security? The inbox is monitored.</p>
+    </span>
+    <p class="sub">Questions, opportunities, or just want to talk security? Send it straight through — it lands in my inbox.</p>
+
+    <form class="contact-form" id="contactForm" novalidate>
+      <div class="cf-row">
+        <div>
+          <label for="cfName">Name</label>
+          <input type="text" id="cfName" name="name" maxlength="120" placeholder="who's calling" required>
+        </div>
+        <div>
+          <label for="cfEmail">Email</label>
+          <input type="email" id="cfEmail" name="email" maxlength="200" placeholder="where to reply" required>
+        </div>
+      </div>
+      <div>
+        <label for="cfMessage">Message</label>
+        <textarea id="cfMessage" name="message" maxlength="5000" placeholder="transmit" required></textarea>
+      </div>
+      <div class="cf-trap" aria-hidden="true">
+        <label for="cfCompany">Company</label>
+        <input type="text" id="cfCompany" name="company" tabindex="-1" autocomplete="off">
+      </div>
+      <button type="submit" class="cf-send" id="cfSend">Transmit</button>
+      <p class="cf-status" id="cfStatus" role="status" aria-live="polite"></p>
+    </form>
+
     <div class="foot-meta mono">
-      <span>hello@willim.tech</span>
+      <span>secure channel — no address published</span>
       <span style="display:flex;gap:22px">
         <a href="https://github.com/w1llim" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/thew1llim/" target="_blank" rel="noopener">LinkedIn</a><a href="https://www.instagram.com/willim_2008" target="_blank" rel="noopener">Instagram</a>
       </span>
@@ -1514,9 +1570,9 @@ const SHELL = {
   cadets: ['CUO // COMPANY COMMANDER // HAHSACU', 'personnel under command: 100+', 'service record: CDTREC 2021 -> CUO 2026'],
   kungfu: ['白鶴派 pak hok pai — white crane, since 2020', 'armament: dao (single sabre) // aux: lion dance'],
   contact: [
-    'hello@willim.tech',
+    'channel: the contact form in the footer — cd contact',
     'github.com/w1llim // linkedin: in/thew1llim // instagram: willim_2008',
-    'status: inbox monitored — open a channel anytime',
+    'status: monitored — messages route straight to my inbox',
   ],
   ls: [
     'top  mission  coursework  command  kungfu  majorworks  projects  timeline  toolkit  ops-lab/  blog  contact',
@@ -1982,6 +2038,53 @@ countIO.observe(countEl);
   });
   slipIO.observe(sec);
   window.addEventListener('resize', () => { if (running) layout(); });
+})();
+
+/* ================= contact form ================= */
+(function () {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+  const status = document.getElementById('cfStatus');
+  const send = document.getElementById('cfSend');
+
+  function say(msg, state) {
+    status.textContent = msg;
+    if (state) status.setAttribute('data-state', state);
+    else status.removeAttribute('data-state');
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const data = Object.fromEntries(new FormData(form).entries());
+
+    if (!data.name.trim() || !data.email.trim() || !data.message.trim()) {
+      return say('all three fields are required.', 'err');
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(data.email.trim())) {
+      return say('that email address does not look valid.', 'err');
+    }
+
+    send.disabled = true;
+    say('transmitting...');
+    try {
+      const r = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      const out = await r.json().catch(() => ({}));
+      if (r.ok) {
+        form.reset();
+        say('message received. i will reply to that address.', 'ok');
+      } else {
+        say(out.error || 'transmission failed — try again shortly.', 'err');
+      }
+    } catch {
+      say('no connection — check your network and retry.', 'err');
+    } finally {
+      send.disabled = false;
+    }
+  });
 })();
 
 </script>
