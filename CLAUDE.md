@@ -80,6 +80,14 @@ bottom of each file: `SHELL` (command → output lines), `SECTIONS` (`cd <name>`
 added to one page should be added to the other, and `help` / `ls` output kept
 consistent.
 
+**Hero blueprint.** The index hero is drawn as a plotting sheet: `.bp` (map
+grid, CSS-counter easting/northing labels, moss glow) fills the full-bleed
+`.hero` section, whose content sits in `.hero-in`; the bearing ring
+(`svg.bp-ring`) and the console's detail tag hang off `#termSlot`, and
+`.bp-dim` dimension lines show live px sizes (`[data-dim]`, filled by a
+`ResizeObserver`). All of it is `aria-hidden` and `bp-` prefixed — bare names
+like `.dim` are already used by terminal output lines.
+
 **Reveal animations.** Most content uses `.reveal` (plus `.d1`/`.d2`/`.d3`
 stagger classes) faded in by an IntersectionObserver. Headings use
 `data-scramble-scroll` for the text-scramble effect. Both honour
