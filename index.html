@@ -189,25 +189,103 @@ nav.links a::before{display:none}
 }
 
 /* ---------- hero ---------- */
-.hero{
+/* the section is full-bleed so its backdrop can be; .hero-in is the centred column */
+.hero{padding:0;position:relative;overflow:hidden;overflow:clip}
+.hero-in{
   min-height:100svh;display:flex;flex-direction:column;justify-content:center;
-  padding-top:90px;position:relative;
+  padding-top:90px;
 }
-.hero::before{
-  content:"";position:absolute;inset:0;z-index:-2;
+/* blueprint backdrop — the hero is drawn as a plotting sheet. .bp carries the
+   map grid, its easting/northing labels and the moss glow; the bearing ring
+   and dimension lines hang off the elements they annotate (and the ring is
+   cropped by the section's overflow). Everything is bp- prefixed: bare names
+   like .dim already belong to the terminal's output lines. */
+.bp{position:absolute;inset:0;z-index:-2;pointer-events:none}
+.bp::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 900px 600px at 72% 22%,rgba(var(--moss-rgb),.5),transparent 65%);
+}
+.bp-grid{
+  position:absolute;inset:0;
   background-image:
-    linear-gradient(var(--line) 1px,transparent 1px),
-    linear-gradient(90deg,var(--line) 1px,transparent 1px);
-  background-size:56px 56px;
-  -webkit-mask-image:radial-gradient(ellipse at 30% 40%,#000 20%,transparent 75%);
-          mask-image:radial-gradient(ellipse at 30% 40%,#000 20%,transparent 75%);
+    linear-gradient(rgba(var(--kraft-rgb),.12) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--kraft-rgb),.12) 1px,transparent 1px),
+    linear-gradient(rgba(var(--kraft-rgb),.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--kraft-rgb),.04) 1px,transparent 1px);
+  background-size:80px 80px,80px 80px,20px 20px,20px 20px;
+  background-position:0 58px; /* first line sits on the header's bottom edge */
+  -webkit-mask-image:linear-gradient(#000 75%,transparent);
+          mask-image:linear-gradient(#000 75%,transparent);
 }
-.hero::after{
-  content:"";position:absolute;inset:0;z-index:-3;
-  background:radial-gradient(ellipse 900px 600px at 75% 20%,rgba(var(--moss-rgb),.5),transparent 65%);
+/* grid references: one empty <i> per 80px square, numbered by CSS counters */
+.bp-e,.bp-n{position:absolute;display:flex;font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--kraft-dim);opacity:.8}
+.bp-e i,.bp-n i{flex:none;font-style:normal}
+.bp-e{left:0;top:64px;counter-reset:bp-e 13}
+.bp-e i{width:80px;padding-left:5px}
+.bp-e i::before{counter-increment:bp-e;content:counter(bp-e)}
+.bp-n{left:5px;top:58px;flex-direction:column;counter-reset:bp-n 87}
+.bp-n i{height:80px;padding-top:66px}
+.bp-n i::before{counter-increment:bp-n -1;content:counter(bp-n)}
+/* bearing ring, centred on the console */
+.bp-ring{
+  position:absolute;left:50%;top:50%;width:min(840px,180vw);aspect-ratio:1;
+  transform:translate(-50%,-50%);z-index:-1;pointer-events:none;overflow:visible;
 }
+.bp-ring circle,.bp-ring line{fill:none;stroke:rgba(var(--kraft-rgb),.34);stroke-width:1}
+.bp-ring .faint{stroke:rgba(var(--kraft-rgb),.18)}
+.bp-ring .tick{stroke:rgba(var(--kraft-rgb),.5);stroke-width:8}
+.bp-ring .tick.major{stroke-width:16}
+.bp-ring .centre{stroke:rgba(var(--phos-rgb),.4);stroke-dasharray:18 5 3 5}
+.bp-ring .brg{stroke:rgba(var(--phos-rgb),.75)}
+.bp-ring text{font:500 11px var(--mono);letter-spacing:.1em;fill:var(--kraft-dim);text-anchor:middle;dominant-baseline:central}
+.bp-ring text.brg{fill:var(--phos);stroke:none}
+/* dimension lines: <b> line, <i> live px value, <b> line — arrowheads on the
+   outer ends, extension lines (::before/::after) reaching back to the part */
+.bp-part{position:relative;width:fit-content}
+.bp-dim{
+  --dl:rgba(var(--phos-rgb),.6);
+  position:absolute;display:flex;align-items:center;pointer-events:none;
+  font:500 10px/1 var(--mono);letter-spacing:.14em;color:var(--phos);
+}
+.bp-dim b{flex:1;position:relative;background:var(--dl)}
+.bp-dim i{font-style:normal;padding:0 9px;white-space:nowrap}
+.bp-dim::before,.bp-dim::after{content:"";position:absolute;background:var(--dl)}
+.bp-dim.x{left:0;right:0;height:13px}
+.bp-dim.x b{height:1px}
+.bp-dim.x b:first-child::before,.bp-dim.x b:last-child::after{content:"";position:absolute;top:-3px;border:3.5px solid transparent}
+.bp-dim.x b:first-child::before{left:0;border-left:0;border-right:9px solid var(--dl)}
+.bp-dim.x b:last-child::after{right:0;border-right:0;border-left:9px solid var(--dl)}
+.bp-dim.x::before,.bp-dim.x::after{width:1px;top:-5px;height:var(--ext)}
+.bp-dim.x::before{left:0}
+.bp-dim.x::after{right:0}
+.bp-dim.x.below::before,.bp-dim.x.below::after{top:auto;bottom:-5px}
+.bp-dim.y{top:0;bottom:0;width:13px;flex-direction:column}
+.bp-dim.y b{width:1px}
+.bp-dim.y i{padding:9px 0;writing-mode:vertical-rl;transform:rotate(180deg)}
+.bp-dim.y b:first-child::before,.bp-dim.y b:last-child::after{content:"";position:absolute;left:-3px;border:3.5px solid transparent}
+.bp-dim.y b:first-child::before{top:0;border-top:0;border-bottom:9px solid var(--dl)}
+.bp-dim.y b:last-child::after{bottom:0;border-bottom:0;border-top:9px solid var(--dl)}
+.bp-dim.y::before,.bp-dim.y::after{height:1px;right:-5px;width:var(--ext)}
+.bp-dim.y::before{top:0}
+.bp-dim.y::after{bottom:0}
+.bp-part .bp-dim.x{top:-34px;--ext:32px}
+.bp-part .bp-dim.y{right:-46px;--ext:44px}
+.term-slot .bp-dim.x{bottom:-40px;--ext:36px}
+/* console callout: detail tag above, registration corners around */
+.bp-tag{
+  position:absolute;left:0;top:-34px;display:flex;align-items:center;gap:10px;pointer-events:none;
+  font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--phos);
+}
+.bp-tag em{font-style:normal;width:20px;height:20px;border:1px solid var(--phos);border-radius:50%;display:grid;place-items:center;letter-spacing:0}
+.bp-tag span{color:var(--kraft-dim)}
+.bp-corner{position:absolute;width:14px;height:14px;border:0 solid rgba(var(--phos-rgb),.6);pointer-events:none}
+.bp-corner.tl{left:-9px;top:-9px;border-left-width:1px;border-top-width:1px}
+.bp-corner.tr{right:-9px;top:-9px;border-right-width:1px;border-top-width:1px}
+.bp-corner.bl{left:-9px;bottom:-9px;border-left-width:1px;border-bottom-width:1px}
+.bp-corner.br{right:-9px;bottom:-9px;border-right-width:1px;border-bottom-width:1px}
 .hero-grid{display:grid;grid-template-columns:1.35fr .9fr;gap:clamp(28px,4vw,64px);align-items:center}
 .eyebrow{display:flex;align-items:center;gap:12px;margin-bottom:18px;color:var(--kraft-dim)}
+.hero .eyebrow{margin-bottom:50px} /* room for the name's width dimension */
 .eyebrow::before{content:"";width:34px;height:1px;background:var(--phos)}
 h1.name{
   font-family:var(--disp);font-weight:700;
@@ -289,6 +367,7 @@ h1.name .accent{color:var(--phos);text-shadow:0 0 24px var(--phos-dim)}
 .term.fullscreen .term-min{display:none}
 body.term-fs-lock{overflow:hidden}
 body.term-fs-lock header{display:none} /* keep the fixed site chrome from bleeding into the terminal's title bar */
+body.term-fs-lock .term-slot>:not(.term){visibility:hidden} /* the slot collapses while the console is out of flow; park its annotations */
 @media(max-width:600px){.term.fullscreen{width:calc(100vw - 16px)}}
 
 .hero-foot{
@@ -303,6 +382,12 @@ body.term-fs-lock header{display:none} /* keep the fixed site chrome from bleedi
 @media(max-width:900px){
   .hero-grid{grid-template-columns:1fr}
   .term{max-width:560px}
+  /* slot hugs the console so the ring and width dimension stay centred on it */
+  .term-slot{max-width:560px;margin-top:28px}
+  .bp-part .bp-dim.y{right:-38px;--ext:36px}
+  /* stacked layout: the ring now crosses the copy, so strip it to faint arcs */
+  .bp-n,.bp-ring text,.bp-ring .centre,.bp-ring .brg{display:none}
+  .bp-ring{opacity:.55}
 }
 
 /* ---------- ticker ---------- */
@@ -760,46 +845,71 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 </header>
 
 <!-- ================= HERO ================= -->
-<section class="hero wrap" id="top">
-  <div class="hero-grid">
-    <div>
-      <div class="eyebrow mono">Year 12 · Sydney, Australia · HSC 2026</div>
-      <h1 class="name">
-        <span class="glitchable" data-scramble>WILLIAM</span>
-        <span class="glitchable accent" data-scramble>LAM</span>
-      </h1>
-      <p class="hero-sub">Year 12 student, <b>Cadet Under Officer</b>, and future security engineer. Running a heavy STEM course load and commanding a company of 100+ cadets — headed for <b>UNSW cyber security</b>.</p>
-      <div class="hero-cta">
-        <a class="btn" href="ops/">Enter the ops lab</a>
-        <a class="btn ghost" href="#contact">Get in touch</a>
-      </div>
-    </div>
-
-    <div class="term-slot" id="termSlot">
-      <div class="term" id="termShell" aria-label="Interactive terminal — William's profile boot sequence; type help for commands, cd to navigate">
-        <div class="term-bar">
-          <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/profile</span>
-          <span class="term-btns">
-            <button type="button" class="term-full" id="termFull" aria-label="Fullscreen terminal" title="Fullscreen (or type: fullscreen)">⛶</button>
-            <button type="button" class="term-min" id="termMin" aria-label="Minimize terminal">_</button>
-          </span>
-        </div>
-        <div class="term-body" id="terminal" aria-hidden="true"></div>
-        <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
-      </div>
-    </div>
+<section class="hero" id="top">
+  <div class="bp" aria-hidden="true">
+    <div class="bp-grid"></div>
+    <div class="bp-e"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="bp-n"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
   </div>
+  <div class="wrap hero-in">
+    <div class="hero-grid">
+      <div>
+        <div class="eyebrow mono">Year 12 · Sydney, Australia · HSC 2026</div>
+        <div class="bp-part">
+          <h1 class="name">
+            <span class="glitchable" data-scramble>WILLIAM</span>
+            <span class="glitchable accent" data-scramble>LAM</span>
+          </h1>
+          <span class="bp-dim x" aria-hidden="true"><b></b><i data-dim="w"></i><b></b></span>
+          <span class="bp-dim y" aria-hidden="true"><b></b><i data-dim="h"></i><b></b></span>
+        </div>
+        <p class="hero-sub">Year 12 student, <b>Cadet Under Officer</b>, and future security engineer. Running a heavy STEM course load and commanding a company of 100+ cadets — headed for <b>UNSW cyber security</b>.</p>
+        <div class="hero-cta">
+          <a class="btn" href="ops/">Enter the ops lab</a>
+          <a class="btn ghost" href="#contact">Get in touch</a>
+        </div>
+      </div>
 
-  <div class="hero-foot mono">
-    <div class="coords">
-      <span>LAT −33.86</span>
-      <span>LON 151.20</span>
-      <span>TZ AEST</span>
+      <div class="term-slot" id="termSlot">
+        <svg class="bp-ring" viewBox="-420 -420 840 840" aria-hidden="true">
+          <circle r="310"/>
+          <circle class="tick" r="314" stroke-dasharray="1 26.402" stroke-dashoffset=".5"/>
+          <circle class="tick major" r="318" stroke-dasharray="1.6 164.904" stroke-dashoffset=".8"/>
+          <circle class="faint" r="368"/>
+          <circle class="faint" r="240" stroke-dasharray="4 6"/>
+          <line class="centre" x1="-302" y1="0" x2="302" y2="0"/><line class="centre" x1="0" y1="-302" x2="0" y2="302"/>
+          <line class="brg" x1="0" y1="0" x2="219.2" y2="-219.2"/><circle class="brg" cx="219.2" cy="-219.2" r="4"/>
+          <text class="brg" x="247.5" y="-247.5" transform="rotate(45 247.5 -247.5)">BRG 045</text>
+          <text x="0" y="-344">000</text><text x="172" y="-297.9">030</text><text x="297.9" y="-172">060</text><text x="344" y="0">090</text><text x="297.9" y="172">120</text><text x="172" y="297.9">150</text><text x="0" y="344">180</text><text x="-172" y="297.9">210</text><text x="-297.9" y="172">240</text><text x="-344" y="0">270</text><text x="-297.9" y="-172">300</text><text x="-172" y="-297.9">330</text>
+        </svg>
+        <span class="bp-tag" aria-hidden="true"><em>A</em>Detail A — console <span>· scale 1:1</span></span>
+        <i class="bp-corner tl" aria-hidden="true"></i><i class="bp-corner tr" aria-hidden="true"></i><i class="bp-corner bl" aria-hidden="true"></i><i class="bp-corner br" aria-hidden="true"></i>
+        <span class="bp-dim x below" aria-hidden="true"><b></b><i data-dim="w"></i><b></b></span>
+        <div class="term" id="termShell" aria-label="Interactive terminal — William's profile boot sequence; type help for commands, cd to navigate">
+          <div class="term-bar">
+            <span><span class="lights"><i></i><i></i><i></i></span>wlam@hsc-2026 : ~/profile</span>
+            <span class="term-btns">
+              <button type="button" class="term-full" id="termFull" aria-label="Fullscreen terminal" title="Fullscreen (or type: fullscreen)">⛶</button>
+              <button type="button" class="term-min" id="termMin" aria-label="Minimize terminal">_</button>
+            </span>
+          </div>
+          <div class="term-body" id="terminal" aria-hidden="true"></div>
+          <input id="termKb" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Terminal command input">
+        </div>
+      </div>
     </div>
-    <a class="scroll-cue" href="#mission">
-      Scroll to decrypt
-      <svg width="13" height="17" viewBox="0 0 14 18" fill="none" aria-hidden="true"><path d="M7 1v14M1.5 10.5L7 16l5.5-5.5" stroke="currentColor" stroke-width="1.6"/></svg>
-    </a>
+
+    <div class="hero-foot mono">
+      <div class="coords">
+        <span>LAT −33.86</span>
+        <span>LON 151.20</span>
+        <span>TZ AEST</span>
+      </div>
+      <a class="scroll-cue" href="#mission">
+        Scroll to decrypt
+        <svg width="13" height="17" viewBox="0 0 14 18" fill="none" aria-hidden="true"><path d="M7 1v14M1.5 10.5L7 16l5.5-5.5" stroke="currentColor" stroke-width="1.6"/></svg>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -1503,6 +1613,20 @@ window.addEventListener('load', () => {
     setTimeout(() => scramble(el, 1100), 200 + i * 250);
   });
 });
+
+/* ================= blueprint dimensions ================= */
+/* The hero's dimension lines carry real measurements: the name block and the
+   console slot report their own size in px, so the figures follow resizes —
+   and flicker along with the name while it decrypts. */
+if ('ResizeObserver' in window) {
+  const dimRO = new ResizeObserver(entries => entries.forEach(e => {
+    const r = e.target.getBoundingClientRect();
+    e.target.querySelectorAll('[data-dim]').forEach(el => {
+      el.textContent = Math.round(el.dataset.dim === 'w' ? r.width : r.height);
+    });
+  }));
+  document.querySelectorAll('.bp-part, .term-slot').forEach(el => dimRO.observe(el));
+}
 document.querySelectorAll('[data-scramble-hover]').forEach(el => {
   let busy = false;
   /* the hover target is the enclosing link, or the element itself when the
