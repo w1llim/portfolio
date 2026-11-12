@@ -51,6 +51,7 @@
   --bark-2:#2B2316;      /* raised panels */
   --moss:#33512F;        /* deep green */
   --olive:#4E5A33;       /* military olive */
+  --bark-olive:#252A16;  /* base, tinted olive — mid-stop of the command band */
   --kraft:#D3C4A2;       /* kraft paper */
   --kraft-dim:#A99B7D;
   --phos:#8CF56B;        /* phosphor green accent */
@@ -74,6 +75,7 @@ html[data-theme="light"]{
   --bark-2:#E4DAC0;      /* raised panels */
   --moss:#8FA878;        /* sage green */
   --olive:#7A8A5C;
+  --bark-olive:#E4EED2;  /* sage wash, no darker than the paper so ink keeps its contrast */
   --kraft:#2B2316;       /* espresso ink */
   --kraft-dim:#6B5D45;
   --phos:#1E7A10;        /* phosphor, dimmed for paper */
@@ -430,7 +432,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
 @media(max-width:620px){.mod-grid{grid-template-columns:1fr}.mod p{min-height:0}}
 
 /* ---------- command (cadets) ---------- */
-.command{background:linear-gradient(180deg,var(--bark) 0%,#252A16 50%,var(--bark) 100%)}
+.command{background:linear-gradient(180deg,var(--bark) 0%,var(--bark-olive) 50%,var(--bark) 100%)}
 .command::before{
   content:"";position:absolute;inset:0;pointer-events:none;opacity:.35;
   background-image:repeating-linear-gradient(-45deg,transparent 0 34px,rgba(78,90,51,.35) 34px 35px);
@@ -453,7 +455,7 @@ section{padding:clamp(80px,10vw,150px) 0;position:relative}
   color:var(--phos);text-shadow:0 0 30px var(--phos-dim);
 }
 .rank-badge .rk-sub{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--kraft-dim);margin-top:10px}
-.chevrons{display:flex;justify-content:center;gap:6px;margin-bottom:18px}
+.chevrons{display:flex;justify-content:center;gap:6px;margin-bottom:18px;color:var(--phos)}
 .chevrons svg{opacity:0;transform:translateY(-8px);transition:opacity .5s,transform .5s}
 .rank-badge.in .chevrons svg{opacity:1;transform:none}
 .rank-badge.in .chevrons svg:nth-child(2){transition-delay:.15s}
@@ -1040,9 +1042,9 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         <span class="corner tl"></span><span class="corner tr"></span>
         <span class="corner bl"></span><span class="corner br"></span>
         <div class="chevrons" aria-hidden="true">
-          <svg width="34" height="18" viewBox="0 0 34 18"><path d="M2 16 L17 3 L32 16" fill="none" stroke="#8CF56B" stroke-width="3.5"/></svg>
-          <svg width="34" height="18" viewBox="0 0 34 18"><path d="M2 16 L17 3 L32 16" fill="none" stroke="#8CF56B" stroke-width="3.5"/></svg>
-          <svg width="34" height="18" viewBox="0 0 34 18"><path d="M2 16 L17 3 L32 16" fill="none" stroke="#8CF56B" stroke-width="3.5"/></svg>
+          <svg width="34" height="18" viewBox="0 0 34 18"><path d="M2 16 L17 3 L32 16" fill="none" stroke="currentColor" stroke-width="3.5"/></svg>
+          <svg width="34" height="18" viewBox="0 0 34 18"><path d="M2 16 L17 3 L32 16" fill="none" stroke="currentColor" stroke-width="3.5"/></svg>
+          <svg width="34" height="18" viewBox="0 0 34 18"><path d="M2 16 L17 3 L32 16" fill="none" stroke="currentColor" stroke-width="3.5"/></svg>
         </div>
         <div class="rk">CUO</div>
         <div class="rk-sub">Cadet Under Officer</div>
