@@ -76,6 +76,11 @@ html[data-theme="light"] #netCanvas{background:radial-gradient(ellipse at 50% 50
 html{scroll-behavior:smooth}
 body{
   background:var(--bark);
+  /* the plotting sheet carries on down the page: the hero's 80px squares, fainter */
+  background-image:
+    linear-gradient(rgba(var(--kraft-rgb),.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--kraft-rgb),.045) 1px,transparent 1px);
+  background-size:80px 80px;background-position:0 58px;
   color:var(--kraft);
   font-family:var(--body);
   font-size:17px;line-height:1.65;
@@ -188,12 +193,68 @@ nav.links a::before{display:none}
 
 /* ---------- sections ---------- */
 section{padding:clamp(80px,10vw,150px) 0;position:relative}
-.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:clamp(36px,5vw,60px);flex-wrap:wrap}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:clamp(50px,5.5vw,66px);flex-wrap:wrap;position:relative}
+/* every section header is a sheet title: numbered balloon above, a dimension
+   line carrying the header's live width below */
+.sec-head .bp-tag{position:static;flex:0 0 100%;margin-bottom:-6px}
+.sec-head .bp-dim.x{bottom:-30px;--ext:20px}
 .sec-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(32px,4.6vw,58px);line-height:1}
 .sec-head h2 .hash{color:var(--phos);margin-right:6px}
 .sec-head .count{font-family:var(--mono);font-size:12.5px;color:var(--phos);letter-spacing:.12em;text-transform:uppercase}
 
 .page-top{padding-top:calc(58px + clamp(50px,7vw,90px))}
+/* ---------- blueprint sheet (same language as the index hero) ---------- */
+/* .bp is the page-top backdrop: map grid, CSS-counter grid references and the
+   moss glow, fading out below the header block. bp- prefixed throughout. */
+.page-top>.bp{position:absolute;inset:0 0 auto;height:640px;z-index:-2;overflow:hidden;pointer-events:none;
+  -webkit-mask-image:linear-gradient(#000 45%,transparent);mask-image:linear-gradient(#000 45%,transparent)}
+.bp::before{
+  content:"";position:absolute;inset:0;
+  background:radial-gradient(ellipse 900px 600px at 72% 22%,rgba(var(--moss-rgb),.5),transparent 65%);
+}
+.bp-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(var(--kraft-rgb),.1) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--kraft-rgb),.1) 1px,transparent 1px),
+    linear-gradient(rgba(var(--kraft-rgb),.04) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--kraft-rgb),.04) 1px,transparent 1px);
+  background-size:80px 80px,80px 80px,20px 20px,20px 20px;
+  background-position:0 58px;
+}
+.bp-e,.bp-n{position:absolute;display:flex;font:500 9px/1 var(--mono);letter-spacing:.1em;color:var(--kraft-dim);opacity:.8}
+.bp-e i,.bp-n i{flex:none;font-style:normal}
+.bp-e{left:0;top:64px;counter-reset:bp-e 13}
+.bp-e i{width:80px;padding-left:5px}
+.bp-e i::before{counter-increment:bp-e;content:counter(bp-e)}
+.bp-n{left:5px;top:58px;flex-direction:column;counter-reset:bp-n 87}
+.bp-n i{height:80px;padding-top:66px}
+.bp-n i::before{counter-increment:bp-n -1;content:counter(bp-n)}
+@media(max-width:900px){.bp-n{display:none}}
+/* dimension line: <b> line, <i> live px value, <b> line */
+.bp-dim{
+  --dl:rgba(var(--phos-rgb),.6);
+  position:absolute;display:flex;align-items:center;pointer-events:none;
+  font:500 10px/1 var(--mono);letter-spacing:.14em;color:var(--phos);
+}
+.bp-dim b{flex:1;position:relative;background:var(--dl)}
+.bp-dim i{font-style:normal;padding:0 9px;white-space:nowrap}
+.bp-dim::before,.bp-dim::after{content:"";position:absolute;background:var(--dl)}
+.bp-dim.x{left:0;right:0;height:13px}
+.bp-dim.x b{height:1px}
+.bp-dim.x b:first-child::before,.bp-dim.x b:last-child::after{content:"";position:absolute;top:-3px;border:3.5px solid transparent}
+.bp-dim.x b:first-child::before{left:0;border-left:0;border-right:9px solid var(--dl)}
+.bp-dim.x b:last-child::after{right:0;border-right:0;border-left:9px solid var(--dl)}
+.bp-dim.x::before,.bp-dim.x::after{width:1px;top:-5px;height:var(--ext)}
+.bp-dim.x::before{left:0}
+.bp-dim.x::after{right:0}
+.bp-dim.x.below::before,.bp-dim.x.below::after{top:auto;bottom:-5px}
+.bp-tag{
+  display:flex;align-items:center;gap:10px;pointer-events:none;
+  font:500 10px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--phos);
+}
+.bp-tag em{font-style:normal;width:20px;height:20px;border:1px solid var(--phos);border-radius:50%;display:grid;place-items:center;letter-spacing:0}
+.bp-tag span{color:var(--kraft-dim)}
 .ops-intro{margin:-18px 0 clamp(30px,4vw,44px);color:var(--kraft-dim);max-width:64ch;font-size:15.5px}
 
 /* ---------- ops lab ---------- */
@@ -739,10 +800,17 @@ body.term-fs-lock header{display:none}
 
 <!-- ================= OPS LAB ================= -->
 <section id="ops" class="page-top">
+  <div class="bp" aria-hidden="true">
+    <div class="bp-grid"></div>
+    <div class="bp-e"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="bp-n"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+  </div>
   <div class="wrap">
     <div class="sec-head reveal">
+      <span class="bp-tag" aria-hidden="true"><em>OL</em>Drawing OL-01 <span>· 5 stages</span></span>
       <h2 data-scramble-scroll><span class="hash">#</span>Ops Lab</h2>
       <span class="count">22 live modules · Interactive</span>
+      <span class="bp-dim x below" aria-hidden="true"><b></b><i data-dim="w"></i><b></b></span>
     </div>
 
     <div class="ops-stage reveal" id="stage-observe"><b>stage 01 · observe</b> <span class="note">— watch the perimeter, map the range</span></div>
@@ -1552,6 +1620,19 @@ DEBUG=true</textarea>
 
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ================= blueprint dimensions ================= */
+/* Dimension lines carry real measurements: whatever a .bp-dim hangs off
+   reports its own width in px, so the figure follows resizes. */
+if ('ResizeObserver' in window) {
+  const dimRO = new ResizeObserver(entries => entries.forEach(e => {
+    const r = e.target.getBoundingClientRect();
+    e.target.querySelectorAll(':scope > .bp-dim [data-dim]').forEach(el => {
+      el.textContent = Math.round(el.dataset.dim === 'w' ? r.width : r.height);
+    });
+  }));
+  new Set([...document.querySelectorAll('.bp-dim')].map(d => d.parentElement)).forEach(el => dimRO.observe(el));
+}
 
 /* ================= theme toggle (dark default / light) ================= */
 const themeBtn = document.getElementById('themeToggle');

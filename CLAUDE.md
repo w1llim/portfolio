@@ -80,13 +80,27 @@ bottom of each file: `SHELL` (command → output lines), `SECTIONS` (`cd <name>`
 added to one page should be added to the other, and `help` / `ls` output kept
 consistent.
 
-**Hero blueprint.** The index hero is drawn as a plotting sheet: `.bp` (map
-grid, CSS-counter easting/northing labels, moss glow) fills the full-bleed
-`.hero` section, whose content sits in `.hero-in`; the bearing ring
-(`svg.bp-ring`) and the console's detail tag hang off `#termSlot`, and
-`.bp-dim` dimension lines show live px sizes (`[data-dim]`, filled by a
-`ResizeObserver`). All of it is `aria-hidden` and `bp-` prefixed — bare names
-like `.dim` are already used by terminal output lines.
+**Blueprint language.** The site is drawn as a set of plotting sheets, built
+from a small `bp-` kit that is duplicated per page like everything else:
+
+- `.bp` — full-bleed backdrop (map grid, CSS-counter easting/northing labels,
+  moss glow). It fills the index `.hero` section (content sits in `.hero-in`)
+  and the top of `.page-top` on ops and blog. `body` carries the same 80px
+  grid, fainter, so the sheet continues down every page.
+- `.bp-tag` — a balloon plus label. Every `.sec-head` opens with one
+  (`Sheet 02 / 10` … on the index, `Drawing OL-01` / `FN-01` on ops / blog);
+  lettered details mark the console (A) and the two `.rank-badge` cards (B, C).
+  Adding an index section means renumbering the sheets.
+- `.bp-dim` — dimension line whose `[data-dim]` figure is the live px size of
+  its parent, filled by one `ResizeObserver` per page. It hangs off the name,
+  `#termSlot`, each `.sec-head`, the badges and the footer headline.
+- `svg.bp-ring` — bearing ring behind the console; the footer reuses it with
+  `<use href="#bpRing">`, which is why its parts are styled through the inner
+  `.bp-ring-g` group rather than the outer svg. `404.html` has its own copy.
+
+All of it is `aria-hidden`, coloured from the theme variables (the mission
+sheet pins its paper ink in hex, like the rest of that section), and `bp-`
+prefixed — bare names like `.dim` are already used by terminal output lines.
 
 **Reveal animations.** Most content uses `.reveal` (plus `.d1`/`.d2`/`.d3`
 stagger classes) faded in by an IntersectionObserver. Headings use

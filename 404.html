@@ -12,13 +12,18 @@
 <script>/* honour the theme chosen on the main site; dark is the default */
 (function(){try{if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <style>
-:root{--bark:#211A10;--kraft:#D3C4A2;--kraft-dim:#A99B7D;--phos:#8CF56B;--threat:#E8603F;--moss:#33512F}
-html[data-theme="light"]{--bark:#EFE8D6;--kraft:#2B2316;--kraft-dim:#6B5D45;--phos:#1E7A10;--threat:#BC4222;--moss:#8FA878}
+:root{--bark:#211A10;--kraft:#D3C4A2;--kraft-dim:#A99B7D;--phos:#8CF56B;--threat:#E8603F;--moss:#33512F;--kraft-rgb:211,196,162;--phos-rgb:140,245,107}
+html[data-theme="light"]{--bark:#EFE8D6;--kraft:#2B2316;--kraft-dim:#6B5D45;--phos:#1E7A10;--threat:#BC4222;--moss:#8FA878;--kraft-rgb:43,35,22;--phos-rgb:30,122,16}
 html[data-theme="light"] body::after{opacity:.35}
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   min-height:100svh;display:flex;align-items:center;justify-content:center;
   background:var(--bark);color:var(--kraft);text-align:center;padding:24px;
+  /* the site's plotting-sheet grid */
+  background-image:
+    linear-gradient(rgba(var(--kraft-rgb),.07) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(var(--kraft-rgb),.07) 1px,transparent 1px);
+  background-size:80px 80px;background-position:50% 50%;
   font-family:"JetBrains Mono","Cascadia Code",Consolas,monospace;
 }
 body::after{
@@ -26,6 +31,31 @@ body::after{
   background:repeating-linear-gradient(0deg,transparent 0 3px,rgba(0,0,0,.14) 3px 4px);
 }
 .box{max-width:560px}
+/* blueprint language from the main site: a bearing ring with no fix, and a
+   dimension line that can't measure what isn't there. Fixed, so the ring
+   never adds scrollable overflow. */
+.bp-ring{position:fixed;left:50%;top:50%;width:min(840px,180vw);aspect-ratio:1;transform:translate(-50%,-50%);z-index:-1;pointer-events:none;overflow:visible}
+.bp-ring circle,.bp-ring line{fill:none;stroke:rgba(var(--kraft-rgb),.34);stroke-width:1}
+.bp-ring .faint{stroke:rgba(var(--kraft-rgb),.18)}
+.bp-ring .tick{stroke:rgba(var(--kraft-rgb),.5);stroke-width:8}
+.bp-ring .tick.major{stroke-width:16}
+.bp-ring .centre{stroke:rgba(var(--phos-rgb),.4);stroke-dasharray:18 5 3 5}
+.bp-ring text{font:500 11px "JetBrains Mono","Cascadia Code",Consolas,monospace;letter-spacing:.1em;fill:var(--kraft-dim);text-anchor:middle;dominant-baseline:central}
+@media(max-width:900px){.bp-ring text,.bp-ring .centre{display:none}.bp-ring{opacity:.55}}
+.bp-part{position:relative;width:fit-content;margin:0 auto}
+.bp-dim{
+  --dl:rgba(var(--phos-rgb),.6);
+  position:absolute;left:0;right:0;top:-30px;height:13px;display:flex;align-items:center;
+  font-size:10px;line-height:1;letter-spacing:.14em;color:var(--phos);
+}
+.bp-dim b{flex:1;height:1px;position:relative;background:var(--dl)}
+.bp-dim i{font-style:normal;padding:0 9px}
+.bp-dim::before,.bp-dim::after{content:"";position:absolute;background:var(--dl);width:1px;top:-5px;height:28px}
+.bp-dim::before{left:0}
+.bp-dim::after{right:0}
+.bp-dim b:first-child::before,.bp-dim b:last-child::after{content:"";position:absolute;top:-3px;border:3.5px solid transparent}
+.bp-dim b:first-child::before{left:0;border-left:0;border-right:9px solid var(--dl)}
+.bp-dim b:last-child::after{right:0;border-right:0;border-left:9px solid var(--dl)}
 .code{
   font-size:clamp(72px,18vw,140px);font-weight:700;line-height:1;color:var(--threat);
   text-shadow:0 0 40px rgba(232,96,63,.35);
@@ -51,8 +81,20 @@ a:hover{background:var(--phos);color:var(--bark)}
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+<svg class="bp-ring" viewBox="-420 -420 840 840" aria-hidden="true">
+  <circle r="310"/>
+  <circle class="tick" r="314" stroke-dasharray="1 26.402" stroke-dashoffset=".5"/>
+  <circle class="tick major" r="318" stroke-dasharray="1.6 164.904" stroke-dashoffset=".8"/>
+  <circle class="faint" r="368"/>
+  <circle class="faint" r="240" stroke-dasharray="4 6"/>
+  <line class="centre" x1="-302" y1="0" x2="302" y2="0"/><line class="centre" x1="0" y1="-302" x2="0" y2="302"/>
+  <text x="0" y="-344">000</text><text x="172" y="-297.9">030</text><text x="297.9" y="-172">060</text><text x="344" y="0">090</text><text x="297.9" y="172">120</text><text x="172" y="297.9">150</text><text x="0" y="344">180</text><text x="-172" y="297.9">210</text><text x="-297.9" y="172">240</text><text x="-344" y="0">270</text><text x="-297.9" y="-172">300</text><text x="-172" y="-297.9">330</text>
+</svg>
 <div class="box">
-  <div class="code">404</div>
+  <div class="bp-part">
+    <div class="code">404</div>
+    <span class="bp-dim" aria-hidden="true"><b></b><i>???</i><b></b></span>
+  </div>
   <div class="tag">[ SIGNAL LOST ]</div>
   <p>&gt; requested resource not found on this perimeter.<br>&gt; the packet was intercepted, or it never existed.<span class="blink">_</span></p>
   <a href="https://portfolio.willim.tech/">Re-establish uplink</a>
