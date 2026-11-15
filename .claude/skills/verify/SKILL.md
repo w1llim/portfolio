@@ -52,8 +52,5 @@ Gotchas learned the hard way:
 
 ## Theme
 
-Dark is default; light mode is toggled via `#themeToggle` in the header or the
-terminal commands `theme light|dark|toggle`. Choice persists in
-`localStorage.theme` and is applied pre-paint by a head script setting
-`data-theme` on `<html>`. The slipspace section (index) and `#netCanvas` (ops)
-intentionally stay dark in light mode.
+Dark only. There is no light mode, no `#themeToggle` and no terminal `theme`
+command; a stale `localStorage.theme` from the old toggle is ignored.

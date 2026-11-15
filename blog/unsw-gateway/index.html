@@ -24,8 +24,6 @@
   window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
 </script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
-<script>/* apply the saved theme before first paint to avoid a flash; dark is the default */
-(function(){try{if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADHUlEQVR42u2by2sTURTGv7mTyaNt0jYo0SYmrW0QpQiCSkCLrQul1I1I3QhuxJX/QcGtaxEEN24KoohgN+LOKoqE4gOhC7FgW2ySNiU1GkObSSZxMc3kTh7tpNrH3LlnN5OTzJzf/c65d+bmCDBgPV0dJZjQZuNpYTMfgcXAmwEhsBy4ERDEKsE3io1YJfhGMRIrBV8vVgKLG7Ha6FerwPIKEKw4+htOgxwAB8ABcAAcgIXMZsTp5qersLulhp8vT6/g6eWXO3rjQ3ciODbau6HPw9PPsPYzxxXwzwrYqh2/fgQDt09qx49HXmDlW3rT7/UNB3Hx3oB2PD44gUwsuzcANCN3+U9efzGnaOymXPrbylf9DgBMjkUxORbVnbtw9yzCI6G9UwRrADgMAqjyk+sAMMUsUAPAZWtaAYU1BUWlxAgAoylA+W3n6G8/gMwWU4AGkJFNDOA/pMB2K8C2WykgSgQ3PoxCarEhE8tifHCCvRQorBZ0BYxOAX/EB6lF5e/2t6LzsIcCYGMDQPUcTku7e8iv8wue66L8xA3XAKYCQI+gSEk7VAUgRANwVEDlMmYHQAVQTgFvuB2eQBsAQMkpAICuUz5I6wqhFSCzpIByCpTlr+SL+Pr8u6oOO4E/4qtJFaZSoFzdu4cCAIDklxTmXsVq0oAulmwpwCHC2W7HgRP7AACxqSXEppLaTFEuhMxMgzVF0CEidD4AQVR3qX+8TSCfzWPx4zIAwBNoQ0ePB0QiLAGQdSnQNxxUq/tvGYnPauDzrytpEL4UArGRhstpU88CLq8Th84cVEf/XQKldenPUQCOXumFyJYCKgF4w+0Q7eol59/EtfMrM7+0Nz5ufyucnQ42AWhW0gOoBrJTL0N2DUByOoXV1JoeAJUGzAOoN9oL0SVtVVg2JaegWCia93EYABbeL+J++JGhJ8cH/U8AvjPEAXAA2Ms7Q/v7vbg1cw1m2BvkCuAAwP8lxhXAAXAAHAAHwAFwAI0BGGktY9Vm42mBK8BogyGrLXRcAc20mbLYQEma7bVlrXuUbKXhmKXWWd48DYu3z/8Ff9JQkseoevwAAAAASUVORK5CYII=">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -42,7 +40,7 @@
   --phos-dim:rgba(var(--phos-rgb),.35);
   --threat:#E8603F;      /* hostile packets / alerts */
   --line:rgba(var(--kraft-rgb),.16);
-  /* raw channels for the translucent layers, so both themes can reuse the alphas */
+  /* raw channels, so translucent layers can set their own alpha */
   --bark-rgb:33,26,16;
   --deep-rgb:20,15,8;    /* recessed panel wells */
   --kraft-rgb:211,196,162;
@@ -53,26 +51,6 @@
   --body:'Archivo',sans-serif;
   --disp:'Chakra Petch',sans-serif;
 }
-/* ---------- light theme (field-manual paper) — toggled via header button ---------- */
-html[data-theme="light"]{
-  --bark:#EFE8D6;        /* kraft paper base */
-  --bark-2:#E4DAC0;      /* raised panels */
-  --moss:#8FA878;        /* sage green */
-  --olive:#7A8A5C;
-  --kraft:#2B2316;       /* espresso ink */
-  --kraft-dim:#6B5D45;
-  --phos:#1E7A10;        /* phosphor, dimmed for paper */
-  --threat:#BC4222;
-  --line:rgba(var(--kraft-rgb),.22);
-  --bark-rgb:239,232,214;
-  --deep-rgb:252,249,240;
-  --kraft-rgb:43,35,22;
-  --phos-rgb:30,122,16;
-  --threat-rgb:188,66,34;
-  --moss-rgb:143,168,120;
-}
-html[data-theme="light"] body::before{opacity:.2}
-html[data-theme="light"] body::after{background:radial-gradient(ellipse at 50% 40%,transparent 60%,rgba(64,52,28,.14))}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -128,12 +106,6 @@ header{
 }
 .nav-toggle span{width:16px;height:1.5px;background:var(--kraft);transition:transform .25s,opacity .2s}
 .nav-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.theme-toggle{
-  display:flex;align-items:center;justify-content:center;background:none;border:1px solid var(--line);
-  width:36px;height:36px;color:var(--kraft-dim);font-size:15px;line-height:1;cursor:pointer;flex-shrink:0;
-  transition:color .2s,border-color .2s;
-}
-.theme-toggle:hover{color:var(--phos);border-color:var(--phos)}
 .nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .nav-toggle.open span:nth-child(2){opacity:0}
 .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
@@ -317,7 +289,6 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
     </nav>
     <div class="status mono"><span class="dot"></span>Log idle</div>
     <div class="nav-actions">
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" title="Toggle light / dark theme">☀</button>
       <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu">
         <span></span><span></span><span></span>
       </button>
@@ -385,26 +356,6 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-/* ================= theme toggle (dark default / light) ================= */
-const themeBtn = document.getElementById('themeToggle');
-const themeMeta = document.querySelector('meta[name="theme-color"]');
-function currentTheme() {
-  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-}
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  const light = t === 'light';
-  themeBtn.textContent = light ? '☾' : '☀';
-  themeBtn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
-  if (themeMeta) themeMeta.setAttribute('content', light ? '#EFE8D6' : '#211A10');
-}
-function setTheme(t) {
-  applyTheme(t);
-  try { localStorage.setItem('theme', t); } catch (e) {}
-}
-applyTheme(currentTheme()); // sync the button with whatever the head script applied
-themeBtn.addEventListener('click', () => setTheme(currentTheme() === 'light' ? 'dark' : 'light'));
 
 /* ================= nav dropdown ================= */
 (function navMenu() {

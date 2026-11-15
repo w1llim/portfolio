@@ -24,8 +24,6 @@
   window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
 </script>
 <script defer src="/_vercel/speed-insights/script.js"></script>
-<script>/* apply the saved theme before first paint to avoid a flash; dark is the default */
-(function(){try{if(localStorage.getItem('theme')==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -58,7 +56,7 @@
   --phos-dim:rgba(var(--phos-rgb),.35);
   --threat:#E8603F;      /* hostile packets / alerts */
   --line:rgba(var(--kraft-rgb),.16);
-  /* raw channels for the translucent layers, so both themes can reuse the alphas */
+  /* raw channels, so translucent layers can set their own alpha */
   --bark-rgb:33,26,16;
   --deep-rgb:20,15,8;    /* recessed panel wells */
   --kraft-rgb:211,196,162;
@@ -69,35 +67,6 @@
   --body:'Archivo',sans-serif;
   --disp:'Chakra Petch',sans-serif;
 }
-/* ---------- light theme (field-manual paper) — toggled via header button or `theme light` ---------- */
-html[data-theme="light"]{
-  --bark:#EFE8D6;        /* kraft paper base */
-  --bark-2:#E4DAC0;      /* raised panels */
-  --moss:#8FA878;        /* sage green */
-  --olive:#7A8A5C;
-  --bark-olive:#E4EED2;  /* sage wash, no darker than the paper so ink keeps its contrast */
-  --kraft:#2B2316;       /* espresso ink */
-  --kraft-dim:#6B5D45;
-  --phos:#1E7A10;        /* phosphor, dimmed for paper */
-  --threat:#BC4222;
-  --line:rgba(var(--kraft-rgb),.22);
-  --bark-rgb:239,232,214;
-  --deep-rgb:252,249,240;
-  --kraft-rgb:43,35,22;
-  --phos-rgb:30,122,16;
-  --threat-rgb:188,66,34;
-  --moss-rgb:143,168,120;
-}
-html[data-theme="light"] body::before{opacity:.2}
-html[data-theme="light"] body::after{background:radial-gradient(ellipse at 50% 40%,transparent 60%,rgba(64,52,28,.14))}
-/* the slipspace jump stays a dark tunnel in both themes — the starfield needs the void */
-html[data-theme="light"] .slipspace{
-  --bark:#211A10;--bark-2:#2B2316;--kraft:#D3C4A2;--kraft-dim:#A99B7D;--phos:#8CF56B;
-  --kraft-rgb:211,196,162;--phos-rgb:140,245,107;--line:rgba(211,196,162,.16);
-}
-/* the mission brief is printed on kraft paper in both themes — its ink colours
-   are hardcoded for that paper, so pin the paper rather than let --kraft darken it */
-html[data-theme="light"] .mission{background:#D3C4A2}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{
@@ -165,12 +134,6 @@ nav.links a:hover::before{opacity:1}
 }
 .nav-toggle span{width:16px;height:1.5px;background:var(--kraft);transition:transform .25s,opacity .2s}
 .nav-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
-.theme-toggle{
-  display:flex;align-items:center;justify-content:center;background:none;border:1px solid var(--line);
-  width:36px;height:36px;color:var(--kraft-dim);font-size:15px;line-height:1;cursor:pointer;flex-shrink:0;
-  transition:color .2s,border-color .2s;
-}
-.theme-toggle:hover{color:var(--phos);border-color:var(--phos)}
 .nav-toggle.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
 .nav-toggle.open span:nth-child(2){opacity:0}
 .nav-toggle.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
@@ -838,7 +801,6 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
     </nav>
     <div class="status mono"><span class="dot"></span>System online</div>
     <div class="nav-actions">
-      <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to light mode" title="Toggle light / dark theme">☀</button>
       <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle navigation menu">
         <span></span><span></span><span></span>
       </button>
@@ -1531,26 +1493,6 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 <script>
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-/* ================= theme toggle (dark default / light) ================= */
-const themeBtn = document.getElementById('themeToggle');
-const themeMeta = document.querySelector('meta[name="theme-color"]');
-function currentTheme() {
-  return document.documentElement.getAttribute('data-theme') === 'light' ? 'light' : 'dark';
-}
-function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t);
-  const light = t === 'light';
-  themeBtn.textContent = light ? '☾' : '☀';
-  themeBtn.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
-  if (themeMeta) themeMeta.setAttribute('content', light ? '#EFE8D6' : '#211A10');
-}
-function setTheme(t) {
-  applyTheme(t);
-  try { localStorage.setItem('theme', t); } catch (e) {}
-}
-applyTheme(currentTheme()); // sync the button with whatever the head script applied
-themeBtn.addEventListener('click', () => setTheme(currentTheme() === 'light' ? 'dark' : 'light'));
-
 /* ================= project video toggle ================= */
 /* Video is hidden by default; the iframe is only created (lazy) the first
    time a card's "Watch demo" link is opened, via youtube-nocookie.com. */
@@ -1685,7 +1627,6 @@ const SHELL = {
     '  whoami   mission     cadets   kungfu   fastfetch',
     '  projects majorworks  contact  ls       clear',
     '  fullscreen / windowed — resize the terminal (or use the ⛶ button; esc exits)',
-    '  theme <light|dark|toggle> — switch the colour scheme (dark is default)',
     "  cd <dir> — jump to a section, e.g. cd kungfu. ls to list.",
     "  cd ops-lab/<stage> — jump to a lab stage. ls ops-lab to list.",
   ],
@@ -1830,27 +1771,6 @@ function runCommand(raw) {
   else if (cmd === 'windowed' || cmd === 'exitfullscreen' || cmd === 'restore' || cmd === 'unmaximize') {
     if (termShellEl.classList.contains('fullscreen')) { setFullscreen(false); shellPrint('terminal -> windowed', 'dim'); }
     else { shellPrint('already windowed — type `fullscreen` to expand', 'dim'); }
-  }
-  else if (cmd === 'theme') {
-    shellPrint('theme: ' + currentTheme() + (currentTheme() === 'dark' ? ' (default)' : ''), 'dim');
-    shellPrint('usage: theme <light|dark|toggle>', 'dim');
-  }
-  else if (cmd === 'theme light' || cmd === 'light' || cmd === 'lightmode') {
-    if (currentTheme() === 'light') { shellPrint('already in light mode — type `theme dark` to go back', 'dim'); }
-    else { setTheme('light'); shellPrint('theme -> light // sunlight protocol engaged', 'ok'); }
-  }
-  else if (cmd === 'theme dark' || cmd === 'dark' || cmd === 'darkmode') {
-    if (currentTheme() === 'dark') { shellPrint('already in dark mode', 'dim'); }
-    else { setTheme('dark'); shellPrint('theme -> dark // returning to the shadows', 'ok'); }
-  }
-  else if (cmd === 'theme toggle') {
-    const next = currentTheme() === 'light' ? 'dark' : 'light';
-    setTheme(next);
-    shellPrint('theme -> ' + next, 'ok');
-  }
-  else if (cmd.startsWith('theme ')) {
-    shellPrint('theme: unknown mode `' + cmd.slice(6).trim() + '`', 'dim');
-    shellPrint('usage: theme <light|dark|toggle>', 'dim');
   }
   else if (cmd === 'cd' || cmd.startsWith('cd ')) {
     const target = cmd.slice(2).trim().replace(/^~?\/+/, '').replace(/\/+$/, '');
@@ -2009,9 +1929,8 @@ countIO.observe(countEl);
     ctx.globalCompositeOperation = 'source-over';
 
     const density = .2 + intensity * .8;    // more columns rain as you go deeper
-    const light = currentTheme() === 'light'; // darker glyphs so the rain reads on paper
-    const glyphBright = light ? '#123D08' : '#D9FFCC';
-    const glyphBase = light ? '#2E6B1E' : '#8CF56B';
+    const glyphBright = '#D9FFCC';
+    const glyphBase = '#8CF56B';
     for (let i = 0; i < cols; i++) {
       const d = drops[i];
       if (d.gate > density) continue;

@@ -55,21 +55,13 @@ depth). Never hard-code a host, or the `/portfolio/` prefix, in a
 link between pages. Adding a page means adding a directory with an
 `index.html`, plus a `sitemap.xml` entry.
 
-**Theme.** Dark is the default; light mode is opt-in. Colours come from CSS
-custom properties on `:root` (`--bark`, `--kraft`, `--phos`, `--threat`,
-`--moss`, `--olive`, …), overridden under `html[data-theme="light"]`. Several
-are also exposed as raw RGB channels (`--kraft-rgb`, `--phos-rgb`, …) so
-translucent layers can reuse the same alphas in both themes. **Never hard-code
-a hex colour in new markup** — use a variable, and check the light theme.
-
-The choice persists in `localStorage.theme` and is applied pre-paint by a small
-inline `<head>` script that sets `data-theme` on `<html>` (this is duplicated in
-each page, including `404.html`, to avoid a flash of the wrong theme). Toggled
-via `#themeToggle` in the header (present on every page) or the terminal
-command `theme light|dark|toggle` (currently implemented in the index terminal
-only — the ops terminal has no `theme` command yet). The slipspace section on the index and `#netCanvas`
-on ops deliberately stay dark in light mode; `<meta name="theme-color">` is
-updated in JS alongside the toggle.
+**Theme.** The site is dark-only — the light mode, its header toggle and the
+terminal `theme` command were removed. Colours come from CSS custom properties
+on `:root` (`--bark`, `--kraft`, `--phos`, `--threat`, `--moss`, `--olive`, …).
+Several are also exposed as raw RGB channels (`--kraft-rgb`, `--phos-rgb`, …)
+so translucent layers can set their own alpha. **Never hard-code a hex colour
+in new markup** — use a variable. `<meta name="theme-color">` is a static
+`#211A10` on every page.
 
 **Terminal.** Both `index.html` and `ops/index.html` carry the same docked
 terminal (`#termShell` / `#terminal`), with command tables defined near the
@@ -162,8 +154,8 @@ gotchas (the floating hero terminal needs `{ force: true }` clicks, wait for
 programmatic scrolls, and Google Fonts failing behind the sandbox proxy is
 environmental, not a regression).
 
-After changing shared UI (nav, terminal, theme), check **all four** pages —
-index, ops, blog, 404 — in both themes, since the code is duplicated per page.
+After changing shared UI (nav, terminal), check **every** page — index, ops,
+blog (and its posts), 404 — since the code is duplicated per page.
 
 ## Git
 
