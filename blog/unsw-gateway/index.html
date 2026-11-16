@@ -251,6 +251,10 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
   .reveal{opacity:1;transform:none}
   html{scroll-behavior:auto}
 }
+
+/* keyboard users jump past the nav — offscreen until it takes focus */
+.skip{position:fixed;left:12px;top:-80px;z-index:10000;padding:10px 14px;background:var(--bark);color:var(--phos);border:1px solid var(--phos);font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+.skip:focus{top:12px}
 </style>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -258,6 +262,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+
+<a class="skip" href="#content">skip to content</a>
 
 <div class="term docked minimized" id="termShell" aria-label="Interactive terminal — type help for commands, cd to navigate">
   <div class="term-bar">
@@ -295,6 +301,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
     </div>
   </div>
 </header>
+
+<main id="content">
 
 <!-- ================= POST ================= -->
 <section id="post" class="page-top">
@@ -344,6 +352,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
     </div>
   </div>
 </section>
+
+</main>
 
 <!-- ================= FOOTER ================= -->
 <footer>

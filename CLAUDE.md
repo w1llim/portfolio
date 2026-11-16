@@ -31,8 +31,21 @@ dependency here.
 | --------- | ------------------ | ---------------------------------------------- |
 | `/`       | `index.html`       | hero, mission, coursework, command, kung fu, major works, projects, timeline, toolkit, contact + docked terminal |
 | `/ops/`   | `ops/index.html`   | Ops Lab — 5 stages of interactive security tools |
-| `/blog/`  | `blog/index.html`  | field notes (currently placeholder post cards)  |
+| `/blog/`  | `blog/index.html`  | field notes — one published post card, the rest still placeholders |
+| `/blog/unsw-gateway/` | `blog/unsw-gateway/index.html` | the first post; a post is a directory with its own `index.html` |
+| `/api/contact` | `api/contact.js` | serverless function behind the footer contact form |
 | —         | `404.html`         | 404 handler (served by Vercel's static routing), standalone styles |
+
+The one piece that is not static is `api/contact.js`: Vercel builds anything
+under `api/` as a serverless function. It takes the footer form's JSON and
+mails it through **Resend**'s REST API with Node's global `fetch` — still no
+dependencies. It is configured by env vars on the Vercel project
+(`RESEND_API_KEY` and `CONTACT_TO` required, `CONTACT_FROM` optional), accepts
+`application/json` only, and drops anything that fills the offscreen honeypot
+field `ref_code` (named so no browser autofills it). The hub repo
+(`w1llim/hub`) carries a near-identical copy — port a fix to one into the
+other. It does not run under `python3 -m http.server`; a local submit only
+exercises the form's error path.
 
 Supporting files: `robots.txt`, `sitemap.xml`, `assets/og-image.png`,
 `projects/` (coursework artifacts — PDFs, `.pkt`, `.accdb`, `.xlsx`, plus
@@ -108,11 +121,17 @@ flaghunter, grep, diff A *and* B, entropy — plus an entry in each of their
 a bare `.pipe-btn` is only the shared button style (`xor ▸ magic`), and
 `[data-copy-target]` buttons are wired generically near the bottom of the file.
 
+**Page skeleton.** Every page opens with a `.skip` link to `#content` and
+wraps its sections in `<main id="content">` (the 404's box is its `<main>`),
+and each has exactly one `<h1>` — the hero name, the `.sec-head` title on ops
+and the blog index, the post title, the 404 code.
+
 **Adding a panel.** Wrap it in `.ops-solo` (full width) or one of the grids —
 `.ops-grid2` is *three* columns and `.ops-grid3` is *two*, so the names don't
 track the counts. Then bump `<span class="count">N live modules</span>` and the
 three `<head>` descriptions (`description`, `og:description`,
-`twitter:description`) that enumerate the tools. Panel form controls are styled
+`twitter:description`) that enumerate the tools and spell the count out, and
+the `Packages:` line in this page's `FASTFETCH`. Panel form controls are styled
 only for `textarea`, `input[type=text]`, `input[type=datetime-local]`,
 `input[type=range]` (inside `.shift-row`) and `select.grep-src` — anything
 else, `input[type=number]` especially, renders as a raw browser default. Rows

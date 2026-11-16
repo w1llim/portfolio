@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ops Lab — William Lam</title>
-<meta name="description" content="Interactive security &amp; CTF lab, ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, a keyed substitution cipher, Vigenère cracker, frequency analysis with an auto-solving substitution cracker, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool. All client-side; nothing is uploaded.">
+<meta name="description" content="Interactive security &amp; CTF lab, ordered as a pipeline — packet monitor, port-scan sim, a CIDR subnet calculator, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, a keyed substitution cipher, Vigenère cracker, frequency analysis with an auto-solving substitution cracker, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, UUID inspector, flag hunter, grep pattern search, a diff/compare tool and a Shannon entropy meter. All client-side; nothing is uploaded.">
 <link rel="canonical" href="https://portfolio.willim.tech/ops/">
 <meta name="robots" content="index, follow">
 <meta property="og:title" content="Ops Lab — William Lam">
-<meta property="og:description" content="Twenty-two interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, a keyed substitution cipher, Vigenère cracker, frequency analysis with an auto-solving substitution cracker, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
+<meta property="og:description" content="Twenty-five interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a CIDR subnet calculator, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, a keyed substitution cipher, Vigenère cracker, frequency analysis with an auto-solving substitution cracker, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, UUID inspector, flag hunter, grep pattern search, a diff/compare tool and a Shannon entropy meter.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://portfolio.willim.tech/ops/">
 <meta property="og:site_name" content="William Lam — Portfolio">
 <meta property="og:image" content="https://portfolio.willim.tech/assets/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Ops Lab — William Lam">
-<meta name="twitter:description" content="Twenty-two interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, a keyed substitution cipher, Vigenère cracker, frequency analysis with an auto-solving substitution cracker, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, flag hunter, grep pattern search and a diff/compare tool.">
+<meta name="twitter:description" content="Twenty-five interactive security &amp; CTF modules ordered as a pipeline — packet monitor, port-scan sim, a CIDR subnet calculator, a hexdump/strings file analyzer, EXIF inspector, a lat/lon geo-locator, steganography LSB extractor, QR decoder, a magic multi-codec decoder, single-byte XOR brute-forcer, ciphers, a keyed substitution cipher, Vigenère cracker, frequency analysis with an auto-solving substitution cracker, SHA-256 avalanche, hash identifier, password audit, RSA toy solver, JWT decoder, timestamp converter, UUID inspector, flag hunter, grep pattern search, a diff/compare tool and a Shannon entropy meter.">
 <meta name="theme-color" content="#211A10">
 <script>
   window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
@@ -159,8 +159,8 @@ nav.links a::before{display:none}
 /* ---------- sections ---------- */
 section{padding:clamp(80px,10vw,150px) 0;position:relative}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:clamp(36px,5vw,60px);flex-wrap:wrap}
-.sec-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(32px,4.6vw,58px);line-height:1}
-.sec-head h2 .hash{color:var(--phos);margin-right:6px}
+.sec-head h1,.sec-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(32px,4.6vw,58px);line-height:1}
+.sec-head h1 .hash,.sec-head h2 .hash{color:var(--phos);margin-right:6px}
 .sec-head .count{font-family:var(--mono);font-size:12.5px;color:var(--phos);letter-spacing:.12em;text-transform:uppercase}
 
 .page-top{padding-top:calc(58px + clamp(50px,7vw,90px))}
@@ -656,6 +656,10 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 body.term-fs-lock{overflow:hidden}
 body.term-fs-lock header{display:none}
 @media(max-width:600px){.term.fullscreen{width:calc(100vw - 16px)}}
+
+/* keyboard users jump past the nav — offscreen until it takes focus */
+.skip{position:fixed;left:12px;top:-80px;z-index:10000;padding:10px 14px;background:var(--bark);color:var(--phos);border:1px solid var(--phos);font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+.skip:focus{top:12px}
 </style>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -663,6 +667,8 @@ body.term-fs-lock header{display:none}
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+
+<a class="skip" href="#content">skip to content</a>
 
 <div class="term docked minimized" id="termShell" aria-label="Interactive terminal — type help for commands, cd to navigate">
   <div class="term-bar">
@@ -701,12 +707,14 @@ body.term-fs-lock header{display:none}
   </div>
 </header>
 
+<main id="content">
+
 <!-- ================= OPS LAB ================= -->
 <section id="ops" class="page-top">
   <div class="wrap">
     <div class="sec-head reveal">
-      <h2 data-scramble-scroll><span class="hash">#</span>Ops Lab</h2>
-      <span class="count">22 live modules · Interactive</span>
+      <h1 data-scramble-scroll><span class="hash">#</span>Ops Lab</h1>
+      <span class="count">25 live modules · Interactive</span>
     </div>
 
     <div class="ops-stage reveal" id="stage-observe"><b>stage 01 · observe</b> <span class="note">— watch the perimeter, map the range</span></div>
@@ -1500,6 +1508,8 @@ DEBUG=true</textarea>
 
   </div>
 </section>
+
+</main>
 
 <footer>
   <div class="wrap foot-meta mono">
@@ -4661,7 +4671,11 @@ const SECTIONS = {
   kungfu: 'kungfu', majorworks: 'majorworks', 'major-works': 'majorworks',
   projects: 'projects', timeline: 'timeline', toolkit: 'toolkit', contact: 'contact',
 };
+/* null prototypes: a typed `constructor` or `__proto__` is then just an unknown
+   command, not an inherited Object member that crashes the shell mid-line */
+[SHELL, SECTIONS].forEach(t => Object.setPrototypeOf(t, null));
 const STAGES = { observe: 'stage-observe', extract: 'stage-extract', decode: 'stage-decode', crypto: 'stage-crypto', synthesize: 'stage-synthesize' };
+Object.setPrototypeOf(STAGES, null);
 const FASTFETCH = [
   ['\\_\\  /_/', 'ok'],
   [' \\ \\/ /', 'ok'],
@@ -4674,7 +4688,7 @@ const FASTFETCH = [
   ['Host: HAHSACU — Australian Army Cadets', ''],
   ['Kernel: CUO 6.2026 (Company Commander)', ''],
   ['Uptime: 6 yrs (2021 → present)', ''],
-  ['Packages: 21 (ops-lab modules)', ''],
+  ['Packages: 25 (ops-lab modules)', ''],
   ['Shell: pak-hok-pai — white crane (2020~)', ''],
   ['CPU: Cybersecurity Mgmt + Security Eng (dual major)', ''],
   ['Target: UNSW BIS/BCompSc — ETA 2027', ''],

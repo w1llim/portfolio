@@ -773,6 +773,10 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
   .rank-badge .chevrons svg{opacity:1;transform:none}
   html{scroll-behavior:auto}
 }
+
+/* keyboard users jump past the nav — offscreen until it takes focus */
+.skip{position:fixed;left:12px;top:-80px;z-index:10000;padding:10px 14px;background:var(--bark);color:var(--phos);border:1px solid var(--phos);font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+.skip:focus{top:12px}
 </style>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -780,6 +784,8 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+
+<a class="skip" href="#content">skip to content</a>
 
 <canvas id="matrixRain" aria-hidden="true"></canvas>
 
@@ -807,6 +813,8 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
     </div>
   </div>
 </header>
+
+<main id="content">
 
 <!-- ================= HERO ================= -->
 <section class="hero" id="top">
@@ -1449,6 +1457,8 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
   </div>
 </section>
 
+</main>
+
 <!-- ================= FOOTER ================= -->
 <footer id="contact">
   <div class="wrap">
@@ -1473,8 +1483,8 @@ footer .sub{margin-top:16px;color:var(--kraft-dim);font-size:16px;max-width:50ch
         <textarea id="cfMessage" name="message" maxlength="5000" placeholder="transmit" required></textarea>
       </div>
       <div class="cf-trap" aria-hidden="true">
-        <label for="cfCompany">Company</label>
-        <input type="text" id="cfCompany" name="company" tabindex="-1" autocomplete="off">
+        <label for="cfRef">Leave this field empty</label>
+        <input type="text" id="cfRef" name="ref_code" tabindex="-1" autocomplete="off">
       </div>
       <button type="submit" class="cf-send" id="cfSend">Transmit</button>
       <p class="cf-status" id="cfStatus" role="status" aria-live="polite"></p>
@@ -1663,7 +1673,7 @@ const FASTFETCH = [
   ['Host: HAHSACU — Australian Army Cadets', ''],
   ['Kernel: CUO 6.2026 (Company Commander)', ''],
   ['Uptime: 6 yrs (2021 → present)', ''],
-  ['Packages: 6 (HSC modules), 8 (projects), 2 (majorworks)', ''],
+  ['Packages: 6 (HSC modules), 7 (projects), 2 (majorworks)', ''],
   ['Shell: pak-hok-pai — white crane (2020~)', ''],
   ['CPU: Cybersecurity Mgmt + Security Eng (dual major)', ''],
   ['Target: UNSW BIS/BCompSc — ETA 2027', ''],
@@ -1683,6 +1693,9 @@ const SECTIONS = {
   toolkit: 'toolkit',
   contact: 'contact',
 };
+/* null prototypes: a typed `constructor` or `__proto__` is then just an unknown
+   command, not an inherited Object member that crashes the shell mid-line */
+[SHELL, STAGES, SECTIONS].forEach(t => Object.setPrototypeOf(t, null));
 const PROJECTS = [
   { title: 'Math Quest', tag: 'CLI arithmetic quiz (Python)', desc: 'Command-line arithmetic quiz game — a lives/streak system, a boss fight with harder expressions, a one-time calculator power-up earned by a 5-streak, and scores persisted to a stats file between runs.' },
   { title: 'Enterprise Network & Threat Model', tag: 'Packet Tracer', desc: 'A four-department LAN built and secured in Cisco Packet Tracer — WPA2, port security, MAC locking — paired with a full threat analysis, 5x5 risk matrix and mitigation plan.' },

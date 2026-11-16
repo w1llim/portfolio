@@ -51,13 +51,31 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ error: 'contact form is not configured' });
   }
 
-  const body = typeof req.body === 'string' ? safeParse(req.body) : req.body || {};
+  /* JSON only. A cross-site form can post text/plain without a preflight, so
+     refusing everything else keeps other origins from driving this endpoint
+     through a visitor's browser. */
+  if (!/^application\/json\b/i.test(req.headers['content-type'] || '')) {
+    return res.status(415).json({ error: 'send the form as JSON' });
+  }
+
+  /* Vercel's body getter throws on malformed JSON, and valid JSON can still be
+     null or a bare string — anything that is not an object is an empty form. */
+  let body;
+  try {
+    body = typeof req.body === 'string' ? safeParse(req.body) : req.body;
+  } catch {
+    body = null;
+  }
+  if (!body || typeof body !== 'object') body = {};
 
   /* Honeypot: a real person never sees this field, so anything in it is a bot.
-     Answer 200 so the bot records a success and moves on. */
-  if (clean(body.company, 200)) return res.status(200).json({ ok: true });
+     Answer 200 so the bot records a success and moves on. It is deliberately
+     not called `company` or anything else a browser would autofill — that
+     would drop a real message while telling its sender it was delivered. */
+  if (clean(body.ref_code, 200)) return res.status(200).json({ ok: true });
 
-  const name = clean(body.name, 120);
+  /* the name lands in the subject line, so it stays on one line */
+  const name = clean(body.name, 120).replace(/\s+/g, ' ');
   const email = clean(body.email, 200);
   const message = clean(body.message, 5000);
 

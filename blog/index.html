@@ -128,8 +128,8 @@ nav.links a.current{color:var(--phos)}
 .page-top{padding-top:calc(58px + clamp(50px,7vw,90px))}
 section{padding-bottom:clamp(80px,10vw,150px);position:relative}
 .sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:20px;margin-bottom:clamp(36px,5vw,60px);flex-wrap:wrap}
-.sec-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(32px,4.6vw,58px);line-height:1}
-.sec-head h2 .hash{color:var(--phos);margin-right:6px}
+.sec-head h1,.sec-head h2{font-family:var(--disp);font-weight:700;font-size:clamp(32px,4.6vw,58px);line-height:1}
+.sec-head h1 .hash,.sec-head h2 .hash{color:var(--phos);margin-right:6px}
 .sec-head .count{font-family:var(--mono);font-size:12.5px;color:var(--phos);letter-spacing:.12em;text-transform:uppercase}
 .blog-intro{max-width:70ch;color:var(--kraft-dim);font-size:16px;margin-bottom:clamp(40px,6vw,64px)}
 .blog-intro b{color:var(--kraft);font-weight:600}
@@ -233,6 +233,10 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
   .reveal{opacity:1;transform:none}
   html{scroll-behavior:auto}
 }
+
+/* keyboard users jump past the nav — offscreen until it takes focus */
+.skip{position:fixed;left:12px;top:-80px;z-index:10000;padding:10px 14px;background:var(--bark);color:var(--phos);border:1px solid var(--phos);font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;text-decoration:none}
+.skip:focus{top:12px}
 </style>
 <script>
   window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
@@ -240,6 +244,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
 <script defer src="/_vercel/insights/script.js"></script>
 </head>
 <body>
+
+<a class="skip" href="#content">skip to content</a>
 
 <div class="term docked minimized" id="termShell" aria-label="Interactive terminal — type help for commands, cd to navigate">
   <div class="term-bar">
@@ -278,11 +284,13 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
   </div>
 </header>
 
+<main id="content">
+
 <!-- ================= BLOG ================= -->
 <section id="blog" class="page-top">
   <div class="wrap">
     <div class="sec-head reveal">
-      <h2><span class="hash">#</span>Blog</h2>
+      <h1><span class="hash">#</span>Blog</h1>
       <span class="count">1 post published · more drafting</span>
     </div>
 
@@ -346,6 +354,8 @@ footer{border-top:1px solid var(--moss);padding:38px 0 44px;margin-top:clamp(40p
     <p class="blog-note mono reveal d4">// more entries deploy here as they are drafted — check back after the HSC</p>
   </div>
 </section>
+
+</main>
 
 <!-- ================= FOOTER ================= -->
 <footer>
